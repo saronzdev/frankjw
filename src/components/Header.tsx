@@ -6,7 +6,7 @@ import { menuItems, getAuth } from '../shared/utils'
 
 const mI = menuItems
 if (getAuth()?.role === 'admin') {
-  mI.push({ label: 'Dashboard', href: '/dashboard' })
+  mI.splice(0, 0, { label: 'Dashboard', href: '/dashboard' })
 }
 
 export function Header({ title }: { title: string }) {
@@ -25,7 +25,15 @@ export function Header({ title }: { title: string }) {
           </h1>
           <nav className="hidden md:flex items-center space-x-4">
             {mI.map((item, index) => (
-              <Link key={index} href={item.href} className="text-lg hover:text-gray-200 transition-colors">
+              <Link
+                key={index}
+                href={item.href}
+                className={`${
+                  item.href === '/dashboard'
+                    ? 'rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-400'
+                    : 'hover:text-gray-600'
+                } text-lg transition-colors`}
+              >
                 {item.label}
               </Link>
             ))}

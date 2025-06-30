@@ -2,6 +2,9 @@ import { useState, useEffect } from 'preact/hooks'
 import { getCats } from '../shared/fetching'
 import { Category } from '../components/Products/Category'
 import { Header } from '../components/Header'
+import { ErrorCard } from '../components/Products/ErrorCard'
+import { LoadingCard } from '../components/Products/LoadigCard'
+import { Errors } from '../shared/types'
 
 export function Products() {
   const [cats, setCats] = useState<string[]>([])
@@ -13,8 +16,9 @@ export function Products() {
     getCats(setCats, setError, setLoading)
   }, [])
 
-  if (loading) return <p className="mt-4 text-center text-lg">Cargando...</p>
-  if (error > 0) return <p className="mt-4 text-red-700 text-center text-lg">Ocurrió un error en el servidor</p>
+  if (loading) return <LoadingCard />
+  console.log(error.toString())
+  if (error > 0) return <ErrorCard message={Errors[error as Errors]} />
 
   return (
     <div className="min-h-screen flex flex-col">

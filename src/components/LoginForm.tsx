@@ -1,6 +1,8 @@
 import { useState } from 'preact/hooks'
 import { isValidEmail } from '../shared/utils'
 import { login } from '../shared/fetching'
+import { Toaster, toast } from 'sonner'
+import { Errors } from '../shared/types'
 
 export function LoginForm() {
   const [email, setEmail] = useState('')
@@ -9,25 +11,26 @@ export function LoginForm() {
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
     if (!isValidEmail(email)) {
-      alert('Email inválido')
+      toast.error(Errors[2001])
       return
     }
-    const { ok, error } = await login(email, password)
+    const { ok, error, role } = await login(email, password)
     if (ok) {
-      window.location.href = '/dashboard'
+      const redir = role === 'admin' ? '/dashboard' : '/'
+      window.location.href = redir
     } else {
       switch (error) {
         case 1002:
-          alert('Credenciales no validas')
+          toast.error(Errors[1002])
           break
         case 1004:
-          alert('Usuario no encontrado')
+          toast.error(Errors[1004])
           break
         case 1005:
-          alert('Contraseña incorrecta')
+          toast.error(Errors[1005])
           break
         default:
-          alert('Ha ocurrido un error. ErrorCode: ' + error)
+          toast.error(Errors[error as Errors])
           break
       }
     }
@@ -35,6 +38,7 @@ export function LoginForm() {
 
   return (
     <div class="min-h-screen bg-gray-50 flex items-center justify-center p-8">
+      <Toaster richColors style={{ fontSize: '20px' }} position="top-center" />
       <div class="bg-white p-8 rounded-lg shadow-sm max-w-md w-full">
         <h1 class="text-3xl font-bold text-center text-black mb-2">Iniciar Sesión</h1>
         <form onSubmit={handleSubmit} class="space-y-6">
