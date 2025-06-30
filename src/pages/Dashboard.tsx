@@ -81,7 +81,7 @@ export function Dashboard() {
   }
 
   if (loading) return <LoadingCard />
-  if (error) return <ErrorCard message={error} />
+  // if (error) return <ErrorCard message={} />
 
   return (
     <>
