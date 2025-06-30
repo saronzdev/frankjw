@@ -15,7 +15,6 @@ export function Category({ category }: { category: string }) {
   }, [])
 
   if (loading) return <LoadingCard />
-  console.log(error.toString())
   if (error) return <ErrorCard message={error} />
 
   return (
