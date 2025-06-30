@@ -1,8 +1,8 @@
 import type { ProductType, ErrorResponse, ProductIn, LoginResponse } from './types'
 import { capitalize } from './utils'
 
-const URL = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:3000' + '/api/v1/products'
-const AUTH_URL = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:3000' + '/api/v1/auth'
+const URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000' + '/api/v1/products'
+const AUTH_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000' + '/api/v1/auth'
 const auth = localStorage.getItem('auth')?.split('"')[1]
 
 export const login = async (email: string, password: string) => {
