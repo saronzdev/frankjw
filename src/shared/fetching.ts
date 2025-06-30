@@ -1,4 +1,4 @@
-import type { ProductType, ErrorResponse, ProductIn, LoginResponse } from './types'
+import type { ProductType, ProductIn, LoginResponse } from './types'
 import { capitalize } from './utils'
 import axios, { AxiosError } from 'axios'
 

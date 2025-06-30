@@ -16,7 +16,6 @@ export function Products() {
   }, [])
 
   if (loading) return <LoadingCard />
-  console.log(error.toString())
   if (error) return <ErrorCard message={error} />
 
   return (

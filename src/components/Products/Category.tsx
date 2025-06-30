@@ -2,18 +2,21 @@ import { useState, useEffect } from 'preact/hooks'
 import { getProducts } from '../../shared/fetching'
 import type { ProductType } from '../../shared/types'
 import { ProductCard } from './ProductCard'
+import { LoadingCard } from './LoadigCard'
+import { ErrorCard } from './ErrorCard'
 
 export function Category({ category }: { category: string }) {
   const [products, setProducts] = useState<ProductType[]>([])
-  const [error, setError] = useState(0)
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getProducts(setProducts, setError, setLoading, category)
   }, [])
 
-  if (loading) return <p className="mt-4 text-center text-lg">Cargando...</p>
-  if (error > 0) return <p className="mt-4 text-red-700 text-center text-lg">Ups... ocurrió un error.ErrorCode: {error}</p>
+  if (loading) return <LoadingCard />
+  console.log(error.toString())
+  if (error) return <ErrorCard message={error} />
 
   return (
     <section>
