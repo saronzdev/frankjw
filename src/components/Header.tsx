@@ -16,7 +16,7 @@ export function Header({ title }: { title: string }) {
   return (
     <>
       <header className="sticky p-2 top-0 z-30 bg-black text-white border-b border-gray-800">
-        <div className="flex items-center justify-between px-4 py-4">
+        <div className="flex items-center justify-between px-4 py-2">
           <button onClick={toggleSidebar} className="md:hidden p-2 rounded-lg transition-colors">
             <img src={Menu} alt="Menu" className="w-10 h-10" />
           </button>
