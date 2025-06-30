@@ -1,52 +1,63 @@
 import type { ProductType, ErrorResponse, ProductIn, LoginResponse } from './types'
 import { capitalize } from './utils'
+import axios, { AxiosError } from 'axios'
+
+type CatsResponse = {
+  data: string[]
+  status: number
+}
+
+const Errors = (error: AxiosError) => {
+  let response: string
+  switch (error.status) {
+    case 404:
+      response = 'No hay productos aún...'
+      break
+    default:
+      response = error.toString()
+  }
+  return response
+}
 
 const URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000') + '/api/v1/products'
 const AUTH_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000') + '/api/v1/auth'
 const auth = localStorage.getItem('auth')?.split('"')[1]
 
-console.log(URL)
-
 export const login = async (email: string, password: string) => {
   try {
-    const response = await fetch(AUTH_URL + '/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-    const { token, role, code } = (await response.json()) as LoginResponse
-    if (response.ok) {
-      const data = JSON.stringify({ token, role })
-      localStorage.setItem('auth', data)
-      return { ok: true, error: null, role }
-    } else return { ok: false, error: code }
-  } catch {
-    return { ok: false, error: 1000 }
+    const { data, status }: LoginResponse = await axios.post(
+      AUTH_URL + '/login',
+      { email, password },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    if (status !== 200) return
+    const authData = JSON.stringify({ token: data.token, role: data.role })
+    localStorage.setItem('auth', authData)
+    return { ok: true, error: null, role: data.role }
+  } catch (error) {
+    if (error instanceof AxiosError) return { ok: false, error: Errors(error), role: null }
   }
 }
 
 export const getCats = async (
   setData: (value: string[]) => void,
-  setError: (code: number) => void,
+  setError: (message: string) => void,
   setLoading: (satate: boolean) => void
 ) => {
   try {
-    const response = await fetch(URL + '?cats=true')
-    if (response.ok) {
-      const result = (await response.json()) as string[]
-      let data: string[] = []
-      result.forEach((c) => {
-        if (!data.includes(c)) data.push(c)
-      })
-      setData(data.map((c) => capitalize(c)))
-    } else {
-      const error = (await response.json()) as ErrorResponse
-      setError(error.code)
-    }
-  } catch {
-    setError(1000)
+    const { data, status }: CatsResponse = await axios.get(URL + '/cats')
+    if (status !== 200) return
+    let cats: string[] = []
+    data.forEach((c) => {
+      if (!cats.includes(c)) cats.push(c)
+    })
+    setData(cats.map((c) => capitalize(c)))
+  } catch (error) {
+    if (error instanceof AxiosError) setError(Errors(error))
   } finally {
     setLoading(false)
   }
@@ -54,83 +65,64 @@ export const getCats = async (
 
 export const getProducts = async (
   setData: (value: ProductType[]) => void,
-  setError: (code: number) => void,
+  setError: (message: string) => void,
   setLoading: (satate: boolean) => void,
   category?: string
 ) => {
   try {
     const url = category ? URL + '/' + category.toLowerCase() : URL
-    const response = await fetch(url)
-    if (response.ok) {
-      const result = (await response.json()) as ProductType[]
-      setData(result.map((p) => ({ ...p, category: capitalize(p.category) })))
-    } else {
-      const error = (await response.json()) as ErrorResponse
-      setError(error.code)
-    }
-  } catch {
-    setError(1000)
+    const { data, status }: { data: ProductType[]; status: Number } = await axios.get(url)
+    if (status !== 200) return
+    setData(data.map((p) => ({ ...p, category: capitalize(p.category) })))
+  } catch (error) {
+    if (error instanceof AxiosError) setError(Errors(error))
   } finally {
     setLoading(false)
   }
 }
 
 //Admin
-export const createProduct = async (data: ProductIn) => {
+export const createProduct = async (dataProduct: ProductIn) => {
   try {
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`
-      },
-      body: JSON.stringify(data)
-    })
-    if (response.ok) return { ok: true, error: null }
-    else {
-      const { code } = (await response.json()) as ErrorResponse
-      return { ok: false, error: code }
-    }
-  } catch {
-    return { ok: false, error: 1000 }
-  }
-}
-
-export const updateProduct = async (id: number, data: ProductIn) => {
-  try {
-    const response = await fetch(URL + '/' + id, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`
-      },
-      body: JSON.stringify(data)
-    })
-    if (response.ok) return { ok: true, error: null }
-    else {
-      const { code } = (await response.json()) as ErrorResponse
-      return { ok: false, error: code }
-    }
-  } catch {
-    return { ok: false, error: 1000 }
-  }
-}
-
-export const deleteProduct = async (id: number) => {
-  try {
-    const response = await fetch(URL + '/' + id, {
-      method: 'DELETE',
+    const { status } = await axios.post(URL, dataProduct, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth}`
       }
     })
-    if (response.ok) return { ok: true, error: null }
-    else {
-      const { code } = (await response.json()) as ErrorResponse
-      return { ok: false, error: code }
-    }
-  } catch {
-    return { ok: false, error: 1000 }
+    if (status !== 200) return
+    return { ok: true, error: null }
+  } catch (error) {
+    if (error instanceof AxiosError) return { ok: false, error: Errors(error) }
+  }
+}
+
+export const updateProduct = async (id: number, productData: ProductIn) => {
+  try {
+    const { status } = await axios.put(URL + '/' + id, productData, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`
+      }
+    })
+    if (status !== 200) return
+    return { ok: false, error: null }
+  } catch (error) {
+    if (error instanceof AxiosError) return { ok: false, error: Errors(error) }
+  }
+}
+
+export const deleteProduct = async (id: number) => {
+  try {
+    const { status } = await axios.delete(URL + '/' + id, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`
+      }
+    })
+    if (status !== 200) return
+    return { ok: true, error: null }
+  } catch (error) {
+    if (error instanceof AxiosError) return { ok: false, error: Errors(error) }
   }
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'preact/hooks'
 import { ProductForm } from '../components/Products/ProductForm'
 import { ProductCard } from '../components/Products/ProductCard'
 import { Search } from '../components/Products/Search'
-import { Errors, type ProductIn, type ProductType } from '../shared/types'
+import { type ProductIn, type ProductType } from '../shared/types'
 import { createProduct, deleteProduct, getProducts, updateProduct } from '../shared/fetching'
 import { getAuth } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
@@ -14,7 +14,7 @@ export function Dashboard() {
   if (getAuth()?.role !== 'admin') return (window.location.href = '/login')
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(0)
+  const [error, setError] = useState('')
   const [refresh, setRefresh] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
@@ -57,12 +57,12 @@ export function Dashboard() {
 
   const handleSaveProduct = async (data: ProductIn) => {
     if (editingProduct) {
-      const { ok, error } = await updateProduct(editingProduct.id, data)
-      if (!ok) toast.error(`Ha ocurrido un error. ErrorCode: ${error}`)
+      const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: string }
+      if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
       else setRefresh(true)
     } else {
-      const { ok, error } = await createProduct(data)
-      if (!ok) toast.error(`Ha ocurrido un error. ErrorCode: ${error}`)
+      const { ok, error } = (await createProduct(data)) as { ok: boolean; error: string }
+      if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
       else setRefresh(true)
     }
     setShowForm(false)
@@ -70,8 +70,8 @@ export function Dashboard() {
   }
 
   const handleDeleteProduct = async (id: number) => {
-    const { ok, error } = await deleteProduct(id)
-    if (!ok) toast.error(`Ha ocurrido un error. ErrorCode: ${error}`)
+    const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: string }
+    if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
     else setRefresh(true)
   }
 
@@ -81,7 +81,7 @@ export function Dashboard() {
   }
 
   if (loading) return <LoadingCard />
-  if (error > 0) return <ErrorCard message={Errors[error as Errors]} />
+  if (error) return <ErrorCard message={error} />
 
   return (
     <>

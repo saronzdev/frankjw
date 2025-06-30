@@ -2,7 +2,6 @@ import { useState } from 'preact/hooks'
 import { isValidEmail } from '../shared/utils'
 import { login } from '../shared/fetching'
 import { Toaster, toast } from 'sonner'
-import { Errors } from '../shared/types'
 
 export function LoginForm() {
   const [email, setEmail] = useState('')
@@ -11,29 +10,14 @@ export function LoginForm() {
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
     if (!isValidEmail(email)) {
-      toast.error(Errors[2001])
+      toast.error('Email no válido')
       return
     }
-    const { ok, error, role } = await login(email, password)
+    const { ok, error, role } = (await login(email, password)) as { ok: boolean; error: string; role: string | null }
     if (ok) {
       const redir = role === 'admin' ? '/dashboard' : '/'
       window.location.href = redir
-    } else {
-      switch (error) {
-        case 1002:
-          toast.error(Errors[1002])
-          break
-        case 1004:
-          toast.error(Errors[1004])
-          break
-        case 1005:
-          toast.error(Errors[1005])
-          break
-        default:
-          toast.error(Errors[error as Errors])
-          break
-      }
-    }
+    } else toast.error(error)
   }
 
   return (
@@ -66,7 +50,7 @@ export function LoginForm() {
 
           <button
             type="submit"
-            class="w-full bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium flex items-center justify-center"
+            class="w-full bg-black text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium flex items-center justify-center"
           >
             Iniciar Sesión
           </button>

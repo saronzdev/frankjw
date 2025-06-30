@@ -4,11 +4,10 @@ import { Category } from '../components/Products/Category'
 import { Header } from '../components/Header'
 import { ErrorCard } from '../components/Products/ErrorCard'
 import { LoadingCard } from '../components/Products/LoadigCard'
-import { Errors } from '../shared/types'
 
 export function Products() {
   const [cats, setCats] = useState<string[]>([])
-  const [error, setError] = useState(0)
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [filterCategory, setFilterCategory] = useState('')
 
@@ -18,7 +17,7 @@ export function Products() {
 
   if (loading) return <LoadingCard />
   console.log(error.toString())
-  if (error > 0) return <ErrorCard message={Errors[error as Errors]} />
+  if (error) return <ErrorCard message={error} />
 
   return (
     <div className="min-h-screen flex flex-col">

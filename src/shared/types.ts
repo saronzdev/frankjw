@@ -42,7 +42,10 @@ export interface ErrorResponse {
 }
 
 export interface LoginResponse {
-  token: string
-  role: string
-  code?: number
+  data: {
+    token: string
+    role: string
+    code?: number
+  }
+  status: number
 }
