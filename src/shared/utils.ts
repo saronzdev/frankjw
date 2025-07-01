@@ -44,7 +44,7 @@ export function getErrorMessage(code: number): string {
     case 1101:
       return 'Producto no encontrado.'
     case 1102:
-      return 'Ya existe un producto con este identificador.'
+      return 'Ya existe un producto con este ID.'
     case 1103:
       return 'El ID del producto no es válido.'
 
