@@ -19,6 +19,7 @@ export function Products() {
 
   if (loading) return <LoadingCard />
   if (error > 0) {
+    console.log('Error fetching categories:', error)
     if (error === 1101) return <NotProducts />
     return <ErrorCard message={getErrorMessage(error)} />
   }

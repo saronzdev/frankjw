@@ -48,6 +48,7 @@ export const getCats = async (
     if (error instanceof AxiosError) {
       if (error.response) {
         const { data } = error.response
+        console.error('Error fetching categories:', data)
         setError(data.code)
       }
     } else if (error.request) {
