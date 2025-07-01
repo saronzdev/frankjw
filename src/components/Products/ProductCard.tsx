@@ -18,7 +18,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     }
   }
 
-  const waMsg = `https://api.whatsapp.com/send?phone=5356433122&text=Hola+quisiera+reservar+el+${encodeURIComponent(
+  const waMsg = `https://api.whatsapp.com/send?phone=5353444690&text=Hola+quisiera+reservar+el+${encodeURIComponent(
     data.name
   )}+(ID:+${data.productId})`
 

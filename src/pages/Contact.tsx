@@ -121,8 +121,8 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 class="font-medium text-gray-900 mb-1">Teléfono</h3>
-                      <a href="tel:+5352921813" class="text-gray-600 hover:text-gray-900 transition-colors">
-                        +53 5 2921813
+                      <a href="tel:+5353444690" class="text-gray-600 hover:text-gray-900 transition-colors">
+                        +5353444690
                       </a>
                     </div>
                   </div>
@@ -134,7 +134,7 @@ export function Contact() {
                     <div>
                       <h3 class="font-medium text-gray-900 mb-1">Email</h3>
                       <a href="mailto:frankjoyeria91@gmail.com" class="text-gray-600 hover:text-gray-900 transition-colors">
-                        frankjoyeria91@gmail.com
+                        frankjoyeriacuba@gmail.com
                       </a>
                     </div>
                   </div>
