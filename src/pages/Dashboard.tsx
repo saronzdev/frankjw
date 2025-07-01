@@ -96,12 +96,14 @@ export function Dashboard() {
             + Nuevo Producto
           </button>
         </div>
-        <Search
-          searchTerm={searchTerm}
-          handlerSearch={handlerSearch}
-          setSearchTerm={setSearchTerm}
-          placeholder="Bucar por ID o Nombre"
-        />
+        {filteredProducts && filteredProducts.length > 0 && (
+          <Search
+            searchTerm={searchTerm}
+            handlerSearch={handlerSearch}
+            setSearchTerm={setSearchTerm}
+            placeholder="Bucar por ID o Nombre"
+          />
+        )}
 
         {filteredProducts && filteredProducts.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-4 gap-6">
