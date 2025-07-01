@@ -7,12 +7,15 @@ import { createProduct, deleteProduct, getProducts, updateProduct } from '../sha
 import { getAuth, getErrorMessage } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
 import { ErrorCard } from '../components/Products/ErrorCard'
-import { Header } from '../components/Header'
 import { NotProducts } from '../components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
+import { useLocation } from 'wouter'
 
 export function Dashboard() {
-  if (getAuth()?.role !== 'admin') return (window.location.href = '/login')
+  const [_, setLocation] = useLocation()
+
+  if (getAuth()?.role !== 'admin') setLocation('/login')
+
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(0)
@@ -90,7 +93,6 @@ export function Dashboard() {
 
   return (
     <>
-      <Header title="Dashboard" />
       <div className="min-h-screen">
         <Toaster richColors position="bottom-center" />
         <div className="flex justify-center m-6">

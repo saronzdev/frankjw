@@ -4,16 +4,23 @@ import About from '@/assets/about.svg'
 import Contact from '@/assets/contact.svg'
 import X from '@/assets/close.svg'
 import Dashboard from '@/assets/dashboard.svg'
-import { getAuth, menuItems } from '../shared/utils'
+import { menuItems } from '../shared/utils'
 
 const mI = menuItems.map((item) => ({
   ...item,
-  icon: item.href === '/' ? Home : item.href === '/products' ? Products : item.href === '/about' ? About : Contact
+  icon:
+    item.href === '/'
+      ? Home
+      : item.href === '/products'
+      ? Products
+      : item.href === '/about'
+      ? About
+      : item.href === '/contact'
+      ? Contact
+      : item.href === '/dashboard'
+      ? Dashboard
+      : Home
 }))
-
-if (getAuth()?.role === 'admin') {
-  mI.push({ label: 'Dashboard', href: '/dashboard', icon: Dashboard })
-}
 
 export function MobileSidebar(props: { isOpen: boolean; toggleSidebar: () => void }) {
   return (

@@ -10,7 +10,7 @@ export function NotProducts(props: Props) {
       <p className="text-gray-600 mb-4">
         {props.searchTerm
           ? 'No se encontraron productos con los filtros aplicados'
-          : 'Comienza agregando tu primer producto'}
+          : 'No hay productos disponibles actualmente.'}
       </p>
     </div>
   )

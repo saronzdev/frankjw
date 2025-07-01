@@ -10,7 +10,6 @@ import tree from '@/assets/tree.svg'
 export function About() {
   return (
     <div class="min-h-screen bg-white">
-      <Header title="Nuestra Historia" />
       <section class="py-20 px-4">
         <div class="max-w-4xl mx-auto text-center">
           <h1 class="text-5xl md:text-6xl font-light tracking-tight text-gray-900 mb-6">Nuestra Historia</h1>

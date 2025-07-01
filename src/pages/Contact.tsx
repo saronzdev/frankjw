@@ -1,10 +1,8 @@
 import { ContactMe } from '../components/Landing/ContactMe'
-import { Header } from '../components/Header'
 
 export function Contact() {
   return (
     <>
-      <Header title="Contáctanos" />
       <div class="min-h-screen bg-white">
         <section class="py-20 px-4">
           <div class="max-w-4xl mx-auto text-center">

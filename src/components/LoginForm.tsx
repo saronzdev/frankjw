@@ -2,8 +2,10 @@ import { useState } from 'preact/hooks'
 import { getErrorMessage, isValidEmail } from '../shared/utils'
 import { login } from '../shared/fetching'
 import { Toaster, toast } from 'sonner'
+import { useLocation } from 'wouter'
 
 export function LoginForm() {
+  const [_, setLocation] = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -16,7 +18,7 @@ export function LoginForm() {
     const { ok, error, role } = (await login(email, password)) as { ok: boolean; error: number; role: string | null }
     if (ok) {
       const redir = role === 'admin' ? '/dashboard' : '/'
-      window.location.href = redir
+      setLocation(redir)
     } else toast.error(getErrorMessage(error))
   }
 

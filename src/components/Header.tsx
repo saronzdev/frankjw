@@ -1,15 +1,11 @@
 import { useState } from 'preact/hooks'
 import { MobileSidebar } from './MobileSidebar'
+import { Link, useLocation } from 'wouter'
 import Menu from '@/assets/menu.svg'
-import { Link } from 'wouter'
-import { menuItems, getAuth } from '../shared/utils'
+import { menuItems, titles } from '../shared/utils'
 
-const mI = menuItems
-if (getAuth()?.role === 'admin') {
-  mI.splice(0, 0, { label: 'Dashboard', href: '/dashboard' })
-}
-
-export function Header({ title }: { title: string }) {
+export function Header() {
+  const [location] = useLocation()
   const [isOpen, setOpen] = useState(false)
 
   const toggleSidebar = () => setOpen(!isOpen)
@@ -21,10 +17,10 @@ export function Header({ title }: { title: string }) {
             <img src={Menu} alt="Menu" className="w-10 h-10" />
           </button>
           <h1 className="text-3xl -ml-2 md:ml-0 tracking-wide flex-1 text-center md:text-left md:flex-none header-title">
-            {title}
+            {titles[location as keyof typeof titles] || 'Home'}
           </h1>
           <nav className="hidden md:flex items-center space-x-4">
-            {mI.map((item, index) => (
+            {menuItems.map((item, index) => (
               <Link
                 key={index}
                 href={item.href}

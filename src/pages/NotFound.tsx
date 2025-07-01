@@ -1,4 +1,5 @@
 export function NotFound() {
+  window.history.replaceState(null, '', '/404')
   return (
     <div class="min-h-screen bg-white flex items-center justify-center px-4">
       <div class="max-w-2xl mx-auto text-center">

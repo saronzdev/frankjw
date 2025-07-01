@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import { getCats } from '../shared/fetching'
 import { Category } from '../components/Products/Category'
-import { Header } from '../components/Header'
 import { ErrorCard } from '../components/Products/ErrorCard'
 import { LoadingCard } from '../components/Products/LoadigCard'
 import { getErrorMessage } from '../shared/utils'
@@ -26,7 +25,6 @@ export function Products() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header title="Productos" />
       <section>
         <div className="flex justify-center">
           <select

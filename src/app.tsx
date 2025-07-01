@@ -6,17 +6,21 @@ import { Contact } from './pages/Contact'
 import { Dashboard } from './pages/Dashboard'
 import { NotFound } from './pages/NotFound'
 import { Login } from './pages/Login'
+import { Header } from './components/Header'
 
 export function App() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/products" component={Products} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/login" component={Login} />
-      <Route path="*" component={NotFound} />
-    </Switch>
+    <>
+      <Header />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/products" component={Products} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/login" component={Login} />
+        <Route path="*" component={NotFound} />
+      </Switch>
+    </>
   )
 }
