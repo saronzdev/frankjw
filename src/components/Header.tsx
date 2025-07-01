@@ -17,7 +17,7 @@ export function Header() {
             <img src={Menu} alt="Menu" className="w-10 h-10" />
           </button>
           <h1 className="text-3xl -ml-2 md:ml-0 tracking-wide flex-1 text-center md:text-left md:flex-none header-title">
-            {titles[location as keyof typeof titles] || 'Home'}
+            {titles[location as keyof typeof titles]}
           </h1>
           <nav className="hidden md:flex items-center space-x-4">
             {menuItems.map((item, index) => (
