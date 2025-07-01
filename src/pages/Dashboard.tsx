@@ -6,7 +6,7 @@ import { type ProductIn, type ProductType } from '../shared/types'
 import { createProduct, deleteProduct, getProducts, updateProduct } from '../shared/fetching'
 import { getAuth } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
-import { ErrorCard } from '../components/Products/ErrorCard'
+// import { ErrorCard } from '../components/Products/ErrorCard'
 import { Header } from '../components/Header'
 import { Toaster, toast } from 'sonner'
 
@@ -14,7 +14,7 @@ export function Dashboard() {
   if (getAuth()?.role !== 'admin') return (window.location.href = '/login')
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [_, setError] = useState('')
   const [refresh, setRefresh] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
