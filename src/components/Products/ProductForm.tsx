@@ -158,13 +158,12 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Peso (gramos) *</label>
                 <input
-                  type="number"
+                  type="text"
+                  pattern="^\d*([,.]\d+)?$"
                   name="weight"
                   value={productData.weight}
                   onInput={handleInputChange}
                   required
-                  min="0"
-                  step="0.01"
                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
                   placeholder="0.00"
                 />
@@ -172,20 +171,15 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Quilates *</label>
-                <select
+                <input
                   name="karats"
+                  type="text"
                   value={productData.karats}
                   onChange={handleInputChange}
                   required
                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
-                >
-                  <option value="">Seleccionar quilates</option>
-                  <option value={10}>10k</option>
-                  <option value={14}>14k</option>
-                  <option value={18}>18k</option>
-                  <option value={22}>22k</option>
-                  <option value={24}>24k</option>
-                </select>
+                  placeholder="0"
+                />
               </div>
             </div>
 

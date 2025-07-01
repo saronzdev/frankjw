@@ -21,8 +21,8 @@ export function LoginForm() {
   }
 
   return (
-    <div class="min-h-screen bg-gray-50 flex items-center justify-center p-8">
-      <Toaster richColors style={{ fontSize: '20px' }} position="top-center" />
+    <div class="h-screen bg-gray-50 flex items-center justify-center p-8">
+      <Toaster richColors position="top-center" />
       <div class="bg-white p-8 rounded-lg shadow-sm max-w-md w-full">
         <h1 class="text-3xl font-bold text-center text-black mb-2">Iniciar Sesión</h1>
         <form onSubmit={handleSubmit} class="space-y-6">
