@@ -23,9 +23,7 @@ export const login = async (email: string, password: string) => {
       if (error.response) {
         const { data } = error.response
         return { ok: false, error: data.code, role: null }
-      } else if (error.request) {
-        return { ok: false, error: 1000, role: null }
-      }
+      } else if (error.request) return { ok: false, error: 1000, role: null }
       return { ok: false, error: 1, role: null }
     }
   }
@@ -50,11 +48,9 @@ export const getCats = async (
         const { data } = error.response
         console.error('Error fetching categories:', data)
         setError(data.code)
-      }
-    } else if (error.request) {
-      setError(1000)
+      } else if (error.request) setError(1000)
+      else setError(1)
     }
-    setError(1)
   } finally {
     setLoading(false)
   }
@@ -74,11 +70,9 @@ export const getProducts = async (
       if (error.response) {
         const { data } = error.response
         setError(data.code)
-      }
-    } else if (error.request) {
-      setError(1000)
+      } else if (error.request) setError(1000)
+      else setError(1)
     }
-    setError(1)
   } finally {
     setLoading(false)
   }
@@ -100,9 +94,7 @@ export const createProduct = async (dataProduct: ProductIn) => {
       if (error.response) {
         const { data } = error.response
         return { ok: false, error: data.code }
-      } else if (error.request) {
-        return { ok: false, error: 1000 }
-      }
+      } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
   }
@@ -123,9 +115,7 @@ export const updateProduct = async (id: number, productData: ProductIn) => {
       if (error.response) {
         const { data } = error.response
         return { ok: false, error: data.code }
-      } else if (error.request) {
-        return { ok: false, error: 1000 }
-      }
+      } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
   }
@@ -147,9 +137,7 @@ export const deleteProduct = async (id: number) => {
       if (error.response) {
         const { data } = error.response
         return { ok: false, error: data.code }
-      } else if (error.request) {
-        return { ok: false, error: 1000 }
-      }
+      } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
   }
