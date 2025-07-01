@@ -16,8 +16,8 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     description: product?.description ?? '',
     category: product?.category ?? '',
     price: product?.price ?? 0,
-    weight: product?.weight ?? 0,
-    karats: product?.karats ?? 0,
+    weight: product?.weight ?? '',
+    karats: product?.karats ?? '',
     pictures: product?.pictures ?? ([] as string[])
   }
   const [productData, setProductData] = useState<ProductIn>(newProduct as ProductIn)

@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { isValidEmail } from '../shared/utils'
+import { getErrorMessage, isValidEmail } from '../shared/utils'
 import { login } from '../shared/fetching'
 import { Toaster, toast } from 'sonner'
 
@@ -13,11 +13,11 @@ export function LoginForm() {
       toast.error('Email no válido')
       return
     }
-    const { ok, error, role } = (await login(email, password)) as { ok: boolean; error: string; role: string | null }
+    const { ok, error, role } = (await login(email, password)) as { ok: boolean; error: number; role: string | null }
     if (ok) {
       const redir = role === 'admin' ? '/dashboard' : '/'
       window.location.href = redir
-    } else toast.error(error)
+    } else toast.error(getErrorMessage(error))
   }
 
   return (

@@ -32,7 +32,7 @@ export function Header({ title }: { title: string }) {
                   item.href === '/dashboard'
                     ? 'rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-400'
                     : 'hover:text-gray-600'
-                } text-lg transition-colors`}
+                } text-md text-semibold transition-colors`}
               >
                 {item.label}
               </Link>

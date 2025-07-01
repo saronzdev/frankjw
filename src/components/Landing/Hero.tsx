@@ -18,7 +18,7 @@ export function Hero() {
         </div>
         <div className="space-y-2">
           <div>
-            <h1 className="hidden md:flex text-3xl md:text-5xl tracking-tight text-black">Frank Joyería</h1>
+            <h1 className="hidden md:block text-5xl text-center tracking-tight text-black">Frank Joyería</h1>
             <p className="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">
               No solo vendemos joyas, sino creamos símbolos de emociones y momentos inolvidables.
             </p>

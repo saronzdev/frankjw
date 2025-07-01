@@ -4,17 +4,18 @@ import { ProductCard } from '../components/Products/ProductCard'
 import { Search } from '../components/Products/Search'
 import { type ProductIn, type ProductType } from '../shared/types'
 import { createProduct, deleteProduct, getProducts, updateProduct } from '../shared/fetching'
-import { getAuth } from '../shared/utils'
+import { getAuth, getErrorMessage } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
-// import { ErrorCard } from '../components/Products/ErrorCard'
+import { ErrorCard } from '../components/Products/ErrorCard'
 import { Header } from '../components/Header'
+import { NotProducts } from '../components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 
 export function Dashboard() {
   if (getAuth()?.role !== 'admin') return (window.location.href = '/login')
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
-  const [_, setError] = useState('')
+  const [error, setError] = useState(0)
   const [refresh, setRefresh] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
@@ -57,21 +58,22 @@ export function Dashboard() {
 
   const handleSaveProduct = async (data: ProductIn) => {
     if (editingProduct) {
-      const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: string }
-      if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
+      const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: number }
+      setShowForm(ok)
+      if (!ok) toast.error(getErrorMessage(error))
       else setRefresh(true)
     } else {
-      const { ok, error } = (await createProduct(data)) as { ok: boolean; error: string }
-      if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
+      const { ok, error } = (await createProduct(data)) as { ok: boolean; error: number }
+      setShowForm(ok)
+      if (!ok) toast.error(getErrorMessage(error))
       else setRefresh(true)
     }
-    setShowForm(false)
     setEditingProduct(undefined)
   }
 
   const handleDeleteProduct = async (id: number) => {
-    const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: string }
-    if (!ok) toast.error(`Ha ocurrido un error: ${error}`)
+    const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: number }
+    if (!ok) toast.error(getErrorMessage(error))
     else setRefresh(true)
   }
 
@@ -81,7 +83,10 @@ export function Dashboard() {
   }
 
   if (loading) return <LoadingCard />
-  // if (error) return <ErrorCard message={} />
+  if (error > 0) {
+    if (error === 1101) return <NotProducts searchTerm={searchTerm} />
+    return <ErrorCard message={getErrorMessage(error)} />
+  }
 
   return (
     <>

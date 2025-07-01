@@ -4,10 +4,12 @@ import type { ProductType } from '../../shared/types'
 import { ProductCard } from './ProductCard'
 import { LoadingCard } from './LoadigCard'
 import { ErrorCard } from './ErrorCard'
+import { NotProducts } from './NotProducts'
+import { getErrorMessage } from '../../shared/utils'
 
 export function Category({ category }: { category: string }) {
   const [products, setProducts] = useState<ProductType[]>([])
-  const [error, setError] = useState('')
+  const [error, setError] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,7 +17,10 @@ export function Category({ category }: { category: string }) {
   }, [])
 
   if (loading) return <LoadingCard />
-  if (error) return <ErrorCard message={error} />
+  if (error > 0) {
+    if (error === 1101) return <NotProducts />
+    return <ErrorCard message={getErrorMessage(error)} />
+  }
 
   return (
     <section>
