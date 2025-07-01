@@ -110,14 +110,13 @@ export const createProduct = async (dataProduct: ProductIn) => {
 export const updateProduct = async (id: number, productData: ProductIn) => {
   if (!token) return { ok: false, error: 'No tienes permisos' }
   try {
-    const { status } = await axios.put(URL + '/' + id, productData, {
+    await axios.put(URL + '/' + id, productData, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }
     })
-    if (status !== 200) return
-    return { ok: false, error: null }
+    return { ok: true, error: null }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       if (error.response) {

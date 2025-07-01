@@ -60,15 +60,15 @@ export function Dashboard() {
     if (editingProduct) {
       const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: number }
       setShowForm(!ok)
-      if (!ok) toast.error(getErrorMessage(error))
-      else setRefresh((refresh) => !refresh)
+      if (!ok) return toast.error(getErrorMessage(error))
+      setRefresh((refresh) => !refresh)
+      setEditingProduct(undefined)
     } else {
       const { ok, error } = (await createProduct(data)) as { ok: boolean; error: number }
       setShowForm(!ok)
       if (!ok) toast.error(getErrorMessage(error))
       else setRefresh((refresh) => !refresh)
     }
-    setEditingProduct(undefined)
   }
 
   const handleDeleteProduct = async (id: number) => {
