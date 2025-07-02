@@ -1,4 +1,3 @@
-import { Header } from '../components/Header'
 import ring from '@/assets/ring.svg'
 import diamond from '@/assets/diamond.svg'
 import sparkles from '@/assets/sparkles.svg'
