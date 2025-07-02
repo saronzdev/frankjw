@@ -1,19 +1,15 @@
+import axios from 'axios'
+import { isAdmin } from './fetching'
+
 export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
 
-export const getAuth = () => {
-  const auth = localStorage.getItem('auth')
-  if (auth) return JSON.parse(auth)
-  return null
-}
-
-const isAdmin = getAuth()?.role === 'admin'
 const menuItems = [
   { label: 'Inicio', href: '/' },
   { label: 'Productos', href: '/products' },
   { label: 'Nosotros', href: '/about' },
   { label: 'Contacto', href: '/contact' }
 ]
-if (isAdmin) {
+if (true) {
   menuItems.unshift({ label: 'Dashboard', href: '/dashboard' })
 }
 export { menuItems }
@@ -33,7 +29,18 @@ export const isValidEmail = (email: string) => {
   return re.test(email)
 }
 
-// Puedes poner esto en utils/errors.ts del frontend
+const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
+export const API_URL = url + '/api/v1/'
+
+export const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  },
+  withCredentials: true
+})
 
 export function getErrorMessage(code: number): string {
   switch (code) {

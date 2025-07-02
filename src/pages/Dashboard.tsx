@@ -3,18 +3,20 @@ import { ProductForm } from '../components/Products/ProductForm'
 import { ProductCard } from '../components/Products/ProductCard'
 import { Search } from '../components/Products/Search'
 import { type ProductIn, type ProductType } from '../shared/types'
-import { createProduct, deleteProduct, getProducts, updateProduct } from '../shared/fetching'
-import { getAuth, getErrorMessage } from '../shared/utils'
+import { createProduct, deleteProduct, getProducts, isAdmin, updateProduct } from '../shared/fetching'
+import { getErrorMessage } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
 import { ErrorCard } from '../components/Products/ErrorCard'
 import { NotProducts } from '../components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
 
+const is = await isAdmin()
+
 export function Dashboard() {
   const [_, setLocation] = useLocation()
 
-  if (getAuth()?.role !== 'admin') setLocation('/login')
+  if (!is) setLocation('/login')
 
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
