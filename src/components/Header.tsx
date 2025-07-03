@@ -25,9 +25,9 @@ export function Header({ isAdmin = false }: { isAdmin?: boolean }) {
                 key={index}
                 href={item.href}
                 className={`${
-                  item.href === '/dashboard' && !isAdmin
-                    ? 'hidden hover:text-gray-600'
-                    : 'block rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-400'
+                  item.href === '/dashboard'
+                    ? `${isAdmin ? 'block' : 'hidden'} rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-600`
+                    : 'hover:text-gray-400'
                 } text-md text-semibold transition-colors`}
               >
                 {item.label}
