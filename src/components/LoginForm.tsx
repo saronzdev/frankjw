@@ -17,11 +17,10 @@ export function LoginForm() {
     }
     const { ok, error } = (await login(email, password)) as { ok: boolean; error: number }
     if (ok) {
-      toast.success('Inicio de sesión exitoso')
+      toast.success('Inicio de sesión exitoso. Redirigiendo en 3s...')
       const is = await isUserAdmin()
-      console.log(is)
       const redir = is ? '/dashboard' : '/'
-      setLocation(redir)
+      setTimeout(() => setLocation(redir), 3000)
     } else toast.error(getErrorMessage(error))
   }
 

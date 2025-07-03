@@ -46,14 +46,11 @@ export function Dashboard() {
       setIsSearching(false)
       return
     }
-    
+
     setIsSearching(true)
     const searchTerm = term.toLowerCase().trim()
     const data = products.filter((product) => {
-      return (
-        product.name.toLowerCase().includes(searchTerm) || 
-        product.productId.toLowerCase().includes(searchTerm)
-      )
+      return product.name.toLowerCase().includes(searchTerm) || product.productId.toLowerCase().includes(searchTerm)
     })
     setFilteredProducts(data)
     setIsSearching(false)
@@ -104,10 +101,10 @@ export function Dashboard() {
     <>
       <div className="min-h-screen">
         <Toaster richColors position="bottom-center" />
-        <div className="flex flex-col gap-4 justify-center m-6">
+        <div className="flex flex-col gap-4 items-center justify-center m-6">
           <button
             onClick={handleCreateProduct}
-            className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+            className="w-fit bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
           >
             + Nuevo Producto
           </button>
@@ -124,10 +121,7 @@ export function Dashboard() {
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <NotProducts 
-              searchTerm={searchTerm} 
-              hasProducts={products.length > 0}
-            />
+            <NotProducts searchTerm={searchTerm} hasProducts={products.length > 0} />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
