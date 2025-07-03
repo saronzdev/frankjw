@@ -1,8 +1,7 @@
 import { useState } from 'preact/hooks'
 import noImage from '@/assets/no-image.svg'
 import type { ProductType } from '../../shared/types'
-import sample from '@/assets/sample1.jpg'
-import { ImageGallery } from './ImageGallery'
+import { Heart, Edit, Trash2, ShoppingCart } from 'lucide-react'
 
 interface Props {
   data: ProductType
@@ -12,6 +11,10 @@ interface Props {
 }
 
 export function ProductCard({ data, editable = false, onDelete, onEdit }: Props) {
+  const [isLiked, setIsLiked] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isImageLoading, setIsImageLoading] = useState(true)
+
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
       onDelete?.(data.id)
@@ -22,79 +25,150 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     data.name
   )}+(ID:+${data.productId})`
 
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+  const productImages = data.pictures && data.pictures.length > 0 ? data.pictures : [noImage]
 
-  const productImages = (() => {
-    if (!data.pictures || !Array.isArray(data.pictures)) return [sample]
-    const validPics = data.pictures.filter((pic): pic is string => typeof pic === 'string')
-    return validPics
-  })()
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % productImages.length)
+  }
 
-  const openGallery = () => {
-    setIsGalleryOpen(true)
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md mb-1 flex flex-col">
-      <div className="flex justify-center">
-        <button
-          onClick={openGallery}
-          className={`p-0 border-0 bg-transparent ${productImages.length > 0 ? 'cursor-pointer' : ''}`}
-          aria-label="Ver imagen ampliada"
-        >
+    <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
+      {/* Image Section */}
+      <div className="relative overflow-hidden">
+        <div className="relative h-64 bg-gray-100">
+          {isImageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
           <img
-            className="rounded-lg w-60 object-cover h-60 hover:opacity-90 transition-opacity"
-            src={productImages[0] || noImage}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            src={productImages[currentImageIndex]}
             alt={data.name}
             loading="lazy"
+            onLoad={() => setIsImageLoading(false)}
+            onError={() => setIsImageLoading(false)}
           />
-        </button>
-        {isGalleryOpen && productImages.length > 0 && (
-          <ImageGallery images={productImages} onClose={() => setIsGalleryOpen(false)} />
-        )}
-      </div>
-      <div className="p-4 flex-grow flex flex-col text-center">
-        <h2 className="text-2xl font-semibold line-clamp-2">{data.name}</h2>
-        <p className="my-2 text-gray-600 text-md line-clamp-2 flex-grow">{data.description}</p>
-        <div className="flex items-center space-x-4">
-          <div className="bg-gray-50 p-2 rounded flex-1 text-center">
-            <p className="text-sm text-gray-600">Peso</p>
-            <p className="font-medium">{data.weight} g</p>
-          </div>
-          <div className="bg-gray-50 p-2 rounded flex-1 text-center">
-            <p className="text-sm text-gray-600">Quilates</p>
-            <p className="font-medium">{data.karats} K</p>
-          </div>
-        </div>
-        <div className={`flex justify-between items-center mt-4 pt-3 border-t ${editable ? 'space-x-2' : ''}`}>
-          {editable ? (
+
+          {/* Image Navigation */}
+          {productImages.length > 1 && (
             <>
               <button
-                onClick={() => onEdit?.(data)}
-                class="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded hover:bg-gray-200 transition-colors text-sm font-medium"
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
               >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              {/* Image Indicators */}
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
+                {productImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Action Buttons */}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <button
+              onClick={() => setIsLiked(!isLiked)}
+              className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
+                isLiked ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-700 hover:bg-white'
+              }`}
+            >
+              <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+            </button>
+          </div>
+
+          {/* Price Badge */}
+          <div className="absolute top-3 left-3">
+            <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+              ${data.price}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="p-6">
+        <div className="mb-4">
+          <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+            {data.name}
+          </h3>
+          <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{data.description}</p>
+        </div>
+
+        {/* Product Details */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Peso</p>
+            <p className="text-lg font-bold text-gray-900">{data.weight}g</p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
+            <p className="text-xs text-yellow-700 font-medium uppercase tracking-wide">Quilates</p>
+            <p className="text-lg font-bold text-yellow-800">{data.karats}K</p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          {editable ? (
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => onEdit?.(data)}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 py-3 px-4 rounded-xl hover:from-slate-200 hover:to-slate-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+              >
+                <Edit className="w-4 h-4" />
                 Editar
               </button>
               <button
                 onClick={handleDelete}
-                class="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded hover:bg-red-100 transition-colors text-sm font-medium"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-rose-100 to-rose-200 text-rose-700 py-3 px-4 rounded-xl hover:from-rose-200 hover:to-rose-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
               >
+                <Trash2 className="w-4 h-4" />
                 Eliminar
               </button>
-            </>
+            </div>
           ) : (
-            <>
-              <p className="text-lg font-semibold">{data.price} USD</p>
-              <a
-                href={waMsg}
-                target="_blank"
-                className="px-8 py-4 text-lg text-white bg-black rounded-full hover:bg-gray-800 transition-colors"
-              >
-                Reservar
-              </a>
-            </>
+            <a
+              href={waMsg}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Reservar por WhatsApp
+            </a>
           )}
         </div>
+
+        {/* Product ID - Only shown in editable mode */}
+        {editable && (
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs text-gray-400 text-center font-mono">ID: {data.productId}</p>
+          </div>
+        )}
       </div>
     </div>
   )
