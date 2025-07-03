@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import { getProducts } from '../../shared/fetching'
+import { getProductsByCategory } from '../../shared/fetching'
 import type { ProductType } from '../../shared/types'
 import { ProductCard } from './ProductCard'
 import { LoadingCard } from './LoadigCard'
@@ -13,13 +13,17 @@ export function Category({ category }: { category: string }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getProducts(setProducts, setError, setLoading, category)
+    getProductsByCategory(setProducts, setError, setLoading, category)
   }, [])
 
   if (loading) return <LoadingCard />
   if (error > 0) {
-    if (error === 1101) return <NotProducts />
+    if (error === 1101) return <NotProducts hasProducts={false} />
     return <ErrorCard message={getErrorMessage(error)} />
+  }
+
+  if (products.length === 0) {
+    return <NotProducts hasProducts={false} />
   }
 
   return (

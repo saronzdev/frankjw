@@ -1,25 +1,43 @@
+import axios from 'axios'
+import Home from '@/assets/home.svg'
+import Products from '@/assets/products.svg'
+import About from '@/assets/about.svg'
+import Contact from '@/assets/contact.svg'
+import Dashboard from '@/assets/dashboard.svg'
+
+const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
+export const API_URL = url + '/api/v1/'
+
+export const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  },
+  withCredentials: true
+})
+
 export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
 
-export const getAuth = () => {
-  const auth = localStorage.getItem('auth')
-  if (auth) return JSON.parse(auth)
-  return null
-}
-
-const isAdmin = getAuth()?.role === 'admin'
-const menuItems = [
+export const menuItems = [
   { label: 'Inicio', href: '/' },
   { label: 'Productos', href: '/products' },
   { label: 'Nosotros', href: '/about' },
-  { label: 'Contacto', href: '/contact' }
+  { label: 'Contacto', href: '/contact' },
+  { label: 'Dashboard', href: '/dashboard' }
 ]
-if (isAdmin) {
-  menuItems.unshift({ label: 'Dashboard', href: '/dashboard' })
-}
-export { menuItems }
+
+export const menuItemsMobile = [
+  { label: 'Inicio', href: '/', icon: Home },
+  { label: 'Productos', href: '/products', icon: Products },
+  { label: 'Nosotros', href: '/about', icon: About },
+  { label: 'Contacto', href: '/contact', icon: Contact },
+  { label: 'Dashboard', href: '/dashboard', icon: Dashboard }
+]
 
 export const titles = {
-  '/': 'Inicio',
+  '/': 'Frank Joyería',
   '/products': 'Productos',
   '/about': 'Nuestra Historia',
   '/contact': 'Contacto',
@@ -32,8 +50,6 @@ export const isValidEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return re.test(email)
 }
-
-// Puedes poner esto en utils/errors.ts del frontend
 
 export function getErrorMessage(code: number): string {
   switch (code) {

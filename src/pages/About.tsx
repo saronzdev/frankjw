@@ -1,4 +1,5 @@
 import ring from '@/assets/ring.svg'
+import logo from '@/assets/logo.jpg'
 import diamond from '@/assets/diamond.svg'
 import sparkles from '@/assets/sparkles.svg'
 import palette from '@/assets/palette.svg'
@@ -34,13 +35,7 @@ export function About() {
               </p>
             </div>
             <div class="flex justify-center">
-              <img
-                src="/placeholder.svg?height=300&width=300"
-                alt="Taller de joyería"
-                class="rounded-lg shadow-sm"
-                width={300}
-                height={300}
-              />
+              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={300} height={300} />
             </div>
           </div>
         </section>

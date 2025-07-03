@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn } from '../../shared/types'
 import { uploadFile } from '../../shared/supabase'
-// import { uploadFile } from '../../shared/supabase'
 
 interface ProductFormProps {
   product?: ProductIn

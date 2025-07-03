@@ -3,18 +3,20 @@ import { ProductForm } from '../components/Products/ProductForm'
 import { ProductCard } from '../components/Products/ProductCard'
 import { Search } from '../components/Products/Search'
 import { type ProductIn, type ProductType } from '../shared/types'
-import { createProduct, deleteProduct, getProducts, updateProduct } from '../shared/fetching'
-import { getAuth, getErrorMessage } from '../shared/utils'
+import { createProduct, deleteProduct, getProducts, isUserAdmin, updateProduct } from '../shared/fetching'
+import { getErrorMessage } from '../shared/utils'
 import { LoadingCard } from '../components/Products/LoadigCard'
 import { ErrorCard } from '../components/Products/ErrorCard'
 import { NotProducts } from '../components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
 
+const is = await isUserAdmin()
+
 export function Dashboard() {
   const [_, setLocation] = useLocation()
 
-  if (getAuth()?.role !== 'admin') setLocation('/login')
+  if (!is) setLocation('/login')
 
   const [products, setProducts] = useState<ProductType[]>([])
   const [loading, setLoading] = useState(true)
@@ -23,7 +25,8 @@ export function Dashboard() {
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState<ProductType[] | undefined>()
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([])
+  const [isSearching, setIsSearching] = useState(false)
 
   useEffect(() => {
     getProducts(
@@ -40,13 +43,20 @@ export function Dashboard() {
     setSearchTerm(term)
     if (!term.trim()) {
       setFilteredProducts(products)
+      setIsSearching(false)
       return
     }
-    const searchTerm = term.toLowerCase()
+    
+    setIsSearching(true)
+    const searchTerm = term.toLowerCase().trim()
     const data = products.filter((product) => {
-      return product.name.toLowerCase().includes(searchTerm) || product.productId.toLowerCase().includes(searchTerm)
+      return (
+        product.name.toLowerCase().includes(searchTerm) || 
+        product.productId.toLowerCase().includes(searchTerm)
+      )
     })
     setFilteredProducts(data)
+    setIsSearching(false)
   }
 
   const handleCreateProduct = () => {
@@ -85,9 +95,8 @@ export function Dashboard() {
     setEditingProduct(undefined)
   }
 
-  if (loading) return <LoadingCard />
-  if (error > 0) {
-    if (error === 1101) return <NotProducts searchTerm={searchTerm} />
+  if (loading && products.length === 0) return <LoadingCard />
+  if (error > 0 && error !== 1101) {
     return <ErrorCard message={getErrorMessage(error)} />
   }
 
@@ -95,46 +104,44 @@ export function Dashboard() {
     <>
       <div className="min-h-screen">
         <Toaster richColors position="bottom-center" />
-        <div className="flex justify-center m-6">
+        <div className="flex flex-col gap-4 justify-center m-6">
           <button
             onClick={handleCreateProduct}
             className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
           >
             + Nuevo Producto
           </button>
-        </div>
-        {filteredProducts && filteredProducts.length > 0 && (
           <Search
             searchTerm={searchTerm}
             handlerSearch={handlerSearch}
             setSearchTerm={setSearchTerm}
             placeholder="Bucar por ID o Nombre"
           />
-        )}
-
-        {filteredProducts && filteredProducts.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-4 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                data={product}
-                onEdit={handleEditProduct}
-                onDelete={handleDeleteProduct}
-                editable={true}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📦</div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No hay productos</h3>
-            <p className="text-gray-600 mb-4">
-              {searchTerm
-                ? 'No se encontraron productos con los filtros aplicados'
-                : 'Comienza agregando tu primer producto'}
-            </p>
-          </div>
-        )}
+        </div>
+        <div className="m-4">
+          {isSearching ? (
+            <div className="flex justify-center items-center p-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <NotProducts 
+              searchTerm={searchTerm} 
+              hasProducts={products.length > 0}
+            />
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  data={product}
+                  onEdit={handleEditProduct}
+                  onDelete={handleDeleteProduct}
+                  editable={true}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
       </div>

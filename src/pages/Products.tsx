@@ -18,9 +18,12 @@ export function Products() {
 
   if (loading) return <LoadingCard />
   if (error > 0) {
-    console.log('Error fetching categories:', error)
-    if (error === 1101) return <NotProducts />
+    if (error === 1101) return <NotProducts hasProducts={false} />
     return <ErrorCard message={getErrorMessage(error)} />
+  }
+
+  if (filterCategory && cats.filter(cat => cat === filterCategory).length === 0) {
+    return <NotProducts hasProducts={cats.length > 0} />
   }
 
   return (
