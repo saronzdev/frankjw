@@ -40,7 +40,7 @@ export function Carousel({ title, items }: CarouselProps) {
           >
             {items.map((item) => (
               <div key={item.id} className="w-full flex-shrink-0 relative">
-                <img src={item.image} alt={item.name} className="w-full h-56 md:h-96 object-cover" />
+                <img src="https://placehold.co/200" alt={item.name} className="w-full h-56 md:h-96 object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <h4 className="text-xl font-semibold mb-1">{item.name}</h4>
