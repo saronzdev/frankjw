@@ -18,8 +18,12 @@ export function Category({ category }: { category: string }) {
 
   if (loading) return <LoadingCard />
   if (error > 0) {
-    if (error === 1101) return <NotProducts />
+    if (error === 1101) return <NotProducts hasProducts={false} />
     return <ErrorCard message={getErrorMessage(error)} />
+  }
+
+  if (products.length === 0) {
+    return <NotProducts hasProducts={false} />
   }
 
   return (

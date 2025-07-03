@@ -4,7 +4,7 @@ import { Link, useLocation } from 'wouter'
 import Menu from '@/assets/menu.svg'
 import { menuItems, titles } from '../shared/utils'
 
-export function Header() {
+export function Header({ isAdmin = false }: { isAdmin?: boolean }) {
   const [location] = useLocation()
   const [isOpen, setOpen] = useState(false)
 
@@ -25,9 +25,9 @@ export function Header() {
                 key={index}
                 href={item.href}
                 className={`${
-                  item.href === '/dashboard'
-                    ? 'rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-400'
-                    : 'hover:text-gray-600'
+                  item.href === '/dashboard' && !isAdmin
+                    ? 'hidden hover:text-gray-600'
+                    : 'block rounded-sm bg-white text-black p-2 mx-4 hover:text-gray-400'
                 } text-md text-semibold transition-colors`}
               >
                 {item.label}
@@ -36,7 +36,7 @@ export function Header() {
           </nav>
         </div>
       </header>
-      <MobileSidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+      <MobileSidebar isOpen={isOpen} toggle={toggleSidebar} isAdmin={isAdmin} />
     </>
   )
 }

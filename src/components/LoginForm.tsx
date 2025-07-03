@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { getErrorMessage, isValidEmail } from '../shared/utils'
-import { login, isAdmin } from '../shared/fetching'
+import { login, isUserAdmin } from '../shared/fetching'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
 
@@ -18,7 +18,8 @@ export function LoginForm() {
     const { ok, error } = (await login(email, password)) as { ok: boolean; error: number }
     if (ok) {
       toast.success('Inicio de sesión exitoso')
-      const is = await isAdmin()
+      const is = await isUserAdmin()
+      console.log(is)
       const redir = is ? '/dashboard' : '/'
       setLocation(redir)
     } else toast.error(getErrorMessage(error))

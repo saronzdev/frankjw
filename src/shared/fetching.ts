@@ -8,9 +8,9 @@ type CatsResponse = {
   status: number
 }
 
-export const isAdmin = async () => {
+export const isUserAdmin = async () => {
   try {
-    const { data } = await api.get('me')
+    const { data } = await api.get('auth/me')
     return data.role === 'admin'
   } catch {
     return false
@@ -21,6 +21,7 @@ export const login = async (email: string, password: string) => {
   try {
     const auth = { email, password }
     await api.post('auth/login', auth)
+    return { ok: true, error: null }
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       if (error.response) {

@@ -1,33 +1,9 @@
 import axios from 'axios'
-import { isAdmin } from './fetching'
-
-export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
-
-const menuItems = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Productos', href: '/products' },
-  { label: 'Nosotros', href: '/about' },
-  { label: 'Contacto', href: '/contact' }
-]
-if (true) {
-  menuItems.unshift({ label: 'Dashboard', href: '/dashboard' })
-}
-export { menuItems }
-
-export const titles = {
-  '/': 'Inicio',
-  '/products': 'Productos',
-  '/about': 'Nuestra Historia',
-  '/contact': 'Contacto',
-  '/dashboard': 'Dashboard',
-  '/404': 'Página no encontrada',
-  '/login': 'Iniciar sesión'
-}
-
-export const isValidEmail = (email: string) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return re.test(email)
-}
+import Home from '@/assets/home.svg'
+import Products from '@/assets/products.svg'
+import About from '@/assets/about.svg'
+import Contact from '@/assets/contact.svg'
+import Dashboard from '@/assets/dashboard.svg'
 
 const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
 export const API_URL = url + '/api/v1/'
@@ -41,6 +17,39 @@ export const api = axios.create({
   },
   withCredentials: true
 })
+
+export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+
+export const menuItems = [
+  { label: 'Inicio', href: '/' },
+  { label: 'Productos', href: '/products' },
+  { label: 'Nosotros', href: '/about' },
+  { label: 'Contacto', href: '/contact' },
+  { label: 'Dashboard', href: '/dashboard' }
+]
+
+export const menuItemsMobile = [
+  { label: 'Inicio', href: '/', icon: Home },
+  { label: 'Productos', href: '/products', icon: Products },
+  { label: 'Nosotros', href: '/about', icon: About },
+  { label: 'Contacto', href: '/contact', icon: Contact },
+  { label: 'Dashboard', href: '/dashboard', icon: Dashboard }
+]
+
+export const titles = {
+  '/': 'Frank Joyería',
+  '/products': 'Productos',
+  '/about': 'Nuestra Historia',
+  '/contact': 'Contacto',
+  '/dashboard': 'Dashboard',
+  '/404': 'Página no encontrada',
+  '/login': 'Iniciar sesión'
+}
+
+export const isValidEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(email)
+}
 
 export function getErrorMessage(code: number): string {
   switch (code) {
