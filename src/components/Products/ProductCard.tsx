@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks'
-import noImage from '@/assets/no-image.svg'
+import { increaseSales } from '@/shared/fetching'
 import type { ProductType } from '../../shared/types'
+import noImage from '@/assets/no-image.svg'
 import edit from '@/assets/edit.svg'
 import trash from '@/assets/trash.svg'
 import buy from '@/assets/buy.svg'
@@ -148,6 +149,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
           ) : (
             <a
               href={waMsg}
+              onClick={() => increaseSales(data.id)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"

@@ -97,7 +97,7 @@ export const getProductsByCategory = async (
   }
 }
 
-export const increaseSels = async (id: number) => {
+export const increaseSales = async (id: number) => {
   try {
     await api.patch('products/sales/' + id)
   } catch (error: any) {
