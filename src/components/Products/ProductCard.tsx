@@ -25,19 +25,27 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     if (!element) return
 
     const checkOverflow = () => {
+      const wasExpanded = isDescriptionExpanded
+      if (wasExpanded) {
+        element.style.webkitLineClamp = '2'
+        element.style.display = '-webkit-box'
+        element.style.overflow = 'hidden'
+      }
+
       const isOverflowing = element.scrollHeight > element.clientHeight
       setIsDescriptionLong(isOverflowing)
+
+      if (wasExpanded) {
+        element.style.webkitLineClamp = 'none'
+        element.style.display = 'block'
+        element.style.overflow = 'visible'
+      }
     }
 
-    // Verificar inmediatamente
-    checkOverflow()
+    const timeoutId = setTimeout(checkOverflow, 10)
 
-    // Observar cambios de tamaño
-    const resizeObserver = new ResizeObserver(checkOverflow)
-    resizeObserver.observe(element)
-
-    return () => resizeObserver.disconnect()
-  }, [data.description])
+    return () => clearTimeout(timeoutId)
+  }, [data.description, isDescriptionExpanded])
 
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
@@ -69,7 +77,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </div>
           )}
           <img
-            className="w-full h-full object-center transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
             src={productImages[currentImageIndex]}
             alt={data.name}
             loading="lazy"
@@ -140,8 +148,8 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Peso</p>
-            <p className="text-lg font-bold text-gray-900">{data.weight}g</p>
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Peso (g)</p>
+            <p className="text-lg font-bold text-gray-900">{data.weight}</p>
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
             <p className="text-xs text-yellow-700 font-medium uppercase tracking-wide">Quilates</p>
