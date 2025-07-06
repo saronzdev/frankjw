@@ -25,27 +25,26 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     if (!element) return
 
     const checkOverflow = () => {
-      const wasExpanded = isDescriptionExpanded
-      if (wasExpanded) {
-        element.style.webkitLineClamp = '2'
-        element.style.display = '-webkit-box'
-        element.style.overflow = 'hidden'
-      }
-
       const isOverflowing = element.scrollHeight > element.clientHeight
       setIsDescriptionLong(isOverflowing)
-
-      if (wasExpanded) {
-        element.style.webkitLineClamp = 'none'
-        element.style.display = 'block'
-        element.style.overflow = 'visible'
-      }
     }
 
-    const timeoutId = setTimeout(checkOverflow, 10)
+    checkOverflow()
 
-    return () => clearTimeout(timeoutId)
-  }, [data.description, isDescriptionExpanded])
+    const resizeObserver = new ResizeObserver(checkOverflow)
+    resizeObserver.observe(element)
+
+    return () => resizeObserver.disconnect()
+  }, [data.description])
+
+  // Agrega este useEffect para cuando se expande o contrae
+  useEffect(() => {
+    const element = descriptionRef.current
+    if (!element) return
+
+    const isOverflowing = element.scrollHeight > element.clientHeight
+    setIsDescriptionLong(isOverflowing)
+  }, [isDescriptionExpanded])
 
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
