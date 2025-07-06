@@ -38,7 +38,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
   }
 
-  const isDescriptionLong = data.description.length > 120
+  const isDescriptionLong = data.description.length > 105
 
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
@@ -50,7 +50,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </div>
           )}
           <img
-            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-scale-down object-center transition-transform duration-500 group-hover:scale-105"
             src={productImages[currentImageIndex]}
             alt={data.name}
             loading="lazy"
