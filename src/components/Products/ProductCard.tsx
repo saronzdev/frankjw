@@ -38,19 +38,19 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
   }
 
-  const isDescriptionLong = data.description.length > 100
+  const isDescriptionLong = data.description.length > 120
 
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
       <div className="relative overflow-hidden">
-        <div className="relative h-64 bg-gray-100">
+        <div className="relative h-64 bg-gray-100 flex items-center justify-center">
           {isImageLoading && (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center z-10">
               <div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
           <img
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             src={productImages[currentImageIndex]}
             alt={data.name}
             loading="lazy"
