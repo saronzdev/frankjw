@@ -25,8 +25,11 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     if (!element) return
 
     const checkOverflow = () => {
-      const isOverflowing = element.scrollHeight > element.clientHeight
-      setIsDescriptionLong(isOverflowing)
+      if (!element) return
+      if (!isDescriptionExpanded) {
+        const isOverflowing = element.scrollHeight > element.clientHeight
+        setIsDescriptionLong(isOverflowing)
+      }
     }
 
     checkOverflow()
@@ -35,16 +38,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     resizeObserver.observe(element)
 
     return () => resizeObserver.disconnect()
-  }, [data.description])
-
-  // Agrega este useEffect para cuando se expande o contrae
-  useEffect(() => {
-    const element = descriptionRef.current
-    if (!element) return
-
-    const isOverflowing = element.scrollHeight > element.clientHeight
-    setIsDescriptionLong(isOverflowing)
-  }, [isDescriptionExpanded])
+  }, [data.description, isDescriptionExpanded])
 
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
@@ -147,11 +141,11 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Peso (g)</p>
+            <p className="text-xs text-gray-500 font-medium tracking-wide">Peso (g)</p>
             <p className="text-lg font-bold text-gray-900">{data.weight}</p>
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
-            <p className="text-xs text-yellow-700 font-medium uppercase tracking-wide">Quilates</p>
+            <p className="text-xs text-yellow-700 font-medium tracking-wide">Quilates</p>
             <p className="text-lg font-bold text-yellow-800">{data.karats.join(' | ')}</p>
           </div>
         </div>
