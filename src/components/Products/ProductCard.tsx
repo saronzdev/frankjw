@@ -131,7 +131,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             {(isDescriptionLong || isDescriptionExpanded) && (
               <button
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-xs transition-colors duration-200"
+                className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-md transition-colors duration-200"
               >
                 {isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
               </button>
