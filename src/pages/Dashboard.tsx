@@ -73,23 +73,23 @@ export function Dashboard() {
       if (!ok) return toast.error(getErrorMessage(error))
       setRefresh((refresh) => !refresh)
       setEditingProduct(undefined)
+      toast.success('Se ha actualizado el producto correctamente')
     } else {
       const { ok, error } = (await createProduct(data)) as { ok: boolean; error: number }
       setShowForm(!ok)
-      if (!ok) toast.error(getErrorMessage(error))
-      else setRefresh((refresh) => !refresh)
+      if (!ok) return toast.error(getErrorMessage(error))
+      setRefresh((refresh) => !refresh)
+      toast.success('Se ha añadido el producto correctamente')
     }
   }
 
   const handleDeleteProduct = async (id: number) => {
     const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: number }
-    if (!ok) {
-      toast.error(getErrorMessage(error))
-    } else {
-      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id))
-      setFilteredProducts((prev) => prev.filter((p) => p.id !== id))
-      setRefresh((prev) => !prev)
-    }
+    if (!ok) return toast.error(getErrorMessage(error))
+    setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id))
+    setFilteredProducts((prev) => prev.filter((p) => p.id !== id))
+    setRefresh((prev) => !prev)
+    toast.success('Se ha eliminado el producto correctamente')
   }
 
   const handleCancelForm = () => {
