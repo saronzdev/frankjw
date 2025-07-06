@@ -128,7 +128,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             <p ref={descriptionRef} className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
               {data.description}
             </p>
-            {isDescriptionLong && (
+            {(isDescriptionLong || isDescriptionExpanded) && (
               <button
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
                 className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-xs transition-colors duration-200"
