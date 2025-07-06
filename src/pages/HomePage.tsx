@@ -1,5 +1,5 @@
-import { Hero } from '../components/Landing/Hero'
-import { Highlighted } from '../components/Landing/Highlighted'
+import { Hero } from '@/components/Landing/Hero'
+import { Highlighted } from '@/components/Landing/Highlighted'
 
 export function HomePage() {
   return (

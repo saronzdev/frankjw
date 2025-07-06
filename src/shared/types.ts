@@ -5,7 +5,7 @@ export type ProductIn = {
   category: string
   price: number
   weight: number
-  karats: number
+  karats: string
   pictures?: string[]
 }
 
@@ -14,7 +14,7 @@ type Product = {
   createdAt: string
 }
 
-export type ProductType = Product & ProductIn
+export type ProductType = Product & Omit<ProductIn, 'karats'> & { karats: string[] }
 
 export interface LoginResponse {
   data: {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'preact/hooks'
-import type { ProductIn } from '../../shared/types'
-import { uploadFile } from '../../shared/supabase'
+import type { ProductIn, ProductType } from '@/shared/types'
+import { uploadFile } from '@/shared/supabase'
 
 interface ProductFormProps {
-  product?: ProductIn
+  product?: ProductType
   onSave: (data: ProductIn) => void
   onCancel: () => void
 }
@@ -14,7 +14,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     productId: product?.productId ?? '',
     description: product?.description ?? '',
     category: product?.category ?? '',
-    price: product?.price ?? 0,
+    price: product?.price ?? '',
     weight: product?.weight ?? '',
     karats: product?.karats ?? '',
     pictures: product?.pictures ?? ([] as string[])

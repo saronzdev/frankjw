@@ -1,3 +1,7 @@
+import type { JSX } from 'preact'
+import close from '@/assets/close.svg'
+import search from '@/assets/search.svg'
+
 interface Props {
   searchTerm: string
   setSearchTerm: (value: string) => void
@@ -6,26 +10,46 @@ interface Props {
 }
 
 export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }: Props) {
+  const handleInputChange = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    handlerSearch(e.currentTarget.value)
+  }
+
+  const clearSearch = () => {
+    setSearchTerm('')
+    handlerSearch('')
+  }
+
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mb-8">
       <div className="relative">
-        <input
-          className="w-72 px-4 py-2 rounded-lg border border-gray-500 focus:outline-none focus:border-black"
-          type="text"
-          placeholder={placeholder}
-          onChange={(e) => handlerSearch((e.target as HTMLInputElement).value)}
-          value={searchTerm}
-        />
-        {searchTerm && (
-          <button
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-            onClick={() => setSearchTerm('')}
-          >
-            <svg className="cursor-pointer w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+        <div className="relative">
+          <input
+            className="appearance-none bg-white text-gray-800 w-80 px-6 py-4 pl-14 pr-12 rounded-2xl border-2 border-gray-200 focus:outline-none focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 shadow-sm hover:shadow-md font-medium text-lg placeholder-gray-400"
+            type="text"
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            value={searchTerm}
+          />
+
+          {/* Search icon */}
+          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <img className="w-5 h-5 text-gray-500" src={search} />
+          </div>
+
+          {/* Clear button */}
+          {searchTerm && (
+            <button
+              className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              onClick={clearSearch}
+              type="button"
+            >
+              <img className="w-5 h-5" src={close} />
+            </button>
+          )}
+        </div>
+
+        {/* Decorative gradient border */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 opacity-0 hover:opacity-20 transition-opacity duration-300 pointer-events-none -z-10 blur-sm"></div>
       </div>
     </div>
   )

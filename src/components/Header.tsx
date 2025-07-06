@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks'
 import { MobileSidebar } from './MobileSidebar'
 import { Link, useLocation } from 'wouter'
 import Menu from '@/assets/menu.svg'
-import { menuItems, titles } from '../shared/utils'
+import { menuItems, titles } from '@/shared/utils'
 
 interface HeaderProps {
   isAdmin?: boolean

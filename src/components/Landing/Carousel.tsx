@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'preact/hooks'
+import noImage from '@/assets/no-image.svg'
 import left from '@/assets/left.svg'
 import right from '@/assets/right.svg'
 
 interface CarouselItem {
   id: number
-  image: string
+  pictures: string[]
   name: string
   price: string
 }
@@ -16,6 +17,8 @@ interface CarouselProps {
 
 export function Carousel({ title, items }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  const products = items.map((i) => ({ ...i, pictures: i.pictures && i.pictures.length > 0 ? i.pictures : [noImage] }))
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,13 +41,13 @@ export function Carousel({ title, items }: CarouselProps) {
             className="flex transition-transform duration-700 ease-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {items.map((item) => (
-              <div key={item.id} className="w-full flex-shrink-0 relative">
-                <img src="https://placehold.co/200" alt={item.name} className="w-full h-56 md:h-96 object-cover" />
+            {products.map((p) => (
+              <div key={p.id} className="w-full flex-shrink-0 relative">
+                <img src={p.pictures[0]} alt={p.name} className="w-full h-56 md:h-96 object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h4 className="text-xl font-semibold mb-1">{item.name}</h4>
-                  <p className="text-lg font-medium text-yellow-300">{item.price}</p>
+                  <h4 className="text-xl font-semibold mb-1">{p.name}</h4>
+                  <p className="text-lg font-medium text-yellow-300">{p.price}</p>
                 </div>
               </div>
             ))}
@@ -67,7 +70,7 @@ export function Carousel({ title, items }: CarouselProps) {
       </div>
 
       <div className="flex justify-center mt-6 space-x-3">
-        {items.map((_, index) => (
+        {products.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}

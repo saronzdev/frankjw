@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'preact/hooks'
-import { ProductForm } from '../components/Products/ProductForm'
-import { ProductCard } from '../components/Products/ProductCard'
-import { Search } from '../components/Products/Search'
-import { type ProductIn, type ProductType } from '../shared/types'
-import { createProduct, deleteProduct, getProducts, isUserAdmin, updateProduct } from '../shared/fetching'
-import { getErrorMessage } from '../shared/utils'
-import { LoadingCard } from '../components/Products/LoadigCard'
-import { ErrorCard } from '../components/Products/ErrorCard'
-import { NotProducts } from '../components/Products/NotProducts'
+import { ProductForm } from '@/components/Products/ProductForm'
+import { ProductCard } from '@/components/Products/ProductCard'
+import { Search } from '@/components/Products/Search'
+import { type ProductIn, type ProductType } from '@/shared/types'
+import { createProduct, deleteProduct, getProducts, isUserAdmin, updateProduct } from '@/shared/fetching'
+import { getErrorMessage } from '@/shared/utils'
+import { LoadingCard } from '@/components/Products/LoadigCard'
+import { ErrorCard } from '@/components/Products/ErrorCard'
+import { NotProducts } from '@/components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
 
@@ -83,8 +83,13 @@ export function Dashboard() {
 
   const handleDeleteProduct = async (id: number) => {
     const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: number }
-    if (!ok) toast.error(getErrorMessage(error))
-    else setRefresh((refresh) => !refresh)
+    if (!ok) {
+      toast.error(getErrorMessage(error))
+    } else {
+      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id))
+      setFilteredProducts((prev) => prev.filter((p) => p.id !== id))
+      setRefresh((prev) => !prev)
+    }
   }
 
   const handleCancelForm = () => {

@@ -1,7 +1,9 @@
 import { useState } from 'preact/hooks'
 import noImage from '@/assets/no-image.svg'
 import type { ProductType } from '../../shared/types'
-import { Heart, Edit, Trash2, ShoppingCart } from 'lucide-react'
+import edit from '@/assets/edit.svg'
+import trash from '@/assets/trash.svg'
+import buy from '@/assets/buy.svg'
 
 interface Props {
   data: ProductType
@@ -11,9 +13,9 @@ interface Props {
 }
 
 export function ProductCard({ data, editable = false, onDelete, onEdit }: Props) {
-  const [isLiked, setIsLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isImageLoading, setIsImageLoading] = useState(true)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
@@ -35,9 +37,10 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
   }
 
+  const isDescriptionLong = data.description.length > 100
+
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
-      {/* Image Section */}
       <div className="relative overflow-hidden">
         <div className="relative h-64 bg-gray-100">
           {isImageLoading && (
@@ -54,7 +57,6 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             onError={() => setIsImageLoading(false)}
           />
 
-          {/* Image Navigation */}
           {productImages.length > 1 && (
             <>
               <button
@@ -74,7 +76,6 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
                 </svg>
               </button>
 
-              {/* Image Indicators */}
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
                 {productImages.map((_, index) => (
                   <button
@@ -89,19 +90,6 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </>
           )}
 
-          {/* Action Buttons */}
-          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button
-              onClick={() => setIsLiked(!isLiked)}
-              className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
-                isLiked ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-700 hover:bg-white'
-              }`}
-            >
-              <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-            </button>
-          </div>
-
-          {/* Price Badge */}
           <div className="absolute top-3 left-3">
             <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
               ${data.price}
@@ -110,16 +98,24 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="p-6">
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
             {data.name}
           </h3>
-          <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{data.description}</p>
+          <div className="text-gray-600 text-sm leading-relaxed">
+            <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>{data.description}</p>
+            {isDescriptionLong && (
+              <button
+                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-md transition-colors duration-200"
+              >
+                {isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Product Details */}
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
             <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Peso</p>
@@ -127,11 +123,10 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
             <p className="text-xs text-yellow-700 font-medium uppercase tracking-wide">Quilates</p>
-            <p className="text-lg font-bold text-yellow-800">{data.karats}K</p>
+            <p className="text-lg font-bold text-yellow-800">{data.karats.join(' | ')}</p>
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="space-y-3">
           {editable ? (
             <div className="grid grid-cols-2 gap-3">
@@ -139,14 +134,14 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
                 onClick={() => onEdit?.(data)}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 py-3 px-4 rounded-xl hover:from-slate-200 hover:to-slate-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
               >
-                <Edit className="w-4 h-4" />
+                <img className="w-4 h-4" src={edit} />
                 Editar
               </button>
               <button
                 onClick={handleDelete}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-rose-100 to-rose-200 text-rose-700 py-3 px-4 rounded-xl hover:from-rose-200 hover:to-rose-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
               >
-                <Trash2 className="w-4 h-4" />
+                <img className="w-4 h-4" src={trash} />
                 Eliminar
               </button>
             </div>
@@ -157,13 +152,12 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <img className="w-5 h-5" src={buy} />
               Reservar por WhatsApp
             </a>
           )}
         </div>
 
-        {/* Product ID - Only shown in editable mode */}
         {editable && (
           <div className="mt-4 pt-4 border-t border-gray-100">
             <p className="text-xs text-gray-400 text-center font-mono">ID: {data.productId}</p>

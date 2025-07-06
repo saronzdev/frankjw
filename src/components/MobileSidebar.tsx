@@ -1,4 +1,4 @@
-import { menuItemsMobile } from '../shared/utils'
+import { menuItemsMobile } from '@/shared/utils'
 import X from '@/assets/close.svg'
 
 interface MobileSidebarProps {
@@ -21,7 +21,7 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
       >
         {/* Header */}
         <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
-          <h2 className="text-xl font-bold">Frank Joyería</h2>
+          <h2 className="text-xl font-bold">Menú</h2>
           <button onClick={toggle} className="p-2 rounded-lg hover:bg-white/20 transition-colors" aria-label="Cerrar menú">
             <img className="w-6 h-6" src={X} />
           </button>
