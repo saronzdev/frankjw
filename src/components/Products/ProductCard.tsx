@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { increaseSales } from '@/shared/fetching'
 import type { ProductType } from '../../shared/types'
 import noImage from '@/assets/no-image.svg'
@@ -17,6 +17,27 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
+  const [isDescriptionLong, setIsDescriptionLong] = useState(false)
+  const descriptionRef = useRef<HTMLParagraphElement>(null)
+
+  useEffect(() => {
+    const element = descriptionRef.current
+    if (!element) return
+
+    const checkOverflow = () => {
+      const isOverflowing = element.scrollHeight > element.clientHeight
+      setIsDescriptionLong(isOverflowing)
+    }
+
+    // Verificar inmediatamente
+    checkOverflow()
+
+    // Observar cambios de tamaño
+    const resizeObserver = new ResizeObserver(checkOverflow)
+    resizeObserver.observe(element)
+
+    return () => resizeObserver.disconnect()
+  }, [data.description])
 
   const handleDelete = () => {
     if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
@@ -38,8 +59,6 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
   }
 
-  const isDescriptionLong = data.description.length > 105
-
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
       <div className="relative overflow-hidden">
@@ -50,7 +69,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </div>
           )}
           <img
-            className="w-full h-full object-scale-down object-center transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-center transition-transform duration-500 group-hover:scale-105"
             src={productImages[currentImageIndex]}
             alt={data.name}
             loading="lazy"
@@ -93,7 +112,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
           <div className="absolute top-3 left-3">
             <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-              ${data.price}
+              {data.price} USD
             </span>
           </div>
         </div>
@@ -105,7 +124,9 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             {data.name}
           </h3>
           <div className="text-gray-600 text-sm leading-relaxed">
-            <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>{data.description}</p>
+            <p ref={descriptionRef} className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
+              {data.description}
+            </p>
             {isDescriptionLong && (
               <button
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
