@@ -1,40 +1,63 @@
-import { menuItemsMobile } from '../shared/utils'
+import { menuItemsMobile } from '@/shared/utils'
 import X from '@/assets/close.svg'
 
-export function MobileSidebar({ isOpen, isAdmin, toggle }: { isOpen: boolean; isAdmin: boolean; toggle: () => void }) {
+interface MobileSidebarProps {
+  isOpen: boolean
+  isAdmin: boolean
+  toggle: () => void
+}
+
+export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
   return (
     <>
-      {isOpen && <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onClick={toggle} />}
+      {/* Backdrop */}
+      {isOpen && <div className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" onClick={toggle} />}
 
+      {/* Sidebar */}
       <div
-        className={`md:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between border-b p-4">
-          <h2 className="text-xl font-semibold text-black">Menú</h2>
-          <button onClick={toggle} className="p-1 rounded-lg">
-            <img className="w-8 h-8" src={X} />
+        {/* Header */}
+        <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
+          <h2 className="text-xl font-bold">Menú</h2>
+          <button onClick={toggle} className="p-2 rounded-lg hover:bg-white/20 transition-colors" aria-label="Cerrar menú">
+            <img className="w-6 h-6" src={X} />
           </button>
         </div>
-        <nav className="p-4">
-          <ul className="space-y-2">
-            {menuItemsMobile.map((item, index) => (
-              <li key={index}>
-                <a
-                  href={item.href}
-                  className={`${
-                    item.href === '/dashboard' && !isAdmin ? 'hidden' : 'flex'
-                  } items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200`}
-                  onClick={toggle}
-                >
-                  <img className="w-5 h-5" src={item.icon} />
-                  <span className="font-medium">{item.label}</span>
-                </a>
-              </li>
-            ))}
+
+        {/* Navigation */}
+        <nav className="p-6">
+          <ul className="space-y-3">
+            {menuItemsMobile.map((item) => {
+              const isDashboard = item.href === '/dashboard'
+
+              if (isDashboard && !isAdmin) return null
+
+              return (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
+                    onClick={toggle}
+                  >
+                    <img
+                      className={`w-5 h-5 ${isDashboard ? 'text-white' : 'group-hover:text-yellow-600'}`}
+                      src={item.icon}
+                    />
+                    <span className="font-medium">{item.label}</span>
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </nav>
+
+        {/* Footer */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200">
+          <p className="text-sm text-gray-500 text-center">© 2025 Frank Joyería</p>
+        </div>
       </div>
     </>
   )

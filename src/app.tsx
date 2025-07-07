@@ -1,5 +1,5 @@
 import { Route, Switch } from 'wouter'
-import { Home } from './pages/Home'
+import { HomePage } from './pages/HomePage'
 import { Products } from './pages/Products'
 import { About } from './pages/About'
 import { Contact } from './pages/Contact'
@@ -9,8 +9,8 @@ import { Login } from './pages/Login'
 import { Header } from './components/Header'
 import { isUserAdmin } from './shared/fetching'
 import { useState, useEffect } from 'preact/hooks'
-
-localStorage.clear()
+import { SpeedInsights } from '@vercel/speed-insights/react'
+import { Analytics } from '@vercel/analytics/react'
 
 export function App() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -21,9 +21,11 @@ export function App() {
 
   return (
     <>
+      <SpeedInsights />
+      <Analytics />
       <Header isAdmin={isAdmin} />
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={HomePage} />
         <Route path="/products" component={Products} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/about" component={About} />

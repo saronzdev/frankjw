@@ -3,11 +3,6 @@ import { capitalize } from './utils'
 import { AxiosError } from 'axios'
 import { api } from './utils'
 
-type CatsResponse = {
-  data: string[]
-  status: number
-}
-
 export const isUserAdmin = async () => {
   try {
     const { data } = await api.get('auth/me')
@@ -39,7 +34,7 @@ export const getCats = async (
   setLoading: (satate: boolean) => void
 ) => {
   try {
-    const { data }: CatsResponse = await api.get('products/cats')
+    const { data }: { data: string[] } = await api.get('products/cats')
     let cats: string[] = []
     data.forEach((c) => {
       if (!cats.includes(c)) cats.push(c)
@@ -61,11 +56,12 @@ export const getCats = async (
 export const getProducts = async (
   setData: (value: ProductType[]) => void,
   setError: (code: number) => void,
-  setLoading: (satate: boolean) => void
+  setLoading: (satate: boolean) => void,
+  orderBy: string = 'category'
 ) => {
   try {
-    const { data }: { data: ProductType[] } = await api.get('products')
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category) })))
+    const { data }: { data: ProductType[] } = await api.get(`products/?orderBy=${orderBy}`)
+    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
   } catch (error: any) {
     if (error instanceof AxiosError) {
       if (error.response) {
@@ -87,7 +83,7 @@ export const getProductsByCategory = async (
 ) => {
   try {
     const { data }: { data: ProductType[] } = await api.get('products/category/' + category.toLowerCase())
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category) })))
+    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
   } catch (error: any) {
     if (error instanceof AxiosError) {
       if (error.response) {
@@ -98,6 +94,20 @@ export const getProductsByCategory = async (
     }
   } finally {
     setLoading(false)
+  }
+}
+
+export const increaseSales = async (id: number) => {
+  try {
+    await api.patch('products/sales/' + id)
+  } catch (error: any) {
+    if (error instanceof AxiosError) {
+      if (error.response) {
+        const { data } = error.response
+        console.log(data.code)
+      } else if (error.request) console.log(1000)
+      else console.log('Error')
+    }
   }
 }
 

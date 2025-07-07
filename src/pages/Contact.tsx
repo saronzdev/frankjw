@@ -1,4 +1,4 @@
-import { ContactMe } from '../components/Landing/ContactMe'
+import { ContactMe } from '@/components/Landing/ContactMe'
 
 export function Contact() {
   return (
