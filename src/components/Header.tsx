@@ -28,7 +28,7 @@ export function Header({ isAdmin = false }: HeaderProps) {
               <img className="w-6 h-6" src={Menu} />
             </button>
 
-            <h1 className="text-2xl md:text-3xl font-bold tracking-wide flex-1 text-center md:text-left md:flex-none bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+            <h1 className="text-3xl -ml-2 font-bold tracking-wide flex-1 text-center md:text-left md:flex-none bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
               {titles[location as keyof typeof titles] || 'Frank Joyería'}
             </h1>
 

@@ -4,8 +4,17 @@ import Products from '@/assets/products.svg'
 import About from '@/assets/about.svg'
 import Contact from '@/assets/contact.svg'
 import Dashboard from '@/assets/dashboard.svg'
+import { increaseSales } from './fetching'
+import type { ProductType } from './types'
 
 export const categories = ['Anillos', 'Collares', 'Pulseras', 'Aretes', 'Cadenas', 'Dijes', 'Otros']
+
+export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
+  await increaseSales(product.id)
+  const message = `Hola! Me interesa reservar: ${product.name} - ID: ${product.productId}`
+  const whatsappUrl = `https://wa.me/5353444690?text=${encodeURIComponent(message)}`
+  window.open(whatsappUrl, '_blank')
+}
 
 const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
 export const API_URL = url + '/api/v1/'

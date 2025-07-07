@@ -2,23 +2,27 @@ import { useState, useEffect } from 'preact/hooks'
 import noImage from '@/assets/no-image.svg'
 import left from '@/assets/left.svg'
 import right from '@/assets/right.svg'
-
-interface CarouselItem {
-  id: number
-  pictures: string[]
-  name: string
-  price: string
-}
+import buy from '@/assets/buy.svg'
+import { handleReservation } from '@/shared/utils'
+import type { ProductType } from '@/shared/types'
 
 interface CarouselProps {
   title: string
-  items: CarouselItem[]
+  items: ProductType[]
 }
 
 export function Carousel({ title, items }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const products = items.map((i) => ({ ...i, pictures: i.pictures && i.pictures.length > 0 ? i.pictures : [noImage] }))
+  const products = items.map((i) => {
+    let pictures = ''
+    if (i.pictures) {
+      if (i.pictures.length > 1) pictures = i.pictures[1]
+      else pictures = i.pictures[0]
+    } else pictures = noImage
+
+    return { ...i, pictures }
+  })
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,11 +47,22 @@ export function Carousel({ title, items }: CarouselProps) {
           >
             {products.map((p) => (
               <div key={p.id} className="w-full flex-shrink-0 relative">
-                <img src={p.pictures[0]} alt={p.name} className="w-full h-56 md:h-96 object-contain object-center" />
+                <img src={p.pictures} alt={p.name} className="w-full h-56 md:h-96 object-contain object-center" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h4 className="text-xl font-semibold mb-1">{p.name}</h4>
-                  <p className="text-lg font-medium text-yellow-300">{p.price} USD</p>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <h4 className="text-xl font-semibold mb-1">{p.name}</h4>
+                      <p className="text-lg font-medium text-yellow-300">{p.price} USD</p>
+                    </div>
+                    <button
+                      onClick={() => handleReservation(p)}
+                      className="bg-green-600 hover:bg-green-700 text-white rounded-full p-4 transition-all duration-300 shadow-lg hover:scale-110 flex items-center justify-center cursor-pointer"
+                      title="Reservar por WhatsApp"
+                    >
+                      <img className="w-6 h-6" src={buy} alt="Reservar" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

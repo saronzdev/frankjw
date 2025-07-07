@@ -1,30 +1,29 @@
 import { useState, useEffect } from 'preact/hooks'
 import { getProducts } from '@/shared/fetching'
+import { Toaster, toast } from 'sonner'
 import logo from '@/assets/logo.jpg'
 import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
-
-interface Item {
-  id: number
-  pictures: string[]
-  name: string
-  price: string
-}
+import type { ProductType } from '@/shared/types'
+import { getErrorMessage } from '@/shared/utils'
 
 export function Hero() {
-  const [bestSellers, setBestsSeller] = useState<Item[]>([])
-  const [recents, setRecents] = useState<Item[]>([])
+  const [bestSellers, setBestsSeller] = useState<ProductType[]>([])
+  const [recents, setRecents] = useState<ProductType[]>([])
   const [_, setLoading] = useState(true)
-  const [__, setError] = useState(0)
+  const [error, setError] = useState(0)
 
   useEffect(() => {
-    getProducts((data) => setRecents(data.slice(0, 4) as unknown as Item[]), setError, setLoading, 'createdAt')
-    getProducts((data) => setBestsSeller(data.slice(0, 4) as unknown as Item[]), setError, setLoading, 'sales')
+    getProducts((data) => setRecents(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'createdAt')
+    getProducts((data) => setBestsSeller(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'sales')
   }, [])
+
+  if (error > 0) toast.error(getErrorMessage(error))
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+      <Toaster richColors position="top-center" />
       <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
           <div className="flex justify-center mb-8">

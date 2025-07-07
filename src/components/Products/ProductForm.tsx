@@ -17,7 +17,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     category: product?.category ?? '',
     price: product?.price ?? '',
     weight: product?.weight ?? '',
-    karats: product?.karats ?? '',
+    karats: product?.karats.join(' ') ?? '',
     pictures: product?.pictures ?? ([] as string[]),
     isActive: product?.isActive ?? true
   }

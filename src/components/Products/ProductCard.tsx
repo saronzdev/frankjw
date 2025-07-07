@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
-import { increaseSales } from '@/shared/fetching'
+import { handleReservation } from '@/shared/utils'
 import type { ProductType } from '@/shared/types'
 import noImage from '@/assets/no-image.svg'
 import edit from '@/assets/edit.svg'
@@ -45,10 +45,6 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     }
   }
 
-  const waMsg = `https://api.whatsapp.com/send?phone=5353444690&text=Hola+quisiera+reservar+el+${encodeURIComponent(
-    data.name
-  )}+(ID:+${data.productId})`
-
   const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
 
   return (
@@ -61,7 +57,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </div>
           )}
           <img
-            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
             src={firstImage}
             alt={data.name}
             loading="lazy"
@@ -141,16 +137,13 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
                   <p className="text-orange-700 text-sm font-medium">Producto agotado, pero aún puedes reservarlo</p>
                 </div>
               )}
-              <a
-                href={waMsg}
-                onClick={() => increaseSales(data.id)}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => handleReservation(data)}
                 className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 <img className="w-5 h-5" src={buy} />
                 Reservar por WhatsApp
-              </a>
+              </button>
             </>
           )}
         </div>
