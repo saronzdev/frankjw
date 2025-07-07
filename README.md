@@ -2,7 +2,7 @@
 
 Proyecto web para la gestión y exhibición de productos de joyería, desarrollado con [Preact](https://preactjs.com/), [Vite](https://vitejs.dev/) y [TypeScript](https://www.typescriptlang.org/).
 
-## [URL](frankjoyeriacuba.com)
+## [🌎 Enlace a la web](frankjoyeriacuba.com)
 
 ## Características
 
@@ -44,7 +44,7 @@ app/
    pnpm install
    ```
 
-3. Crea un archivo `.env` con tus variables de entorno (ver ejemplo en `.env.example` si existe).
+3. Crea un archivo `.env` con tus variables de entorno (ver `.env.example`).
 
 4. Inicia el servidor de desarrollo:
    ```sh
