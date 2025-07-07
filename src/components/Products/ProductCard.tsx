@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { increaseSales } from '@/shared/fetching'
-import type { ProductType } from '../../shared/types'
+import type { ProductType } from '@/shared/types'
 import noImage from '@/assets/no-image.svg'
 import edit from '@/assets/edit.svg'
 import trash from '@/assets/trash.svg'
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export function ProductCard({ data, editable = false, onDelete, onEdit }: Props) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const [isDescriptionLong, setIsDescriptionLong] = useState(false)
@@ -50,15 +49,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     data.name
   )}+(ID:+${data.productId})`
 
-  const productImages = data.pictures && data.pictures.length > 0 ? data.pictures : [noImage]
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % productImages.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)
-  }
+  const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
 
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
@@ -70,52 +61,27 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             </div>
           )}
           <img
-            className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
-            src={productImages[currentImageIndex]}
+            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            src={firstImage}
             alt={data.name}
             loading="lazy"
             onLoad={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
           />
 
-          {productImages.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
-                {productImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-
           <div className="absolute top-3 left-3">
             <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
               {data.price} USD
             </span>
           </div>
+
+          {data.isActive === false && (
+            <div className="absolute top-3 right-3">
+              <span className="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                Agotado
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -125,13 +91,13 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
             {data.name}
           </h3>
           <div className="text-gray-600 text-sm leading-relaxed">
-            <p ref={descriptionRef} className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
+            <p ref={descriptionRef} className={`${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
               {data.description}
             </p>
             {(isDescriptionLong || isDescriptionExpanded) && (
               <button
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-md transition-colors duration-200"
+                className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-xs transition-colors duration-200"
               >
                 {isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
               </button>
@@ -141,11 +107,11 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
-            <p className="text-xs text-gray-500 font-medium tracking-wide">Peso (g)</p>
+            <p className="text-md text-gray-500 font-medium tracking-wide">Peso (g)</p>
             <p className="text-lg font-bold text-gray-900">{data.weight}</p>
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
-            <p className="text-xs text-yellow-700 font-medium tracking-wide">Quilates</p>
+            <p className="text-md text-yellow-700 font-medium tracking-wide">Quilates</p>
             <p className="text-lg font-bold text-yellow-800">{data.karats.join(' | ')}</p>
           </div>
         </div>
@@ -169,16 +135,23 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               </button>
             </div>
           ) : (
-            <a
-              href={waMsg}
-              onClick={() => increaseSales(data.id)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              <img className="w-5 h-5" src={buy} />
-              Reservar por WhatsApp
-            </a>
+            <>
+              {data.isActive === false && (
+                <div className="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-3 text-center">
+                  <p className="text-orange-700 text-sm font-medium">Producto agotado, pero aún puedes reservarlo</p>
+                </div>
+              )}
+              <a
+                href={waMsg}
+                onClick={() => increaseSales(data.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <img className="w-5 h-5" src={buy} />
+                Reservar por WhatsApp
+              </a>
+            </>
           )}
         </div>
 

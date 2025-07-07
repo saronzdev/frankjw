@@ -9,8 +9,8 @@ import { Login } from './pages/Login'
 import { Header } from './components/Header'
 import { isUserAdmin } from './shared/fetching'
 import { useState, useEffect } from 'preact/hooks'
-
-localStorage.clear()
+import { SpeedInsights } from '@vercel/speed-insights/react'
+import { Analytics } from '@vercel/analytics/react'
 
 export function App() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -21,6 +21,8 @@ export function App() {
 
   return (
     <>
+      <SpeedInsights />
+      <Analytics />
       <Header isAdmin={isAdmin} />
       <Switch>
         <Route path="/" component={HomePage} />

@@ -61,7 +61,7 @@ export const getProducts = async (
 ) => {
   try {
     const { data }: { data: ProductType[] } = await api.get(`products/?orderBy=${orderBy}`)
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category) })))
+    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
   } catch (error: any) {
     if (error instanceof AxiosError) {
       if (error.response) {
@@ -83,7 +83,7 @@ export const getProductsByCategory = async (
 ) => {
   try {
     const { data }: { data: ProductType[] } = await api.get('products/category/' + category.toLowerCase())
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category) })))
+    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
   } catch (error: any) {
     if (error instanceof AxiosError) {
       if (error.response) {

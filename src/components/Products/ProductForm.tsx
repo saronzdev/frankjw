@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn, ProductType } from '@/shared/types'
 import { uploadFile } from '@/shared/supabase'
+import { categories } from '@/shared/utils'
 
 interface ProductFormProps {
   product?: ProductType
@@ -17,7 +18,8 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     price: product?.price ?? '',
     weight: product?.weight ?? '',
     karats: product?.karats ?? '',
-    pictures: product?.pictures ?? ([] as string[])
+    pictures: product?.pictures ?? ([] as string[]),
+    isActive: product?.isActive ?? true
   }
   const [productData, setProductData] = useState<ProductIn>(newProduct as ProductIn)
   const [images, setImages] = useState<File[]>([])
@@ -37,6 +39,16 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     setProductData((prev: ProductIn) => ({
       ...prev,
       [name]: type === 'number' ? Number.parseFloat(value) || 0 : value
+    }))
+  }
+
+  const handleCheckboxChange = (e: Event) => {
+    const target = e.target as HTMLInputElement
+    const { name, checked } = target
+
+    setProductData((prev: ProductIn) => ({
+      ...prev,
+      [name]: checked
     }))
   }
 
@@ -64,8 +76,6 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     }
     onSave(newProduct)
   }
-
-  const categories = ['Anillos', 'Collares', 'Pulseras', 'Aretes', 'Cadenas', 'Dijes', 'Otros']
 
   return (
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -183,10 +193,24 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Imágenes (máximo 3) {images.length + imagesUrls.length}/3
+              <label class="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={productData.isActive}
+                  onChange={handleCheckboxChange}
+                  class="w-5 h-5 text-gray-900 border-gray-300 rounded focus:ring-gray-900 focus:ring-2"
+                />
+                <span class="text-sm font-medium text-gray-700">Producto disponible</span>
               </label>
-              {images.length + imagesUrls.length < 3 && (
+              <p class="mt-1 text-xs text-gray-500">Desmarca si el producto está agotado</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Imágenes (máximo 2) {images.length + imagesUrls.length}/2
+              </label>
+              {images.length + imagesUrls.length < 2 && (
                 <div>
                   <input
                     type="file"

@@ -5,6 +5,8 @@ import About from '@/assets/about.svg'
 import Contact from '@/assets/contact.svg'
 import Dashboard from '@/assets/dashboard.svg'
 
+export const categories = ['Anillos', 'Collares', 'Pulseras', 'Aretes', 'Cadenas', 'Dijes', 'Otros']
+
 const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
 export const API_URL = url + '/api/v1/'
 
