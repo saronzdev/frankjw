@@ -3,7 +3,7 @@ import { getErrorMessage, isValidEmail } from '@/shared/utils'
 import { login } from '@/shared/fetching'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
-import { isAdmin, refreshAdmin } from '@/shared/signals'
+import { isAdmin, refreshRole } from '@/shared/signals'
 
 export function LoginForm() {
   const [_, setLocation] = useLocation()
@@ -20,7 +20,7 @@ export function LoginForm() {
     if (ok) {
       toast.success('Inicio de sesión exitoso. Redirigiendo...')
       try {
-        refreshAdmin.value = !refreshAdmin.value
+        refreshRole()
         const redir = isAdmin.value ? '/dashboard' : '/'
         setLocation(redir)
       } catch (err) {

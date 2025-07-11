@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { ProductForm } from '@/components/Products/ProductForm'
 import { ProductCard } from '@/components/Products/ProductCard'
 import { Search } from '@/components/Products/Search'
@@ -10,7 +10,7 @@ import { ErrorCard } from '@/components/Products/ErrorCard'
 import { NotProducts } from '@/components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
-import { products, isAdmin, refresh, error, loading } from '@/shared/signals'
+import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
 
 export function Dashboard() {
   const [_, setLocation] = useLocation()
@@ -22,6 +22,10 @@ export function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState(products.value)
   const [isSearching, setIsSearching] = useState(false)
+
+  useEffect(() => {
+    setFilteredProducts(products.value)
+  }, [products.value])
 
   const handlerSearch = (term: string) => {
     setSearchTerm(term)
@@ -55,14 +59,14 @@ export function Dashboard() {
       const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: number }
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(error))
-      refresh.value = !refresh.value
+      await refreshProducts()
       setEditingProduct(undefined)
       toast.success('Se ha actualizado el producto correctamente')
     } else {
       const { ok, error } = (await createProduct(data)) as { ok: boolean; error: number }
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(error))
-      refresh.value = !refresh.value
+      await refreshProducts()
       toast.success('Se ha añadido el producto correctamente')
     }
   }
@@ -70,9 +74,7 @@ export function Dashboard() {
   const handleDeleteProduct = async (id: number) => {
     const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: number }
     if (!ok) return toast.error(getErrorMessage(error))
-    products.value = products.value.filter((p) => p.id !== id)
-    setFilteredProducts((prev) => prev.filter((p) => p.id !== id))
-    refresh.value = !refresh.value
+    await refreshProducts()
     toast.success('Se ha eliminado el producto correctamente')
   }
 

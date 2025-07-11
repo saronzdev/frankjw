@@ -1,31 +1,31 @@
 import type { ProductType, ProductIn } from './types'
 import { AxiosError } from 'axios'
 import { api } from './utils'
-import { products, error as pError, loading, isAdmin } from './signals'
 
 export const isUserAdmin = async () => {
   try {
     const { data } = await api.get('auth/me')
-    return (isAdmin.value = data.role === 'admin')
+    return data.role === 'admin'
   } catch {
-    return (isAdmin.value = false)
+    return false
   }
 }
 
 export const getProductsSignals = async () => {
   try {
     const { data }: { data: ProductType[] } = await api.get('products')
-    products.value = data.map((p) => ({ ...p, isActive: Boolean(p.isActive) }))
+    return data.map((p) => ({ ...p, isActive: Boolean(p.isActive) }))
   } catch (error: any) {
     if (error instanceof AxiosError) {
       if (error.response) {
         const { data } = error.response
-        pError.value = data.code
-      } else if (error.request) pError.value = 1000
-      else pError.value = 1
+        return { error: data.code }
+      } else if (error.request) {
+        return { error: 1000 }
+      } else {
+        return { error: 1 }
+      }
     }
-  } finally {
-    loading.value = false
   }
 }
 

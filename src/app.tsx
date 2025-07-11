@@ -7,17 +7,10 @@ import { Dashboard } from './pages/Dashboard'
 import { NotFound } from './pages/NotFound'
 import { Login } from './pages/Login'
 import { Header } from './components/Header'
-import { refresh, refreshAdmin } from './shared/signals'
-import { useEffect } from 'preact/hooks'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
 
 export function App() {
-  useEffect(() => {
-    refresh.value = !refresh.value
-    refreshAdmin.value = !refreshAdmin.value
-  }, [])
-
   return (
     <>
       <SpeedInsights />

@@ -18,6 +18,12 @@ type Product = {
 
 export type ProductType = Product & Omit<ProductIn, 'karats'> & { karats: string[] }
 
+type ResultError = {
+  error?: number
+}
+
+export type Result = ResultError & ProductType[]
+
 export interface LoginResponse {
   data: {
     token: string
