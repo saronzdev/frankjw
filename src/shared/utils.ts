@@ -7,11 +7,21 @@ import Dashboard from '@/assets/dashboard.svg'
 import { increaseSales } from './fetching'
 import type { ProductType } from './types'
 
-export const categories = ['Anillos', 'Collares', 'Pulseras', 'Aretes', 'Cadenas', 'Dijes', 'Otros']
+export const categories = [
+  'Anillo de hombre',
+  'Anillo de mujer',
+  'Anillo de compromiso mujer',
+  'Anillo de compromiso hombre',
+  'Gargantillas',
+  'Aretes y argollas',
+  'Cadenas',
+  'Dijes',
+  'Manillas'
+]
 
 export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
   await increaseSales(product.id)
-  const message = `Hola! Me interesa reservar: ${product.name} - ID: ${product.productId}`
+  const message = `Hola! Me interesa reservar: ${product.description} - ID: ${product.productId}`
   const whatsappUrl = `https://wa.me/5353444690?text=${encodeURIComponent(message)}`
   window.open(whatsappUrl, '_blank')
 }

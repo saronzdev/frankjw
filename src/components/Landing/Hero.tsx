@@ -13,14 +13,14 @@ export function Hero() {
     <section className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
       <Toaster richColors position="top-center" />
       <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
+        <div className="min-h-screen max-w-4xl mx-auto text-center -mb-8">
           <div className="flex justify-center mb-8">
             <img src={logo} height={400} width={500} className="rounded-md" />
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-gray-900 leading-tight">
-              Momentos Inolvidables
+            <h2 className="text-2xl md:text-5xl font-normal uppercase tracking-tight text-gray-900 leading-tight">
+              Tu joyería de confianza
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               No solo vendemos joyas, sino creamos símbolos de emociones y momentos inolvidables.

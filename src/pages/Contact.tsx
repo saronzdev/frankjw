@@ -13,7 +13,7 @@ export function Contact() {
           </div>
         </section>
 
-        <div class="flex flex-col justify-center items-center space-y-8">
+        <div class="mb-8 flex flex-col justify-center items-center space-y-8">
           <div>
             <h2 class="text-2xl font-light text-center text-black mb-6">Información de contacto</h2>
             <div class="space-y-6">
@@ -48,7 +48,9 @@ export function Contact() {
                 <div>
                   <h3 class="font-medium text-gray-900 mb-1">Ubicación</h3>
                   <div class="text-gray-600 space-y-1">
-                    <p>Calle Media entre Jovellanos y América</p>
+                    <p>
+                      <strong>Calle Medio</strong> entre <strong>2 de Mayo</strong> y <strong>América</strong>
+                    </p>
                     <p>Matanzas, Cuba</p>
                   </div>
                 </div>
