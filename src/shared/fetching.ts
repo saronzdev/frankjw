@@ -1,14 +1,31 @@
 import type { ProductType, ProductIn } from './types'
-import { capitalize } from './utils'
 import { AxiosError } from 'axios'
 import { api } from './utils'
+import { products, error as pError, loading, isAdmin } from './signals'
 
 export const isUserAdmin = async () => {
   try {
     const { data } = await api.get('auth/me')
-    return data.role === 'admin'
+    return (isAdmin.value = data.role === 'admin')
   } catch {
-    return false
+    return (isAdmin.value = false)
+  }
+}
+
+export const getProductsSignals = async () => {
+  try {
+    const { data }: { data: ProductType[] } = await api.get('products')
+    products.value = data.map((p) => ({ ...p, isActive: Boolean(p.isActive) }))
+  } catch (error: any) {
+    if (error instanceof AxiosError) {
+      if (error.response) {
+        const { data } = error.response
+        pError.value = data.code
+      } else if (error.request) pError.value = 1000
+      else pError.value = 1
+    }
+  } finally {
+    loading.value = false
   }
 }
 
@@ -25,75 +42,6 @@ export const login = async (email: string, password: string) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
-  }
-}
-
-export const getCats = async (
-  setData: (value: string[]) => void,
-  setError: (code: number) => void,
-  setLoading: (satate: boolean) => void
-) => {
-  try {
-    const { data }: { data: string[] } = await api.get('products/cats')
-    let cats: string[] = []
-    data.forEach((c) => {
-      if (!cats.includes(c)) cats.push(c)
-    })
-    setData(cats.map((c) => capitalize(c)))
-    return { ok: true, error: null }
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        setError(data.code)
-      } else if (error.request) setError(1000)
-      else setError(1)
-    }
-  } finally {
-    setLoading(false)
-  }
-}
-export const getProducts = async (
-  setData: (value: ProductType[]) => void,
-  setError: (code: number) => void,
-  setLoading: (satate: boolean) => void,
-  orderBy: string = 'category'
-) => {
-  try {
-    const { data }: { data: ProductType[] } = await api.get(`products/?orderBy=${orderBy}`)
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        setError(data.code)
-      } else if (error.request) setError(1000)
-      else setError(1)
-    }
-  } finally {
-    setLoading(false)
-  }
-}
-
-export const getProductsByCategory = async (
-  setData: (value: ProductType[]) => void,
-  setError: (code: number) => void,
-  setLoading: (satate: boolean) => void,
-  category: string
-) => {
-  try {
-    const { data }: { data: ProductType[] } = await api.get('products/category/' + category.toLowerCase())
-    setData(data.map((p) => ({ ...p, category: capitalize(p.category), isActive: Boolean(p.isActive) })))
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        setError(data.code)
-      } else if (error.request) setError(1000)
-      else setError(1)
-    }
-  } finally {
-    setLoading(false)
   }
 }
 

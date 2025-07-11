@@ -1,8 +1,9 @@
 import { useState } from 'preact/hooks'
 import { getErrorMessage, isValidEmail } from '@/shared/utils'
-import { login, isUserAdmin } from '@/shared/fetching'
+import { login } from '@/shared/fetching'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
+import { isAdmin, refreshAdmin } from '@/shared/signals'
 
 export function LoginForm() {
   const [_, setLocation] = useLocation()
@@ -19,8 +20,8 @@ export function LoginForm() {
     if (ok) {
       toast.success('Inicio de sesión exitoso. Redirigiendo...')
       try {
-        const is = await isUserAdmin()
-        const redir = is ? '/dashboard' : '/'
+        refreshAdmin.value = !refreshAdmin.value
+        const redir = isAdmin.value ? '/dashboard' : '/'
         setLocation(redir)
       } catch (err) {
         toast.error('Error verificando permisos. Redirigiendo al inicio...')

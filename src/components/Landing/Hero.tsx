@@ -1,25 +1,13 @@
-import { useState, useEffect } from 'preact/hooks'
-import { getProducts } from '@/shared/fetching'
+import { bestSellers, mostRecents, error } from '@/shared/signals'
 import { Toaster, toast } from 'sonner'
 import logo from '@/assets/logo.jpg'
 import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
-import type { ProductType } from '@/shared/types'
 import { getErrorMessage } from '@/shared/utils'
 
 export function Hero() {
-  const [bestSellers, setBestsSeller] = useState<ProductType[]>([])
-  const [recents, setRecents] = useState<ProductType[]>([])
-  const [_, setLoading] = useState(true)
-  const [error, setError] = useState(0)
-
-  useEffect(() => {
-    getProducts((data) => setRecents(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'createdAt')
-    getProducts((data) => setBestsSeller(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'sales')
-  }, [])
-
-  if (error > 0) toast.error(getErrorMessage(error))
+  if (error.value > 0) toast.error(getErrorMessage(error.value))
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
@@ -58,8 +46,8 @@ export function Hero() {
         </div>
 
         <div className="space-y-20 md:space-y-24">
-          <Carousel title="Últimos Productos" items={recents} />
-          <Carousel title="Los Más Comprados" items={bestSellers} />
+          <Carousel title="Últimos Productos" items={mostRecents.value} />
+          <Carousel title="Los Más Comprados" items={bestSellers.value} />
         </div>
 
         <div className="mt-20 md:mt-24 flex justify-center">

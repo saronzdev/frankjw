@@ -8,6 +8,7 @@ export type ProductIn = {
   karats: string
   isActive: boolean
   pictures?: string[]
+  sales: number
 }
 
 type Product = {

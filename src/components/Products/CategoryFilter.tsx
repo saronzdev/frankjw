@@ -1,5 +1,6 @@
 import type { JSX } from 'preact'
 import down from '@/assets/down.svg'
+import { capitalize } from '@/shared/utils'
 
 interface CategoryFilterProps {
   filterCategory: string
@@ -25,7 +26,7 @@ export function CategoryFilter({ filterCategory, setFilterCategory, cats }: Cate
           </option>
           {cats.map((cat) => (
             <option key={cat} value={cat} className="py-2">
-              {cat}
+              {capitalize(cat)}
             </option>
           ))}
         </select>

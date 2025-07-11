@@ -7,23 +7,22 @@ import { Dashboard } from './pages/Dashboard'
 import { NotFound } from './pages/NotFound'
 import { Login } from './pages/Login'
 import { Header } from './components/Header'
-import { isUserAdmin } from './shared/fetching'
-import { useState, useEffect } from 'preact/hooks'
+import { refresh, refreshAdmin } from './shared/signals'
+import { useEffect } from 'preact/hooks'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
 
 export function App() {
-  const [isAdmin, setIsAdmin] = useState(false)
-
   useEffect(() => {
-    isUserAdmin().then((admin) => setIsAdmin(admin))
+    refresh.value = !refresh.value
+    refreshAdmin.value = !refreshAdmin.value
   }, [])
 
   return (
     <>
       <SpeedInsights />
       <Analytics />
-      <Header isAdmin={isAdmin} />
+      <Header />
       <Switch>
         <Route path="/" component={HomePage} />
         <Route path="/products" component={Products} />

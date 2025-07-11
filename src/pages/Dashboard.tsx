@@ -1,55 +1,39 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { ProductForm } from '@/components/Products/ProductForm'
 import { ProductCard } from '@/components/Products/ProductCard'
 import { Search } from '@/components/Products/Search'
 import { type ProductIn, type ProductType } from '@/shared/types'
-import { createProduct, deleteProduct, getProducts, isUserAdmin, updateProduct } from '@/shared/fetching'
+import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
 import { getErrorMessage } from '@/shared/utils'
 import { LoadingCard } from '@/components/Products/LoadigCard'
 import { ErrorCard } from '@/components/Products/ErrorCard'
 import { NotProducts } from '@/components/Products/NotProducts'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
-
-const is = await isUserAdmin()
+import { products, isAdmin, refresh, error, loading } from '@/shared/signals'
 
 export function Dashboard() {
   const [_, setLocation] = useLocation()
 
-  if (!is) setLocation('/login')
+  if (!isAdmin.value) setLocation('/login')
 
-  const [products, setProducts] = useState<ProductType[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(0)
-  const [refresh, setRefresh] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([])
+  const [filteredProducts, setFilteredProducts] = useState(products.value)
   const [isSearching, setIsSearching] = useState(false)
-
-  useEffect(() => {
-    getProducts(
-      (data) => {
-        setProducts(data)
-        setFilteredProducts(data)
-      },
-      setError,
-      setLoading
-    )
-  }, [refresh])
 
   const handlerSearch = (term: string) => {
     setSearchTerm(term)
     if (!term.trim()) {
-      setFilteredProducts(products)
+      setFilteredProducts(products.value)
       setIsSearching(false)
       return
     }
 
     setIsSearching(true)
     const searchTerm = term.toLowerCase().trim()
-    const data = products.filter((product) => {
+    const data = products.value.filter((product) => {
       return product.name.toLowerCase().includes(searchTerm) || product.productId.toLowerCase().includes(searchTerm)
     })
     setFilteredProducts(data)
@@ -71,14 +55,14 @@ export function Dashboard() {
       const { ok, error } = (await updateProduct(editingProduct.id, data)) as { ok: boolean; error: number }
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(error))
-      setRefresh((refresh) => !refresh)
+      refresh.value = !refresh.value
       setEditingProduct(undefined)
       toast.success('Se ha actualizado el producto correctamente')
     } else {
       const { ok, error } = (await createProduct(data)) as { ok: boolean; error: number }
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(error))
-      setRefresh((refresh) => !refresh)
+      refresh.value = !refresh.value
       toast.success('Se ha añadido el producto correctamente')
     }
   }
@@ -86,9 +70,9 @@ export function Dashboard() {
   const handleDeleteProduct = async (id: number) => {
     const { ok, error } = (await deleteProduct(id)) as { ok: boolean; error: number }
     if (!ok) return toast.error(getErrorMessage(error))
-    setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id))
+    products.value = products.value.filter((p) => p.id !== id)
     setFilteredProducts((prev) => prev.filter((p) => p.id !== id))
-    setRefresh((prev) => !prev)
+    refresh.value = !refresh.value
     toast.success('Se ha eliminado el producto correctamente')
   }
 
@@ -97,9 +81,9 @@ export function Dashboard() {
     setEditingProduct(undefined)
   }
 
-  if (loading && products.length === 0) return <LoadingCard />
-  if (error > 0 && error !== 1101) {
-    return <ErrorCard message={getErrorMessage(error)} />
+  if (loading.value && products.value.length === 0) return <LoadingCard />
+  if (error.value > 0 && error.value !== 1101) {
+    return <ErrorCard message={getErrorMessage(error.value)} />
   }
 
   return (
@@ -113,7 +97,7 @@ export function Dashboard() {
           >
             + Nuevo Producto
           </button>
-          {products.length > 0 && (
+          {products.value.length > 0 && (
             <Search
               searchTerm={searchTerm}
               handlerSearch={handlerSearch}
@@ -128,7 +112,7 @@ export function Dashboard() {
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <NotProducts searchTerm={searchTerm} hasProducts={products.length > 0} />
+            <NotProducts searchTerm={searchTerm} hasProducts={products.value.length > 0} />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
