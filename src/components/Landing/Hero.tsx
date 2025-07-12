@@ -1,6 +1,5 @@
 import { bestSellers, mostRecents, error } from '@/shared/signals'
 import { Toaster, toast } from 'sonner'
-import logo from '@/assets/logo.webp'
 import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
@@ -15,7 +14,7 @@ export function Hero() {
       <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="min-h-screen max-w-4xl mx-auto text-center -mb-8">
           <div className="flex justify-center mb-8">
-            <img src={logo} height={400} width={500} fetchPriority="high" className="rounded-md" />
+            <img src="/logo.webp" height={400} width={500} fetchPriority="high" className="rounded-md" />
           </div>
 
           <div className="space-y-6">

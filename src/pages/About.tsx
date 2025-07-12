@@ -1,5 +1,4 @@
 import ring from '@/assets/ring.svg'
-import logo from '@/assets/logo.webp'
 import diamond from '@/assets/diamond.svg'
 import sparkles from '@/assets/sparkles.svg'
 import palette from '@/assets/palette.svg'
@@ -35,7 +34,14 @@ export function About() {
               </p>
             </div>
             <div class="flex justify-center">
-              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={300} height={300} loading="lazy" />
+              <img
+                src="/logo.webp"
+                alt="Taller de joyería"
+                class="rounded-lg shadow-sm"
+                width={300}
+                height={300}
+                loading="lazy"
+              />
             </div>
           </div>
         </section>
