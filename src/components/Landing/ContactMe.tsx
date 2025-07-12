@@ -42,7 +42,7 @@ export function ContactMe() {
           className={`p-4 bg-white/80 backdrop-blur-sm ${color} rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 border border-gray-200/50`}
           aria-label={name}
         >
-          <img className="w-6 h-6" src={icon} />
+          <img className="w-6 h-6" src={icon} loading="lazy" />
         </a>
       ))}
     </nav>

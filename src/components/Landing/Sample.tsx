@@ -11,6 +11,7 @@ export function Sample({ text, src }: SampleProps) {
           src={src}
           alt={`Producto ${text}`}
           className="w-full h-60 object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
         />
       </div>
       <h4 className="text-center text-lg font-medium text-gray-800 group-hover:text-yellow-600 transition-colors">{text}</h4>

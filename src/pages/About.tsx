@@ -35,7 +35,7 @@ export function About() {
               </p>
             </div>
             <div class="flex justify-center">
-              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={300} height={300} />
+              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={300} height={300} loading="lazy" />
             </div>
           </div>
         </section>
@@ -51,7 +51,7 @@ export function About() {
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors duration-200">
               <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <img src={ring} alt="Anillo" class="w-12 h-12" />
+                <img src={ring} alt="Anillo" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">Anillos & Pulseras</h3>
               <p class="text-gray-600 text-sm">En metales preciosos con acabados únicos</p>
@@ -59,7 +59,7 @@ export function About() {
 
             <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors duration-200">
               <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <img src={diamond} alt="Diamante" class="w-12 h-12" />
+                <img src={diamond} alt="Diamante" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">Piezas con Gemas</h3>
               <p class="text-gray-600 text-sm">Diamantes, esmeraldas, rubíes y zafiros</p>
@@ -67,7 +67,7 @@ export function About() {
 
             <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors duration-200">
               <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <img src={sparkles} alt="Sparkles" class="w-12 h-12" />
+                <img src={sparkles} alt="Sparkles" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">Colecciones Exclusivas</h3>
               <p class="text-gray-600 text-sm">Diseños para ocasiones especiales</p>
@@ -75,7 +75,7 @@ export function About() {
 
             <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition-colors duration-200">
               <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <img src={palette} alt="Palette" class="w-12 h-12" />
+                <img src={palette} alt="Palette" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-2">Personalización</h3>
               <p class="text-gray-600 text-sm">Joyas según tus preferencias únicas</p>
@@ -153,7 +153,7 @@ export function About() {
           <div class="grid md:grid-cols-3 gap-8">
             <div class="text-center">
               <div class="w-20 h-20 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                <img src={rocket} alt="Rocket" class="w-12 h-12" />
+                <img src={rocket} alt="Rocket" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-3">Innovación</h3>
               <p class="text-gray-600">Diseño vanguardista que marca tendencias</p>
@@ -161,7 +161,7 @@ export function About() {
 
             <div class="text-center">
               <div class="w-20 h-20 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                <img src={heart} alt="Heart" class="w-12 h-12" />
+                <img src={heart} alt="Heart" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-3">Compromiso</h3>
               <p class="text-gray-600">Satisfacción total del cliente</p>
@@ -169,7 +169,7 @@ export function About() {
 
             <div class="text-center">
               <div class="w-20 h-20 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                <img src={tree} alt="Tree" class="w-12 h-12" />
+                <img src={tree} alt="Tree" class="w-12 h-12" loading="lazy" />
               </div>
               <h3 class="text-lg font-medium text-gray-900 mb-3">Responsabilidad</h3>
               <p class="text-gray-600">Procesos sociales y ambientalmente responsables</p>
