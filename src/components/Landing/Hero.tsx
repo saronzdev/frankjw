@@ -14,13 +14,13 @@ export function Hero() {
       <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="min-h-screen max-w-4xl mx-auto text-center -mb-8">
           <div className="flex justify-center mb-8">
-            <div style={{ width: 400, height: 300 }} className="flex items-center justify-center">
+            <div style={{ width: 400, height: 250 }} className="flex items-center justify-center">
               <img
                 src="/logo.webp"
                 width={400}
-                height={300}
+                height={250}
                 fetchPriority="high"
-                className="rounded-md p-2 bg-black object-contain w-[400px] h-[300px] block"
+                className="rounded-md p-2 bg-black object-contain w-[400px] h-[250px] block"
                 alt="Frank Joyería Logo"
               />
             </div>
