@@ -1,5 +1,5 @@
 import ring from '@/assets/ring.svg'
-import logo from '@/assets/logo.jpg'
+import logo from '@/assets/logo.webp'
 import diamond from '@/assets/diamond.svg'
 import sparkles from '@/assets/sparkles.svg'
 import palette from '@/assets/palette.svg'

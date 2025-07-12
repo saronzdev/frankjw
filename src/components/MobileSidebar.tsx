@@ -3,23 +3,20 @@ import X from '@/assets/close.svg'
 
 interface MobileSidebarProps {
   isOpen: boolean
-  isAdmin: boolean
+  isAdmin: boolean | null
   toggle: () => void
 }
 
 export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
   return (
     <>
-      {/* Backdrop */}
       {isOpen && <div className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" onClick={toggle} />}
 
-      {/* Sidebar */}
       <div
         className={`md:hidden fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Header */}
         <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
           <h2 className="text-xl font-bold">Menú</h2>
           <button onClick={toggle} className="p-2 rounded-lg hover:bg-white/20 transition-colors" aria-label="Cerrar menú">
@@ -27,7 +24,6 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="p-6">
           <ul className="space-y-3">
             {menuItemsMobile.map((item) => {

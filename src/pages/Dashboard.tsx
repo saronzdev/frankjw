@@ -15,7 +15,11 @@ import { products, isAdmin, refreshProducts, error, loading } from '@/shared/sig
 export function Dashboard() {
   const [_, setLocation] = useLocation()
 
-  if (!isAdmin.value) setLocation('/login')
+  useEffect(() => {
+    if (isAdmin.value === false) setLocation('/login')
+  }, [isAdmin.value, setLocation])
+
+  if (isAdmin.value === null) return <LoadingCard />
 
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
