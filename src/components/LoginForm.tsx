@@ -61,6 +61,7 @@ export function LoginForm() {
           <button
             type="submit"
             class="w-full bg-black text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium flex items-center justify-center"
+            aria-label="Iniciar sesión"
           >
             Iniciar Sesión
           </button>

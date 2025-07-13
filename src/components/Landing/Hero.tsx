@@ -17,10 +17,10 @@ export function Hero() {
           <div className="flex justify-center mb-4">
             <img
               src={logo}
-              width={400}
+              width={375}
               height={250}
               fetchPriority="high"
-              className="rounded-lg p-2 bg-black object-contain w-[400px] h-[250px] block"
+              className="rounded-lg p-2 bg-black object-contain w-[375px] h-[250px] block"
               alt="Frank Joyería Logo"
             />
           </div>
