@@ -1,5 +1,6 @@
 import { menuItemsMobile } from '@/shared/utils'
 import X from '@/assets/close.svg'
+import { Link } from 'wouter'
 
 interface MobileSidebarProps {
   isOpen: boolean
@@ -33,7 +34,7 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
 
               return (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
                     onClick={toggle}
@@ -42,10 +43,9 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
                     <img
                       className={`w-5 h-5 ${isDashboard ? 'text-white' : 'group-hover:text-yellow-600'}`}
                       src={item.icon}
-                      alt={item.label}
                     />
                     <span className="font-medium">{item.label}</span>
-                  </a>
+                  </Link>
                 </li>
               )
             })}
