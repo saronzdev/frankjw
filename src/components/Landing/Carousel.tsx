@@ -78,14 +78,14 @@ export function Carousel({ title, items }: CarouselProps) {
           onClick={() => navigate('prev')}
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:scale-110"
         >
-          <img className="w-5 h-5" src={left} />
+          <img className="w-5 h-5" src={left} alt="Retroceder" />
         </button>
 
         <button
           onClick={() => navigate('next')}
           className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:scale-110"
         >
-          <img className="w-5 h-5" src={right} />
+          <img className="w-5 h-5" src={right} alt="Avanzar" />
         </button>
       </div>
 

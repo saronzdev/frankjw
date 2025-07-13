@@ -16,6 +16,11 @@ async function getProducts() {
 }
 
 async function checkAdmin() {
+  const hasToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('token='))
+  if (!hasToken) {
+    isAdmin.value = false
+    return
+  }
   isAdmin.value = await isUserAdmin()
 }
 

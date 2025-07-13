@@ -5,6 +5,7 @@ import palette from '@/assets/palette.svg'
 import rocket from '@/assets/rocket.svg'
 import heart from '@/assets/heart.svg'
 import tree from '@/assets/tree.svg'
+import logo from '@/assets/logo.webp'
 
 export function About() {
   return (
@@ -34,14 +35,7 @@ export function About() {
               </p>
             </div>
             <div class="flex justify-center">
-              <img
-                src="/logo.webp"
-                alt="Taller de joyería"
-                class="rounded-lg shadow-sm"
-                width={300}
-                height={300}
-                loading="lazy"
-              />
+              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={300} height={300} loading="lazy" />
             </div>
           </div>
         </section>
@@ -183,7 +177,6 @@ export function About() {
           </div>
         </section>
 
-        {/* Quality Commitment */}
         <section class="bg-gray-50 rounded-lg p-12 text-center">
           <h2 class="text-3xl font-light text-gray-900 mb-6">Compromiso de Calidad</h2>
           <p class="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">

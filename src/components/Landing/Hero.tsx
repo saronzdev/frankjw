@@ -4,30 +4,28 @@ import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
 import { getErrorMessage } from '@/shared/utils'
+import logo from '@/assets/logo.webp'
 
 export function Hero() {
   if (error.value > 0) toast.error(getErrorMessage(error.value))
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+    <section className="bg-gradient-to-b from-yellow-100 via-white to-gray-50">
       <Toaster richColors position="top-center" />
-      <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="min-h-screen max-w-4xl mx-auto text-center -mb-8">
-          <div className="flex justify-center mb-8">
-            <div style={{ width: 400, height: 250 }} className="flex items-center justify-center">
-              <img
-                src="/logo.webp"
-                width={400}
-                height={250}
-                fetchPriority="high"
-                className="rounded-md p-2 bg-black object-contain w-[400px] h-[250px] block"
-                alt="Frank Joyería Logo"
-              />
-            </div>
+      <div className="container mx-auto px-4">
+        <div className="min-h-screen -mt-10 flex flex-col justify-center items-center text-center">
+          <div className="flex justify-center mb-4">
+            <img
+              src={logo}
+              width={400}
+              height={250}
+              fetchPriority="high"
+              className="rounded-lg p-2 bg-black object-contain w-[400px] h-[250px] block"
+              alt="Frank Joyería Logo"
+            />
           </div>
-
           <div className="space-y-6">
-            <h2 className="text-2xl md:text-4xl font-normal uppercase tracking-tight text-gray-900 leading-tight">
+            <h2 className="text-2xl md:text-4xl font-semibold uppercase tracking-tight text-gray-900 leading-tight">
               Tu joyería de confianza
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">

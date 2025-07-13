@@ -83,7 +83,12 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
         <div class="p-6">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-light text-gray-900">{product ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-            <button onClick={onCancel} class="text-gray-400 hover:text-gray-600 text-2xl">
+            <button
+              onClick={onCancel}
+              class="text-gray-400 hover:text-gray-600 text-2xl"
+              aria-label="Cerrar formulario"
+              title="Cerrar formulario"
+            >
               ×
             </button>
           </div>
@@ -262,6 +267,8 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                 type="button"
                 onClick={onCancel}
                 class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                aria-label="Cancelar"
+                title="Cancelar"
               >
                 Cancelar
               </button>

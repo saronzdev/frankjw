@@ -23,7 +23,12 @@ export function Contact() {
                 </div>
                 <div>
                   <h3 class="font-medium text-gray-900 mb-1">Teléfono</h3>
-                  <a href="tel:+5353444690" class="text-gray-600 hover:text-gray-900 transition-colors">
+                  <a
+                    href="tel:+5353444690"
+                    class="text-gray-600 hover:text-gray-900 transition-colors"
+                    aria-label="Llamar al teléfono +5353444690"
+                    title="Llamar al teléfono"
+                  >
                     +5353444690
                   </a>
                 </div>
@@ -35,7 +40,12 @@ export function Contact() {
                 </div>
                 <div>
                   <h3 class="font-medium text-gray-900 mb-1">Email</h3>
-                  <a href="mailto:frankjoyeriacuba@gmail.com" class="text-gray-600 hover:text-gray-900 transition-colors">
+                  <a
+                    href="mailto:frankjoyeriacuba@gmail.com"
+                    class="text-gray-600 hover:text-gray-900 transition-colors"
+                    aria-label="Enviar correo a frankjoyeriacuba@gmail.com"
+                    title="Enviar correo"
+                  >
                     frankjoyeriacuba@gmail.com
                   </a>
                 </div>
@@ -99,6 +109,8 @@ export function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center px-8 py-4 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors duration-200 font-medium"
+            aria-label="Chatear por WhatsApp"
+            title="Chatear por WhatsApp"
           >
             Chatear por WhatsApp
           </a>
