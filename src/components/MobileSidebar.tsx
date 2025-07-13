@@ -21,7 +21,7 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
         <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
           <h2 className="text-xl font-bold">Menú</h2>
           <button onClick={toggle} className="p-2 rounded-lg hover:bg-white/20 transition-colors" aria-label="Cerrar menú">
-            <img className="w-6 h-6" src={X} alt="Cerrar Menú" />
+            <img className="w-6 h-6" src={X} alt="Icono de Cerrar Menú" />
           </button>
         </div>
 
@@ -43,6 +43,7 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
                     <img
                       className={`w-5 h-5 ${isDashboard ? 'text-white' : 'group-hover:text-yellow-600'}`}
                       src={item.icon}
+                      alt={`${item.label} icono`}
                     />
                     <span className="font-medium">{item.label}</span>
                   </Link>

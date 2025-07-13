@@ -83,12 +83,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
         <div class="p-6">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-light text-gray-900">{product ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-            <button
-              onClick={onCancel}
-              class="text-gray-400 hover:text-gray-600 text-2xl"
-              aria-label="Cerrar formulario"
-              title="Cerrar formulario"
-            >
+            <button onClick={onCancel} class="text-gray-400 hover:text-gray-600 text-2xl" aria-label="Cerrar formulario">
               ×
             </button>
           </div>
@@ -243,10 +238,9 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                         <span class="text-white text-xs text-center px-2">Imagen existente</span>
                       </div>
                       <button
-                        type="button"
                         onClick={() => removeExistingImage(index)}
                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 transition-colors"
-                        title="Eliminar imagen"
+                        aria-label="Eliminar imagen"
                       >
                         ×
                       </button>
@@ -260,6 +254,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
               <button
                 type="submit"
                 class="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                aria-label={product ? 'Actualizar' : 'Crear' + 'Producto'}
               >
                 {product ? 'Actualizar' : 'Crear'}
               </button>
@@ -267,8 +262,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                 type="button"
                 onClick={onCancel}
                 class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium"
-                aria-label="Cancelar"
-                title="Cancelar"
+                aria-label="Cancelar el formulario"
               >
                 Cancelar
               </button>

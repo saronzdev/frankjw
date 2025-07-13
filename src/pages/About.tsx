@@ -35,7 +35,15 @@ export function About() {
               </p>
             </div>
             <div class="flex justify-center">
-              <img src={logo} alt="Taller de joyería" class="rounded-lg shadow-sm" width={375} height={250} loading="lazy" />
+              <img
+                src={logo}
+                alt="Taller de joyería"
+                class="rounded-lg shadow-sm"
+                width={375}
+                height={250}
+                fetchPriority="high"
+                fetchpriority="high"
+              />
             </div>
           </div>
         </section>

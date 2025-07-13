@@ -32,7 +32,7 @@ export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }
           />
 
           <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <img className="w-5 h-5 text-gray-500" src={search} alt="Buscar" />
+            <img className="w-5 h-5 text-gray-500" src={search} alt="Icono de Buscar" />
           </div>
 
           {searchTerm && (
@@ -41,9 +41,8 @@ export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }
               onClick={clearSearch}
               type="button"
               aria-label="Limpiar búsqueda"
-              title="Limpiar búsqueda"
             >
-              <img className="w-5 h-5" src={close} alt="Limpiar Búsqueda" />
+              <img className="w-5 h-5" src={close} alt="Icono de Limpiar Búsqueda" />
             </button>
           )}
         </div>
