@@ -4,7 +4,7 @@ import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
 import { getErrorMessage } from '@/shared/utils'
-import logo from '@/assets/logo.webp'
+const logo = '/logo.webp'
 
 export function Hero() {
   if (error.value > 0) toast.error(getErrorMessage(error.value))
@@ -18,7 +18,6 @@ export function Hero() {
             <img
               src={logo}
               fetchPriority="high"
-              fetchpriority="high"
               width={375}
               height={250}
               className="rounded-lg p-2 bg-black object-contain w-[375px] h-[250px] block"

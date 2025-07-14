@@ -5,7 +5,7 @@ import palette from '@/assets/palette.svg'
 import rocket from '@/assets/rocket.svg'
 import heart from '@/assets/heart.svg'
 import tree from '@/assets/tree.svg'
-import logo from '@/assets/logo.webp'
+const logo = '/logo.webp'
 
 export function About() {
   return (
