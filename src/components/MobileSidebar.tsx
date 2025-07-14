@@ -1,33 +1,30 @@
 import { menuItemsMobile } from '@/shared/utils'
 import X from '@/assets/close.svg'
+import { Link } from 'wouter'
 
 interface MobileSidebarProps {
   isOpen: boolean
-  isAdmin: boolean
+  isAdmin: boolean | null
   toggle: () => void
 }
 
 export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
   return (
     <>
-      {/* Backdrop */}
-      {isOpen && <div className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" onClick={toggle} />}
+      {isOpen && <div className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" onClick={toggle} />}
 
-      {/* Sidebar */}
       <div
-        className={`md:hidden fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
+        className={`lg:hidden fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Header */}
         <div className="flex items-center justify-between bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
           <h2 className="text-xl font-bold">Menú</h2>
           <button onClick={toggle} className="p-2 rounded-lg hover:bg-white/20 transition-colors" aria-label="Cerrar menú">
-            <img className="w-6 h-6" src={X} />
+            <img className="w-6 h-6" src={X} alt="Icono de Cerrar Menú" />
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="p-6">
           <ul className="space-y-3">
             {menuItemsMobile.map((item) => {
@@ -37,17 +34,19 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: MobileSidebarProps) {
 
               return (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
                     onClick={toggle}
+                    aria-label={`Ir a ${item.label}`}
                   >
                     <img
                       className={`w-5 h-5 ${isDashboard ? 'text-white' : 'group-hover:text-yellow-600'}`}
                       src={item.icon}
+                      alt={`${item.label} icono`}
                     />
                     <span className="font-medium">{item.label}</span>
-                  </a>
+                  </Link>
                 </li>
               )
             })}

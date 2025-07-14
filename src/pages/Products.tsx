@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'preact/hooks'
-import { getCats } from '@/shared/fetching'
+import { useState } from 'preact/hooks'
+import { cats, error, loading } from '@/shared/signals'
 import { Category } from '@/components/Products/Category'
 import { CategoryFilter } from '@/components/Products/CategoryFilter'
 import { ErrorCard } from '@/components/Products/ErrorCard'
@@ -8,33 +8,26 @@ import { getErrorMessage } from '@/shared/utils'
 import { NotProducts } from '@/components/Products/NotProducts'
 
 export function Products() {
-  const [cats, setCats] = useState<string[]>([])
-  const [error, setError] = useState(0)
-  const [loading, setLoading] = useState(true)
   const [filterCategory, setFilterCategory] = useState('')
 
-  useEffect(() => {
-    getCats(setCats, setError, setLoading)
-  }, [])
-
-  if (loading) return <LoadingCard />
-  if (error > 0) {
-    if (error === 1101) return <NotProducts hasProducts={false} />
-    return <ErrorCard message={getErrorMessage(error)} />
+  if (loading.value) return <LoadingCard />
+  if (error.value > 0) {
+    if (error.value === 1101) return <NotProducts hasProducts={false} />
+    return <ErrorCard message={getErrorMessage(error.value)} />
   }
 
-  if (filterCategory && cats.filter((cat) => cat === filterCategory).length === 0) {
-    return <NotProducts hasProducts={cats.length > 0} />
+  if (filterCategory && cats.value.filter((cat) => cat === filterCategory).length === 0) {
+    return <NotProducts hasProducts={cats.value.length > 0} />
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       <section>
         <div className="mt-4 flex justify-center">
-          <CategoryFilter filterCategory={filterCategory} setFilterCategory={setFilterCategory} cats={cats} />
+          <CategoryFilter filterCategory={filterCategory} setFilterCategory={setFilterCategory} cats={cats.value} />
         </div>
         <div className="space-y-4 mb-4">
-          {cats
+          {cats.value
             .filter((item) => !filterCategory || filterCategory.includes(item))
             .map((item) => (
               <Category key={item} category={item} />

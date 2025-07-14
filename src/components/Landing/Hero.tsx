@@ -1,38 +1,32 @@
-import { useState, useEffect } from 'preact/hooks'
-import { getProducts } from '@/shared/fetching'
+import { bestSellers, mostRecents, error } from '@/shared/signals'
 import { Toaster, toast } from 'sonner'
-import logo from '@/assets/logo.jpg'
 import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
-import type { ProductType } from '@/shared/types'
 import { getErrorMessage } from '@/shared/utils'
+const logo = '/logo.webp'
 
 export function Hero() {
-  const [bestSellers, setBestsSeller] = useState<ProductType[]>([])
-  const [recents, setRecents] = useState<ProductType[]>([])
-  const [_, setLoading] = useState(true)
-  const [error, setError] = useState(0)
-
-  useEffect(() => {
-    getProducts((data) => setRecents(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'createdAt')
-    getProducts((data) => setBestsSeller(data.slice(0, 4) as unknown as ProductType[]), setError, setLoading, 'sales')
-  }, [])
-
-  if (error > 0) toast.error(getErrorMessage(error))
+  if (error.value > 0) toast.error(getErrorMessage(error.value))
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+    <section className="bg-gradient-to-b from-yellow-100 via-white to-gray-50">
       <Toaster richColors position="top-center" />
-      <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
-          <div className="flex justify-center mb-8">
-            <img src={logo} height={400} width={500} className="rounded-md" />
+      <div className="container mx-auto px-4">
+        <div className="min-h-screen -mt-10 flex flex-col justify-center items-center text-center">
+          <div className="flex justify-center mb-4">
+            <img
+              src={logo}
+              fetchPriority="high"
+              width={375}
+              height={250}
+              className="rounded-lg p-2 bg-black object-contain w-[375px] h-[250px] block"
+              alt="Frank Joyería Logo"
+            />
           </div>
-
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-gray-900 leading-tight">
-              Momentos Inolvidables
+            <h2 className="text-2xl md:text-4xl font-semibold uppercase tracking-tight text-gray-900 leading-tight">
+              Tu joyería de confianza
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               No solo vendemos joyas, sino creamos símbolos de emociones y momentos inolvidables.
@@ -58,8 +52,8 @@ export function Hero() {
         </div>
 
         <div className="space-y-20 md:space-y-24">
-          <Carousel title="Últimos Productos" items={recents} />
-          <Carousel title="Los Más Comprados" items={bestSellers} />
+          <Carousel title="Últimos Productos" items={mostRecents.value} />
+          <Carousel title="Los Más Comprados" items={bestSellers.value} />
         </div>
 
         <div className="mt-20 md:mt-24 flex justify-center">

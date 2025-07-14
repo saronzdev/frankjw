@@ -17,6 +17,8 @@ export function NotFound() {
         <a
           href="/"
           class="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          aria-label="Volver al inicio"
+          title="Volver al inicio"
         >
           Volver al inicio
         </a>
@@ -24,13 +26,28 @@ export function NotFound() {
         <div class="mt-16 pt-8 border-t border-gray-100">
           <p class="text-sm text-gray-500 mb-4">¿Buscabas alguna de estas páginas?</p>
           <div class="flex flex-wrap justify-center gap-6 text-sm">
-            <a href="/about" class="text-gray-600 hover:text-gray-900 transition-colors">
+            <a
+              href="/about"
+              class="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Ir a Nosotros"
+              title="Nosotros"
+            >
               Nosotros
             </a>
-            <a href="/products" class="text-gray-600 hover:text-gray-900 transition-colors">
+            <a
+              href="/products"
+              class="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Ir a Productos"
+              title="Productos"
+            >
               Productos
             </a>
-            <a href="/contact" class="text-gray-600 hover:text-gray-900 transition-colors">
+            <a
+              href="/contact"
+              class="text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Ir a Contacto"
+              title="Contacto"
+            >
               Contacto
             </a>
           </div>

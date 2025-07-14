@@ -3,13 +3,9 @@ import { MobileSidebar } from './MobileSidebar'
 import { Link, useLocation } from 'wouter'
 import Menu from '@/assets/menu.svg'
 import { menuItems, titles } from '@/shared/utils'
+import { isAdmin } from '@/shared/signals'
 
-interface HeaderProps {
-  isAdmin?: boolean
-  title?: string
-}
-
-export function Header({ isAdmin = false }: HeaderProps) {
+export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [location] = useLocation()
 
@@ -22,25 +18,26 @@ export function Header({ isAdmin = false }: HeaderProps) {
           <div className="flex items-center justify-between py-4">
             <button
               onClick={toggleSidebar}
-              className="md:hidden p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-yellow-600/20 hover:to-gray-800/20 hover:scale-105"
+              className="lg:hidden p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-yellow-600/20 hover:to-gray-800/20 hover:scale-105"
               aria-label="Abrir menú"
             >
-              <img className="w-6 h-6" src={Menu} />
+              <img className="w-6 h-6" src={Menu} alt="Menú lateral" />
             </button>
 
-            <h1 className="text-3xl -ml-2 font-bold tracking-wide flex-1 text-center md:text-left md:flex-none bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+            <h1 className="text-3xl -ml-2 font-bold tracking-wide flex-1 text-center lg:text-left lg:flex-none bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent uppercase">
               {titles[location as keyof typeof titles] || 'Frank Joyería'}
             </h1>
 
-            <nav className="hidden md:flex items-center space-x-2">
+            <nav className="hidden lg:flex items-center space-x-2">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
+                  aria-label={`Ir a ${item.label}`}
                   className={`${
                     item.href === '/dashboard'
                       ? `${
-                          isAdmin ? 'block' : 'hidden'
+                          isAdmin.value ? 'block' : 'hidden'
                         } bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-yellow-700 font-semibold`
                       : 'text-white hover:text-yellow-200 hover:bg-white/10 px-4 py-2 rounded-lg font-medium'
                   } transition-all duration-300 transform hover:scale-105`}
@@ -52,7 +49,7 @@ export function Header({ isAdmin = false }: HeaderProps) {
           </div>
         </div>
       </header>
-      <MobileSidebar isOpen={isOpen} toggle={toggleSidebar} isAdmin={isAdmin} />
+      <MobileSidebar isOpen={isOpen} toggle={toggleSidebar} isAdmin={isAdmin.value} />
     </>
   )
 }

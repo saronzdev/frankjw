@@ -47,7 +47,12 @@ export function Carousel({ title, items }: CarouselProps) {
           >
             {products.map((p) => (
               <div key={p.id} className="w-full flex-shrink-0 relative">
-                <img src={p.pictures} alt={p.name} className="w-full h-56 md:h-96 object-contain object-center" />
+                <img
+                  src={p.pictures}
+                  alt={p.name}
+                  className="w-full h-56 md:h-96 object-contain object-center"
+                  loading="lazy"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <div className="flex justify-between items-end">
@@ -58,9 +63,9 @@ export function Carousel({ title, items }: CarouselProps) {
                     <button
                       onClick={() => handleReservation(p)}
                       className="bg-green-600 hover:bg-green-700 text-white rounded-full p-4 transition-all duration-300 shadow-lg hover:scale-110 flex items-center justify-center cursor-pointer"
-                      title="Reservar por WhatsApp"
+                      aria-label={`Reservar ${p.name}`}
                     >
-                      <img className="w-6 h-6" src={buy} alt="Reservar" />
+                      <img className="w-6 h-6" src={buy} alt="Icono de Reservar" />
                     </button>
                   </div>
                 </div>
@@ -72,15 +77,17 @@ export function Carousel({ title, items }: CarouselProps) {
         <button
           onClick={() => navigate('prev')}
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:scale-110"
+          aria-label="Retroceder"
         >
-          <img className="w-5 h-5" src={left} />
+          <img className="w-5 h-5" src={left} alt="Icono de Retroceder" />
         </button>
 
         <button
           onClick={() => navigate('next')}
           className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg hover:scale-110"
+          aria-label="Avanzar"
         >
-          <img className="w-5 h-5" src={right} />
+          <img className="w-5 h-5" src={right} alt="Icono de Avanzar" />
         </button>
       </div>
 
@@ -92,6 +99,7 @@ export function Carousel({ title, items }: CarouselProps) {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex ? 'bg-yellow-600 scale-125 shadow-lg' : 'bg-gray-300 hover:bg-gray-400 hover:scale-110'
             }`}
+            aria-label={`Ir al producto ${index + 1}`}
           />
         ))}
       </div>

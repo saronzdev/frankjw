@@ -1,5 +1,6 @@
 import type { JSX } from 'preact'
 import down from '@/assets/down.svg'
+import { capitalize } from '@/shared/utils'
 
 interface CategoryFilterProps {
   filterCategory: string
@@ -25,13 +26,13 @@ export function CategoryFilter({ filterCategory, setFilterCategory, cats }: Cate
           </option>
           {cats.map((cat) => (
             <option key={cat} value={cat} className="py-2">
-              {cat}
+              {capitalize(cat)}
             </option>
           ))}
         </select>
 
         <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-          <img className="w-5 h-5 text-gray-500" src={down} />
+          <img className="w-5 h-5 text-gray-500" src={down} alt="Desplegar Categorías" />
         </div>
 
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 opacity-0 hover:opacity-20 transition-opacity duration-300 pointer-events-none -z-10 blur-sm"></div>

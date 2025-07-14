@@ -31,24 +31,22 @@ export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }
             value={searchTerm}
           />
 
-          {/* Search icon */}
           <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <img className="w-5 h-5 text-gray-500" src={search} />
+            <img className="w-5 h-5 text-gray-500" src={search} alt="Icono de Buscar" />
           </div>
 
-          {/* Clear button */}
           {searchTerm && (
             <button
               className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
               onClick={clearSearch}
               type="button"
+              aria-label="Limpiar búsqueda"
             >
-              <img className="w-5 h-5" src={close} />
+              <img className="w-5 h-5" src={close} alt="Icono de Limpiar Búsqueda" />
             </button>
           )}
         </div>
 
-        {/* Decorative gradient border */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 opacity-0 hover:opacity-20 transition-opacity duration-300 pointer-events-none -z-10 blur-sm"></div>
       </div>
     </div>

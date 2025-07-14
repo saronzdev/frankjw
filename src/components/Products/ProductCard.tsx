@@ -26,8 +26,11 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
     const checkOverflow = () => {
       if (!element) return
       if (!isDescriptionExpanded) {
-        const isOverflowing = element.scrollHeight > element.clientHeight
-        setIsDescriptionLong(isOverflowing)
+        // Mitiga forced reflow usando requestAnimationFrame
+        window.requestAnimationFrame(() => {
+          const isOverflowing = element.scrollHeight > element.clientHeight
+          setIsDescriptionLong(isOverflowing)
+        })
       }
     }
 
@@ -94,6 +97,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
                 className="text-yellow-600 hover:text-yellow-700 font-medium mt-1 text-xs transition-colors duration-200"
+                aria-label={'Botón de ' + isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
               >
                 {isDescriptionExpanded ? 'Ver menos' : 'Ver más'}
               </button>
@@ -118,15 +122,17 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => onEdit?.(data)}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 py-3 px-4 rounded-xl hover:from-slate-200 hover:to-slate-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                aria-label={`Editar producto ${data.name}`}
               >
-                <img className="w-4 h-4" src={edit} />
+                <img className="w-4 h-4" src={edit} alt="Icono de Editar" />
                 Editar
               </button>
               <button
                 onClick={handleDelete}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-rose-100 to-rose-200 text-rose-700 py-3 px-4 rounded-xl hover:from-rose-200 hover:to-rose-300 transition-all duration-300 font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                aria-label={`Eliminar producto ${data.name}`}
               >
-                <img className="w-4 h-4" src={trash} />
+                <img className="w-4 h-4" src={trash} alt="Icono de Borrar" />
                 Eliminar
               </button>
             </div>
@@ -140,8 +146,9 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => handleReservation(data)}
                 className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                aria-label={`Reservar ${data.name} por WhatsApp`}
               >
-                <img className="w-5 h-5" src={buy} />
+                <img className="w-5 h-5" src={buy} alt="Reservar" />
                 Reservar por WhatsApp
               </button>
             </>

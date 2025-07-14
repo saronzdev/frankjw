@@ -1,7 +1,7 @@
 import { Sample } from './Sample'
-import sample1 from '@/assets/sample1.jpg'
-import sample2 from '@/assets/sample2.jpg'
-import sample3 from '@/assets/sample3.jpg'
+import sample1 from '@/assets/sample1.webp'
+import sample2 from '@/assets/sample2.webp'
+import sample3 from '@/assets/sample3.webp'
 
 const highlights = [
   {

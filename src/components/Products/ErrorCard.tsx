@@ -23,6 +23,7 @@ export function ErrorCard({ message }: Props) {
           <button
             onClick={() => window.location.reload()}
             className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium text-sm"
+            aria-label="Reintentar"
           >
             Intentar de nuevo
           </button>
