@@ -42,7 +42,6 @@ export function About() {
                 width={375}
                 height={250}
                 fetchPriority="high"
-                fetchpriority="high"
               />
             </div>
           </div>
