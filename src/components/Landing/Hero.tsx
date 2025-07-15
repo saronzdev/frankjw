@@ -1,17 +1,12 @@
-import { bestSellers, mostRecents, error } from '@/shared/signals'
-import { Toaster, toast } from 'sonner'
+import { bestSellers, mostRecents } from '@/shared/signals'
 import { Link } from 'wouter'
 import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
-import { getErrorMessage } from '@/shared/utils'
 const logo = '/logo.webp'
 
 export function Hero() {
-  if (error.value > 0) toast.error(getErrorMessage(error.value))
-
   return (
     <section className="bg-gradient-to-b from-yellow-100 via-white to-gray-50">
-      <Toaster richColors position="top-center" />
       <div className="container mx-auto px-4">
         <div className="min-h-screen -mt-10 flex flex-col justify-center items-center text-center">
           <div className="flex justify-center mb-4">
