@@ -16,8 +16,8 @@ async function getProducts() {
 }
 
 async function checkAdmin() {
-  const hasToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('token='))
-  if (!hasToken) {
+  const isLogged = Boolean(localStorage.getItem('logged'))
+  if (!isLogged) {
     isAdmin.value = false
     return
   }

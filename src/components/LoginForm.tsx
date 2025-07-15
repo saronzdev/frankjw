@@ -18,6 +18,7 @@ export function LoginForm() {
     }
     const { ok, error } = (await login(email, password)) as { ok: boolean; error: number }
     if (ok) {
+      localStorage.setItem('logged', 'true')
       toast.success('Inicio de sesión exitoso. Redirigiendo...')
       try {
         refreshRole()
@@ -27,12 +28,14 @@ export function LoginForm() {
         toast.error('Error verificando permisos. Redirigiendo al inicio...')
         setLocation('/')
       }
-    } else toast.error(getErrorMessage(error))
+    } else {
+      toast.error(getErrorMessage(error))
+    }
   }
 
   return (
     <div class="fixed inset-0 bg-gray-50 flex items-center justify-center p-8 overflow-hidden">
-      <Toaster richColors position="top-center" />
+      <Toaster richColors position="bottom-center" />
       <div class="bg-white p-8 rounded-lg shadow-sm max-w-md w-full">
         <h1 class="text-3xl font-bold text-center text-black mb-2">Iniciar Sesión</h1>
         <form onSubmit={handleSubmit} class="space-y-6">
