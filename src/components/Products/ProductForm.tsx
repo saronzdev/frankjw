@@ -91,7 +91,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
 
           <form onSubmit={handleSubmit} class="space-y-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del producto *</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del producto</label>
               <input
                 type="text"
                 name="name"
