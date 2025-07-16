@@ -72,7 +72,6 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
 
     const newProduct: ProductIn = {
       ...productData,
-      name: productData.name ? productData.name : '-',
       pictures: [...imagesUrls, ...(productData.pictures as string[])]
     }
     onSave(newProduct)
@@ -91,12 +90,13 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
 
           <form onSubmit={handleSubmit} class="space-y-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del producto</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del producto *</label>
               <input
                 type="text"
                 name="name"
                 value={productData.name}
                 onInput={handleInputChange}
+                required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
                 placeholder="Ej: Anillo de compromiso"
               />
