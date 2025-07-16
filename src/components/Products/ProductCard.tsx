@@ -86,11 +86,11 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
       <div className="p-6">
         <div className="mb-4">
-          <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+          {/* <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
             {data.name}
-          </h3>
+          </h3> */}
           <div className="text-gray-600 text-sm leading-relaxed">
-            <p ref={descriptionRef} className={`${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
+            <p ref={descriptionRef} className={'text-lg ' + `${isDescriptionExpanded ? '' : 'line-clamp-2'}`}>
               {data.description}
             </p>
             {(isDescriptionLong || isDescriptionExpanded) && (
@@ -107,12 +107,12 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
 
         <div className="grid grid-cols-2 gap-3 mb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-xl text-center border border-gray-200">
-            <p className="text-md text-gray-500 font-medium tracking-wide">Peso (g)</p>
-            <p className="text-lg font-bold text-gray-900">{data.weight}</p>
+            <p className="text-md text-gray-500 font-medium tracking-wide">Peso</p>
+            <p className="text-lg font-bold text-gray-900">{data.weight} g</p>
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-xl text-center border border-yellow-200">
             <p className="text-md text-yellow-700 font-medium tracking-wide">Quilates</p>
-            <p className="text-lg font-bold text-yellow-800">{data.karats.join(' | ')}</p>
+            <p className="text-lg font-bold text-yellow-800">{data.karats.join(' | ')} K</p>
           </div>
         </div>
 

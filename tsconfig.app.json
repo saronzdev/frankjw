@@ -30,5 +30,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/shared/types.ts"]
+  "include": ["src", "src/shared/types.d.ts"]
 }

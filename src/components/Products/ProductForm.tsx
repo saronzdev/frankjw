@@ -72,6 +72,7 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
 
     const newProduct: ProductIn = {
       ...productData,
+      name: productData.name ? productData.name : '-',
       pictures: [...imagesUrls, ...(productData.pictures as string[])]
     }
     onSave(newProduct)
@@ -96,7 +97,6 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                 name="name"
                 value={productData.name}
                 onInput={handleInputChange}
-                required
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
                 placeholder="Ej: Anillo de compromiso"
               />
