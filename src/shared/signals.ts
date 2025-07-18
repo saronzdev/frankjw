@@ -24,8 +24,10 @@ async function checkAdmin() {
   isAdmin.value = await isUserAdmin()
 }
 
-await getProducts()
-await checkAdmin()
+;(async () => {
+  await getProducts()
+  await checkAdmin()
+})()
 
 export const cats = computed(() => [...new Set(products.value.map((p) => p.category))])
 export const mostRecents = computed(() =>
