@@ -1,4 +1,4 @@
-import type { ProductType, ProductIn } from './types'
+import type { ProductType, ProductIn } from '../types'
 import { AxiosError } from 'axios'
 import { api } from './utils'
 

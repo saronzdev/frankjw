@@ -4,7 +4,7 @@ import left from '@/assets/left.svg'
 import right from '@/assets/right.svg'
 import buy from '@/assets/buy.svg'
 import { handleReservation } from '@/shared/utils'
-import type { ProductType } from '@/shared/types'
+import type { ProductType } from '@/types'
 
 interface CarouselProps {
   title: string

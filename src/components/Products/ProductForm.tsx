@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import type { ProductIn, ProductType } from '@/shared/types'
+import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
 import { categories } from '@/shared/utils'
 

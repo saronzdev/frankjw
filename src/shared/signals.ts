@@ -1,5 +1,5 @@
 import { signal, computed } from '@preact/signals'
-import type { ProductType, Result } from './types'
+import type { ProductType, Result } from '../types'
 import { getProductsSignals, isUserAdmin } from './fetching'
 
 export const products = signal<ProductType[]>([])

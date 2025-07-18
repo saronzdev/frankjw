@@ -98,7 +98,7 @@ export function Contact() {
         </div>
       </section>
 
-      <section class="text-center">
+      <section class="text-center mx-4">
         <h2 class="text-3xl font-light text-gray-900 mb-4">¿Listo para crear algo especial?</h2>
         <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
           Contáctanos hoy mismo y descubre cómo podemos ayudarte a crear la joya perfecta para ti o tus seres queridos.

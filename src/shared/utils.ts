@@ -5,7 +5,7 @@ import About from '@/assets/about.svg'
 import Contact from '@/assets/contact.svg'
 import Dashboard from '@/assets/dashboard.svg'
 import { increaseSales } from './fetching'
-import type { ProductType } from './types'
+import type { ProductType } from '../types'
 
 export const categories = [
   'Anillo de hombre',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { handleReservation } from '@/shared/utils'
-import type { ProductType } from '@/shared/types'
+import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import edit from '@/assets/edit.svg'
 import trash from '@/assets/trash.svg'
