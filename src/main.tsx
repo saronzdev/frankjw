@@ -1,3 +1,4 @@
+import '@/shared/polyfills.ts'
 import { render } from 'preact'
 import { App } from './app.tsx'
 
