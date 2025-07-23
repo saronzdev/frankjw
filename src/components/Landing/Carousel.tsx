@@ -52,7 +52,7 @@ export function Carousel({ title, items }: Props) {
                 <div className={styles.content}>
                   <div>
                     <h4>{p.name}</h4>
-                    <h4 style={{ color: '#fbbf24', fontSize: '1.125rem', fontWeight: '600', margin: '4px 0 0 0' }}>
+                    <h4 className={styles.productPrice} style={{ color: '#ffdf20' }}>
                       {p.price} USD
                     </h4>
                   </div>
