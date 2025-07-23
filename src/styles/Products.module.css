@@ -1,0 +1,23 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  flex: 1;
+}
+
+.filterContainer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.categoriesContainer {
+  margin-bottom: 1rem;
+}
+
+.categoriesContainer>*+* {
+  margin-top: 1rem;
+}

@@ -1,0 +1,388 @@
+.card {
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+  overflow: hidden;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #eab308, #d97706, #eab308);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.imageWrapper {
+  position: relative;
+  height: 16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingSpinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #eab308;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .productImage {
+  transform: scale(1.08);
+}
+
+.badgeContainer {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+}
+
+.priceBadge {
+  background: linear-gradient(to right, #eab308, #d97706);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.outOfStockContainer {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.outOfStockBadge {
+  background: linear-gradient(to right, #ef4444, #dc2626);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.descriptionSection {
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  color: #4b5563;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.descriptionClamped {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expandButton {
+  color: #d97706;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.expandButton:hover {
+  color: #b45309;
+  text-decoration: underline;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.statCard {
+  padding: 1rem;
+  border-radius: 0.875rem;
+  text-align: center;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.statCard:hover::before {
+  left: 100%;
+}
+
+.weightCard {
+  background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+  border-color: #d1d5db;
+}
+
+.weightCard:hover {
+  background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.karatsCard {
+  background: linear-gradient(to bottom right, #fffbeb, #fef3c7);
+  border-color: #fde68a;
+}
+
+.karatsCard:hover {
+  background: linear-gradient(to bottom right, #fef3c7, #fde047);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  margin-bottom: 0.25rem;
+}
+
+.weightLabel {
+  color: #6b7280;
+}
+
+.karatsLabel {
+  color: #b45309;
+}
+
+.statValue {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.weightValue {
+  color: #111827;
+}
+
+.karatsValue {
+  color: #92400e;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.editableActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.editButton {
+  background: linear-gradient(to right, #f1f5f9, #e2e8f0);
+  color: #334155;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.editButton:hover {
+  background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.deleteButton {
+  background: linear-gradient(to right, #fef2f2, #fecaca);
+  color: #b91c1c;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.deleteButton:hover {
+  background: linear-gradient(to right, #fecaca, #fca5a5);
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.reserveButton {
+  background: linear-gradient(to right, #10b981, #059669);
+  color: white;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.reserveButton:hover {
+  background: linear-gradient(to right, #059669, #047857);
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.buttonIcon {
+  width: 1rem;
+  height: 1rem;
+  z-index: 1;
+  position: relative;
+}
+
+.reserveIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.outOfStockNotice {
+  background: linear-gradient(to right, #fff7ed, #fed7aa);
+  border: 1px solid #fdba74;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.outOfStockText {
+  color: #c2410c;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.productIdSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.productId {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .content {
+    padding: 1.25rem;
+  }
+
+  .statsGrid {
+    gap: 0.75rem;
+  }
+
+  .statCard {
+    padding: 0.75rem;
+  }
+
+  .button {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .reserveButton {
+    padding: 1rem 1.25rem;
+  }
+}

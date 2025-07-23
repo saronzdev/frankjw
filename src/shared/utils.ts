@@ -6,6 +6,51 @@ import Contact from '@/assets/contact.svg'
 import Dashboard from '@/assets/dashboard.svg'
 import { increaseSales } from './fetching'
 import type { ProductType } from '../types'
+import sample1 from '@/assets/sample1.webp'
+import sample2 from '@/assets/sample2.webp'
+import sample3 from '@/assets/sample3.webp'
+import fb from '@/assets/fb.svg'
+import ws from '@/assets/ws.svg'
+import ig from '@/assets/ig.svg'
+import mail from '@/assets/mail.svg'
+
+export const socialLinks = [
+  {
+    icon: fb,
+    name: 'Facebook',
+    href: 'https://www.facebook.com/profile.php?id=100093441805320'
+  },
+  {
+    icon: ws,
+    name: 'WhatsApp',
+    href: 'https://api.whatsapp.com/send?phone=5353444690'
+  },
+  {
+    icon: ig,
+    name: 'Instagram',
+    href: 'https://instagram.com/frank_joyeria_cuba'
+  },
+  {
+    icon: mail,
+    name: 'Email',
+    href: 'mailto:frankjoyeriacuba@gmail.com'
+  }
+]
+
+export const highlights = [
+  {
+    src: sample1,
+    text: 'Brilla con luz propia'
+  },
+  {
+    src: sample2,
+    text: 'Cada joya cuenta una historia'
+  },
+  {
+    src: sample3,
+    text: 'Elegancia en todo momento'
+  }
+]
 
 export const categories = [
   'Anillo de hombre',

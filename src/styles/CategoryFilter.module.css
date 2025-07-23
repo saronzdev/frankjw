@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  background: white;
+  color: #1f2937;
+  width: 20rem;
+  padding: 1rem 1.5rem;
+  padding-right: 3rem;
+  border-radius: 1rem;
+  border: 2px solid #e5e7eb;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: #eab308;
+  box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.1);
+}
+
+.select:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.option {
+  padding: 0.5rem 0;
+}
+
+.iconContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+  pointer-events: none;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+.hoverEffect {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background: linear-gradient(to right, #fbbf24, #eab308, #d97706);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(2px);
+}
+
+.selectWrapper:hover .hoverEffect {
+  opacity: 0.2;
+}
+
+@media (max-width: 640px) {
+  .select {
+    width: 18rem;
+    padding: 0.875rem 1.25rem;
+    padding-right: 2.75rem;
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,221 @@
+.container {
+  min-height: 100vh;
+  background: white;
+}
+
+.hero {
+  padding: 5rem 1rem;
+}
+
+.heroContent {
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 3.75rem;
+  }
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  color: #4b5563;
+  font-weight: 300;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .heroDescription {
+    font-size: 1.5rem;
+  }
+}
+
+.contactSection {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.contactInfo {
+  max-width: 32rem;
+}
+
+.contactTitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 1.5rem;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contactIcon {
+  width: 3rem;
+  height: 3rem;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contactIcon span {
+  font-size: 1.25rem;
+}
+
+.contactDetails h3 {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.contactLink {
+  color: #4b5563;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contactLink:hover {
+  color: #111827;
+}
+
+.contactAddress {
+  color: #4b5563;
+}
+
+.contactAddress p {
+  margin: 0;
+  margin-bottom: 0.25rem;
+}
+
+.contactAddress p:last-child {
+  margin-bottom: 0;
+}
+
+.socialTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.scheduleSection {
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-bottom: 5rem;
+}
+
+.scheduleHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.scheduleTitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.scheduleDescription {
+  color: #4b5563;
+}
+
+.scheduleGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .scheduleGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .scheduleGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.scheduleItem {
+  text-align: center;
+}
+
+.scheduleItem h3 {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.scheduleItem p {
+  color: #4b5563;
+  margin: 0;
+}
+
+.ctaSection {
+  text-align: center;
+  margin: 0 1rem;
+}
+
+.ctaTitle {
+  font-size: 1.875rem;
+  font-weight: 300;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.ctaDescription {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #16a34a;
+  color: white;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.ctaButton:hover {
+  background: #15803d;
+}
