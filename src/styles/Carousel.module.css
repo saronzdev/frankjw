@@ -97,12 +97,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12px;
+  padding: 12px 12px 0 12px; /* top right bottom left - eliminamos el bottom */
 }
 
 @media (min-width: 768px) {
   .overlay {
-    padding: 20px;
+    padding: 20px 20px 0 20px; /* mismo concepto */
   }
 }
 
