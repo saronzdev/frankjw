@@ -66,16 +66,7 @@
   min-width: 100%;
   position: relative;
   aspect-ratio: 16 / 9;
-  /* Opción 1: Fondo neutro muy sutil */
   /* background: #fefefe; */
-  
-  /* Opción 2: Gradiente casi imperceptible (descomenta para usar) */
-  /* background: linear-gradient(135deg, #fefefe 0%, #f9f9f9 100%); */
-  
-  /* Opción 3: Fondo ligeramente cálido pero muy sutil (descomenta para usar) */
-  /* background: linear-gradient(135deg, #fefefe 0%, #faf9f7 50%, #f8f6f3 100%); */
-  
-  /* Opción 4: Si quieres mantener un toque dorado pero muy sutil (descomenta para usar) */
   background: linear-gradient(135deg, #fefefe 0%, #fefcf8 50%, #fdf9f0 100%);
 }
 
@@ -100,12 +91,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12px 12px 0 12px; /* top right bottom left - eliminamos el bottom */
+  padding: 12px 12px 0 12px;
 }
 
 @media (min-width: 768px) {
   .overlay {
-    padding: 20px 20px 0 20px; /* mismo concepto */
+    padding: 20px 20px 0 20px;
   }
 }
 
