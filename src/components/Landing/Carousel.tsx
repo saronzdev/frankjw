@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'preact/hooks'
-import { handleReservation } from '@/shared/utils'
+// import { handleReservation } from '@/shared/utils'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import buy from '@/assets/buy.svg'
 import right from '@/assets/right.svg'
 import left from '@/assets/left.svg'
 import styles from '@/styles/Carousel.module.css'
+import { Link } from 'wouter'
 
 interface Props {
   title: string
@@ -50,16 +51,9 @@ export function Carousel({ title, items }: Props) {
                 <img src={p.pictures} alt={p.name} className={styles.image} loading="lazy" />
                 <div className={styles.overlay} />
                 <div className={styles.content}>
-                  <div>
-                    <h4>{p.name}</h4>
-                    <h4 className={styles.productPrice} style={{ color: '#ffdf20' }}>
-                      {p.price} USD
-                    </h4>
-                  </div>
-                  <button className={styles.button} onClick={() => handleReservation(p)}>
-                    Reservar
+                  <Link to={`/products#${p.productId}`} className={styles.button}>
                     <img src={buy} alt="Comprar Icono" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}

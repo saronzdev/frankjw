@@ -19,6 +19,23 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const [isDescriptionLong, setIsDescriptionLong] = useState(false)
   const descriptionRef = useRef<HTMLParagraphElement>(null)
+  const [hl, setHl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (id) {
+      const el = document.getElementById(id)
+      const header = document.getElementById('header')
+
+      if (el) {
+        const headerHeight = header?.offsetHeight || 0
+        const y = el.getBoundingClientRect().top + window.scrollY - headerHeight - 20
+
+        window.scrollTo({ top: y, behavior: 'instant' })
+        setHl(id)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const element = descriptionRef.current
@@ -51,7 +68,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
   const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
 
   return (
-    <div className={styles.card}>
+    <div className={hl === data.productId ? styles.cardHighlight : styles.card} id={data.productId}>
       <div className={styles.imageContainer}>
         <div className={styles.imageWrapper}>
           {isImageLoading && (

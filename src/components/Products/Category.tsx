@@ -1,5 +1,4 @@
 import { ProductCard } from './ProductCard'
-// import { capitalize } from '@/shared/utils'
 import { products } from '@/shared/signals'
 import styles from '@/styles/Category.module.css'
 

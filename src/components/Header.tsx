@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <>
-      <header className={styles.header}>
+      <header className={styles.header} id="header">
         <div className={styles.container}>
           <div className={styles.headerContent}>
             <button onClick={toggleSidebar} className={styles.menuButton} aria-label="Abrir menú">
