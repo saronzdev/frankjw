@@ -12,7 +12,7 @@ interface Props {
 
 export function ProductForm({ product, onSave, onCancel }: Props) {
   const newProduct = {
-    name: product?.name ?? '',
+    //name: product?.name ?? '',
     productId: product?.productId ?? '',
     description: product?.description ?? '',
     category: product?.category ?? '',
@@ -90,19 +90,6 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Nombre del producto *</label>
-              <input
-                type="text"
-                name="name"
-                value={productData.name}
-                onInput={handleInputChange}
-                required
-                className={styles.input}
-                placeholder="Ej: Anillo de compromiso"
-              />
-            </div>
-
             <div className={styles.fieldGroup}>
               <label className={styles.label}>ID del producto *</label>
               <input

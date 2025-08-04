@@ -1,6 +1,5 @@
 export type ProductIn = {
   productId: string
-  name: string
   description: string
   category: string
   price: number

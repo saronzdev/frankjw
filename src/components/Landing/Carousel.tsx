@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'preact/hooks'
-// import { handleReservation } from '@/shared/utils'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import buy from '@/assets/buy.svg'
@@ -48,7 +47,7 @@ export function Carousel({ title, items }: Props) {
           <div className={styles.track} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
             {products.map((p) => (
               <div key={p.id} className={styles.slide}>
-                <img src={p.pictures} alt={p.name} className={styles.image} loading="lazy" />
+                <img src={p.pictures} alt={p.productId} className={styles.image} loading="lazy" />
                 <div className={styles.overlay} />
                 <div className={styles.content}>
                   <Link to={`/products#${p.productId}`} className={styles.button}>

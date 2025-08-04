@@ -10,48 +10,36 @@ Proyecto web para la gestión y exhibición de productos de joyería, desarrolla
 - Panel de administración (Dashboard) para gestión de productos
 - Autenticación de usuario y roles (admin)
 - Carga y visualización de imágenes de productos
-- Compartir productos por WhatsApp y Web Share API
-- Diseño responsive y moderno con TailwindCSS
+- Compartir productos por WhatsApp
+- Diseño responsive y moderno con CSS modules
 - Integración con Supabase para almacenamiento y base de datos
-
-## Estructura del proyecto
-
-```
-app/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── shared/
-│   └── ...
-├── public/
-├── tsconfig.json
-├── vite.config.ts
-└── ...
-```
 
 ## Instalación
 
-1. Clona el repositorio:
-   ```sh
+ Clona el repositorio:
+  
+  ```sh
    git clone https://github.com/tuusuario/frank-jw-v2.git
    cd frank-jw-v2/app
-   ```
+  ```
 
-2. Instala las dependencias:
-   ```sh
+ Instala las dependencias:
+  
+  ```sh
    npm install
    # o
    pnpm install
-   ```
+  ```
 
-3. Crea un archivo `.env` con tus variables de entorno (ver `.env.example`).
+ Crea un archivo `.env` con tus variables de entorno (ver `.env.example`).
 
-4. Inicia el servidor de desarrollo:
-   ```sh
+ Inicia el servidor de desarrollo:
+   
+  ```sh
    npm run dev
    # o
    pnpm dev
-   ```
+  ```
 
 ## Scripts útiles
 
@@ -61,7 +49,7 @@ app/
 
 ## Licencia
 
-MIT
+GPL 3.0
 
 ---
 

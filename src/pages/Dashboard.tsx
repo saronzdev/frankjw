@@ -40,7 +40,7 @@ export function Dashboard() {
     setIsSearching(true)
     const searchTerm = term.toLowerCase().trim()
     const data = products.value.filter((product) => {
-      return product.name.toLowerCase().includes(searchTerm) || product.productId.toLowerCase().includes(searchTerm)
+      product.productId.toLowerCase().includes(searchTerm)
     })
     setFilteredProducts(data)
     setIsSearching(false)
@@ -104,7 +104,7 @@ export function Dashboard() {
               searchTerm={searchTerm}
               handlerSearch={handlerSearch}
               setSearchTerm={setSearchTerm}
-              placeholder="Bucar por ID o Nombre"
+              placeholder="Bucar por ID"
             />
           )}
         </div>

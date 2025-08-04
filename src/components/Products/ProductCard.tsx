@@ -60,7 +60,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
   }, [data.description, isDescriptionExpanded])
 
   const handleDelete = () => {
-    if (confirm(`¿Estás seguro de que quieres eliminar "${data.name}"?`)) {
+    if (confirm(`¿Estás seguro de que quieres eliminar este producto?`)) {
       onDelete?.(data.id)
     }
   }
@@ -79,7 +79,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
           <img
             className={styles.productImage}
             src={firstImage}
-            alt={data.name}
+            alt={data.productId}
             loading="lazy"
             onLoad={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
@@ -135,7 +135,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => onEdit?.(data)}
                 className={`${styles.button} ${styles.editButton}`}
-                aria-label={`Editar producto ${data.name}`}
+                aria-label={`Editar producto ${data.productId}`}
               >
                 <img className={styles.buttonIcon} src={edit} alt="Icono de Editar" />
                 Editar
@@ -143,7 +143,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={handleDelete}
                 className={`${styles.button} ${styles.deleteButton}`}
-                aria-label={`Eliminar producto ${data.name}`}
+                aria-label={`Eliminar producto ${data.productId}`}
               >
                 <img className={styles.buttonIcon} src={trash} alt="Icono de Borrar" />
                 Eliminar
@@ -159,7 +159,7 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => handleReservation(data)}
                 className={`${styles.button} ${styles.reserveButton}`}
-                aria-label={`Reservar ${data.name} por WhatsApp`}
+                aria-label={`Reservar ${data.productId} por WhatsApp`}
               >
                 <img className={`${styles.buttonIcon} ${styles.reserveIcon}`} src={buy} alt="Reservar" />
                 Reservar por WhatsApp
