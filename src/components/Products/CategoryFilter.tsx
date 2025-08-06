@@ -1,6 +1,6 @@
 import type { JSX } from 'preact'
 import down from '@/assets/down.svg'
-import { capitalize } from '@/shared/utils'
+import { normalize } from '@/shared/utils'
 import styles from '@/styles/CategoryFilter.module.css'
 
 interface Props {
@@ -23,7 +23,7 @@ export function CategoryFilter({ filterCategory, setFilterCategory, cats }: Prop
           </option>
           {cats.map((cat) => (
             <option key={cat} value={cat} className={styles.option}>
-              {capitalize(cat)}
+              {normalize(cat)}
             </option>
           ))}
         </select>

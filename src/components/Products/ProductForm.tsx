@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
-import { categories } from '@/shared/utils'
+import { categories, normalize } from '@/shared/utils'
 import styles from '@/styles/ProductForm.module.css'
 
 interface Props {
@@ -12,10 +12,9 @@ interface Props {
 
 export function ProductForm({ product, onSave, onCancel }: Props) {
   const newProduct = {
-    //name: product?.name ?? '',
     productId: product?.productId ?? '',
     description: product?.description ?? '',
-    category: product?.category ?? '',
+    category: product?.category ? normalize(product.category) : '',
     price: product?.price ?? '',
     weight: product?.weight ?? '',
     karats: product?.karats.join(' ') ?? '',
@@ -30,6 +29,8 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     if (product?.pictures) {
       const urls = product.pictures.filter((pic): pic is string => typeof pic === 'string')
       setImagesUrls(urls)
+    } else {
+      setImagesUrls([])
     }
   }, [])
 
@@ -59,8 +60,12 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     setImages((prev) => [...prev, ...files])
   }
 
-  const removeExistingImage = (index: number) => {
+  const removeNewImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const removeExistingImage = (index: number) => {
+    setImagesUrls((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: Event) => {
@@ -69,11 +74,11 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     const uploadResults = await Promise.all(uploadPromises ?? [])
     const errors = uploadResults.filter((result) => typeof result !== 'string')
     if (errors.length > 0) alert('Ha ocurrido un error al subir las imagenes')
-    const imagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
+    const newImagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
 
     const newProduct: ProductIn = {
       ...productData,
-      pictures: [...imagesUrls, ...(productData.pictures as string[])]
+      pictures: [...newImagesUrls, ...imagesUrls]
     }
     onSave(newProduct)
   }
@@ -210,6 +215,34 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 </div>
               )}
 
+              {/* Mostrar imágenes nuevas */}
+              {images.length > 0 && (
+                <div className={styles.imageGrid}>
+                  {images.map((image, index) => (
+                    <div key={`new-${index}`} className={styles.imageContainer}>
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`Nueva imagen ${index + 1}`}
+                        className={styles.existingImage}
+                        loading="lazy"
+                      />
+                      <div className={styles.imageOverlay}>
+                        <span className={styles.imageOverlayText}>Nueva imagen</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeNewImage(index)}
+                        className={styles.removeImageButton}
+                        aria-label="Eliminar imagen"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Mostrar imágenes existentes */}
               {imagesUrls.length > 0 && (
                 <div className={styles.imageGrid}>
                   {imagesUrls.map((imageUrl, index) => (
@@ -224,6 +257,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                         <span className={styles.imageOverlayText}>Imagen existente</span>
                       </div>
                       <button
+                        type="button"
                         onClick={() => removeExistingImage(index)}
                         className={styles.removeImageButton}
                         aria-label="Eliminar imagen"

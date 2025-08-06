@@ -84,7 +84,7 @@ export const api = axios.create({
   withCredentials: true
 })
 
-export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+export const normalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
 export const menuItems = [
   { label: 'Inicio', href: '/' },
