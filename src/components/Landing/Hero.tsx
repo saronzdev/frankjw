@@ -11,7 +11,7 @@ export function Hero() {
       <div className={styles.container}>
         <div className={styles.heroContent}>
           <div className={styles.logoContainer}>
-            <img src={logo} fetchPriority="high" className={styles.logo} alt="Frank Joyería Logo" />
+            <img src={logo} fetchPriority="high" className={styles.logo} alt="Frank Joyería Logo" width={300} height={200} />
           </div>
           <div className={styles.textContent}>
             <h2 className={styles.title}>Tu joyería de confianza</h2>

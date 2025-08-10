@@ -4,7 +4,6 @@ import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import edit from '@/assets/edit.svg'
 import trash from '@/assets/trash.svg'
-import buy from '@/assets/buy.svg'
 import styles from '@/styles/ProductCard.module.css'
 
 interface Props {
@@ -159,10 +158,9 @@ export function ProductCard({ data, editable = false, onDelete, onEdit }: Props)
               <button
                 onClick={() => handleReservation(data)}
                 className={`${styles.button} ${styles.reserveButton}`}
-                aria-label={`Reservar ${data.productId} por WhatsApp`}
+                aria-label={`Reservar ${data.productId}`}
               >
-                <img className={`${styles.buttonIcon} ${styles.reserveIcon}`} src={buy} alt="Reservar" />
-                Reservar por WhatsApp
+                Reservar
               </button>
             </>
           )}

@@ -1,4 +1,3 @@
-import { useEffect } from 'preact/hooks'
 import { Route, Switch } from 'wouter'
 import { HomePage } from './pages/HomePage'
 import { Products } from './pages/Products'
@@ -10,13 +9,8 @@ import { Login } from './pages/Login'
 import { Header } from './components/Header'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
-import { refreshProducts } from './shared/signals'
 
 export function App() {
-  useEffect(() => {
-    refreshProducts()
-  }, [])
-
   return (
     <>
       <SpeedInsights />

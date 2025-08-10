@@ -1,3 +1,4 @@
+import { Link } from 'wouter'
 import styles from '@/styles/NotFound.module.css'
 
 export function NotFound() {
@@ -16,22 +17,22 @@ export function NotFound() {
           </p>
         </div>
 
-        <a href="/" className={styles.homeButton} aria-label="Volver al inicio" title="Volver al inicio">
+        <Link to="/" className={styles.homeButton} aria-label="Volver al inicio" title="Volver al inicio">
           Volver al inicio
-        </a>
+        </Link>
 
         <div className={styles.footer}>
           <p className={styles.footerText}>¿Buscabas alguna de estas páginas?</p>
           <div className={styles.footerLinks}>
-            <a href="/about" className={styles.footerLink} aria-label="Ir a Nosotros" title="Nosotros">
+            <Link to="/about" className={styles.footerLink} aria-label="Ir a Nosotros" title="Nosotros">
               Nosotros
-            </a>
-            <a href="/products" className={styles.footerLink} aria-label="Ir a Productos" title="Productos">
+            </Link>
+            <Link to="/products" className={styles.footerLink} aria-label="Ir a Productos" title="Productos">
               Productos
-            </a>
-            <a href="/contact" className={styles.footerLink} aria-label="Ir a Contacto" title="Contacto">
+            </Link>
+            <Link to="/contact" className={styles.footerLink} aria-label="Ir a Contacto" title="Contacto">
               Contacto
-            </a>
+            </Link>
           </div>
         </div>
       </div>
