@@ -86,12 +86,6 @@
   object-position: center;
 }
 
-@media (min-width: 768px) {
-  .image {
-    object-fit: fill;
-  }
-}
-
 .overlay {
   position: absolute;
   bottom: 0;
