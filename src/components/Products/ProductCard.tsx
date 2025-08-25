@@ -44,6 +44,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
         <img
           className={styles.product}
           src={firstImage || noImage}
+          onClick={() => setIsOpen(true)}
           loading="lazy"
           onLoad={() => setIsLoading(false)}
           onError={() => setIsLoading(false)}
