@@ -31,17 +31,15 @@ export function Dashboard() {
 
   const handlerSearch = (term: string) => {
     setSearchTerm(term)
-    if (!term.trim()) {
+    const trimmed = term.trim().toLowerCase()
+    if (!trimmed) {
       setFilteredProducts(products.value)
       setIsSearching(false)
       return
     }
 
     setIsSearching(true)
-    const searchTerm = term.toLowerCase().trim()
-    const data = products.value.filter((product) => {
-      product.productId.toLowerCase().includes(searchTerm)
-    })
+    const data = products.value.filter((product) => product.productId.toLowerCase().includes(trimmed))
     setFilteredProducts(data)
     setIsSearching(false)
   }
@@ -104,7 +102,7 @@ export function Dashboard() {
               searchTerm={searchTerm}
               handlerSearch={handlerSearch}
               setSearchTerm={setSearchTerm}
-              placeholder="Bucar por ID"
+              placeholder="Buscar por ID"
             />
           )}
         </div>
@@ -116,7 +114,7 @@ export function Dashboard() {
           ) : filteredProducts.length === 0 ? (
             <NoProducts searchTerm={searchTerm} hasProducts={products.value.length > 0} />
           ) : (
-            <div className={styles.productsGrid}>
+            <div className={styles.grid}>
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}

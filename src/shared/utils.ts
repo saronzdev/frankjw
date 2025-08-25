@@ -53,15 +53,15 @@ export const highlights = [
 ]
 
 export const categories = [
-  'Anillo de hombre',
-  'Anillo de mujer',
-  'Anillo de compromiso mujer',
-  'Anillo de compromiso hombre',
+  'Anillos para hombre',
+  'Anillos para mujer',
+  'Anillos de compromiso para mujer',
+  'Anillo de compromiso para hombre',
   'Gargantillas',
-  'Aretes y argollas',
+  'Pendientes y argollas',
   'Cadenas',
   'Dijes',
-  'Manillas'
+  'Pulseras'
 ]
 
 export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
@@ -115,6 +115,17 @@ export const titles = {
 export const isValidEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return re.test(email)
+}
+
+export const MAX_RETRIES = 3
+export const INITIAL_BACKOFF_MS = 500
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export function shouldRetry(errorCode?: number) {
+  return errorCode === 1000 || errorCode === 1 || errorCode === 3001 || errorCode === 3002
 }
 
 export function getErrorMessage(code: number): string {
