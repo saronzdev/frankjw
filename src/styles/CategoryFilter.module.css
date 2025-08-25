@@ -21,7 +21,7 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: none;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
 }
 
@@ -55,13 +55,11 @@
   color: #6b7280;
 }
 
-/* Eliminar efectos decorativos */
 .hoverEffect { display: none; }
 
 @media (max-width: 640px) {
   .selectWrapper { max-width: 20rem; }
   .select {
     padding: 0.55rem 2rem 0.55rem 0.75rem;
-    font-size: 0.9rem;
   }
 }
