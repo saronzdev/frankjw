@@ -2,11 +2,20 @@
   margin: 0;
 }
 
+.section.selected {
+  scroll-margin-top: 80px;
+}
+
 .header {
   width: 100vw;
   padding: 1rem 0;
   margin: 0;
   margin-bottom: 0.5rem;
+}
+
+.section.selected .header {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .title {
@@ -18,11 +27,17 @@
   color: #111827;
 }
 
+.section.selected .title {
+  color: #1e293b;
+  font-weight: 600;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0px;
   padding: 0 2px;
+  margin-bottom: 0.5rem;
 }
 
 @media (min-width: 640px) {

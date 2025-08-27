@@ -19,9 +19,7 @@
   transition: transform 0.3s ease-out;
 }
 
-.sidebarOpen {
-  transform: translateX(0);
-}
+.sidebarOpen { transform: translateX(0); }
 
 .header {
   display: flex;
@@ -46,18 +44,11 @@
   transition: background-color 0.2s ease;
 }
 
-.closeButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+.closeButton:hover { background: rgba(255, 255, 255, 0.2); }
 
-.closeIcon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
+.closeIcon { width: 1.5rem; height: 1.5rem; }
 
-.nav {
-  padding: 1.5rem;
-}
+.nav { padding: 1.5rem; }
 
 .navList {
   list-style: none;
@@ -68,9 +59,7 @@
   gap: 0.75rem;
 }
 
-.navItem {
-  margin: 0;
-}
+.navItem { margin: 0; }
 
 .navLink {
   display: flex;
@@ -88,21 +77,70 @@
   color: #d97706;
 }
 
-.navIcon {
-  width: 1.25rem;
-  height: 1.25rem;
+.navIcon { width: 1.25rem; height: 1.25rem; }
+
+.navIconHover { transition: color 0.2s ease; }
+
+.navLink:hover .navIconHover { color: #d97706; }
+
+.navLabel { font-weight: 500; }
+
+/* Dropdown de productos en mobile */
+.productsDropdown {
+  position: relative;
+  width: 100%;
 }
 
-.navIconHover {
-  transition: color 0.2s ease;
+.productsTrigger {
+  width: 100%;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.navLink:hover .navIconHover {
-  color: #d97706;
+.dropdownIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  transition: transform 0.2s ease;
+  margin-left: auto;
 }
 
-.navLabel {
-  font-weight: 500;
+.dropdownIcon.rotated { transform: rotate(180deg); }
+
+.dropdown {
+  margin-top: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.dropdownList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdownItem {
+  margin: 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dropdownItem:last-child { border-bottom: none; }
+
+.dropdownLink {
+  display: block;
+  padding: 0.75rem 1rem 0.75rem 3.25rem;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease;
+}
+
+.dropdownLink:hover {
+  background-color: #e5e7eb;
+  color: #111827;
 }
 
 .footer {
@@ -120,14 +158,8 @@
   text-align: center;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 @media (min-width: 1024px) {
-
-  .overlay,
-  .sidebar {
-    display: none;
-  }
+  .overlay, .sidebar { display: none; }
 }

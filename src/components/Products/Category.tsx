@@ -1,11 +1,18 @@
+import { forwardRef } from 'preact/compat'
 import { ProductCard } from './ProductCard'
 import { products } from '@/shared/signals'
 import styles from '@/styles/Category.module.css'
 
-export function Category({ category }: { category: string }) {
+interface Props {
+  category: string
+  isSelected?: boolean
+}
+
+export const Category = forwardRef<HTMLElement, Props>(({ category, isSelected = false }, ref) => {
   const matchProducts = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
+
   return (
-    <section className={styles.section}>
+    <section ref={ref} className={`${styles.section} ${isSelected ? styles.selected : ''}`}>
       <div className={styles.header}>
         <h1 className={styles.title}>{category}</h1>
       </div>
@@ -16,4 +23,4 @@ export function Category({ category }: { category: string }) {
       </div>
     </section>
   )
-}
+})
