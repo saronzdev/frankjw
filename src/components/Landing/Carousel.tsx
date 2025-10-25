@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
-import buy from '@/assets/buy.svg'
+import shop from '@/assets/shop.svg'
 import right from '@/assets/right.svg'
 import left from '@/assets/left.svg'
 import styles from '@/styles/Carousel.module.css'
@@ -50,8 +50,9 @@ export function Carousel({ title, items }: Props) {
                 <img src={p.pictures} alt={p.productId} className={styles.image} loading="lazy" />
                 <div className={styles.overlay} />
                 <div className={styles.content}>
-                  <Link to={`/products#${p.productId}`} className={styles.button}>
-                    <img src={buy} alt="Comprar Icono" />
+                  <Link to={`/products/${p.category?.toLowerCase().replace(/\s+/g, '-')}`} className={styles.button}>
+                    <img src={shop} alt="Ver" />
+                    Ver
                   </Link>
                 </div>
               </div>
