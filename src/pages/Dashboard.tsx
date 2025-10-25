@@ -9,7 +9,6 @@ import { LoadingCard } from '@/components/Products/LoadigCard'
 import { ErrorCard } from '@/components/Products/ErrorCard'
 import { NoProducts } from '@/components/Products/NoProducts'
 import { Toaster, toast } from 'sonner'
-import { useLocation } from 'wouter'
 import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
 import styles from '@/styles/Dashboard.module.css'
 
@@ -19,11 +18,6 @@ export function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState(products.value)
   const [isSearching, setIsSearching] = useState(false)
-  const [_, setLocation] = useLocation()
-
-  useEffect(() => {
-    if (isAdmin.value === false) setLocation('/login')
-  }, [isAdmin.value])
 
   useEffect(() => {
     setFilteredProducts(products.value)
