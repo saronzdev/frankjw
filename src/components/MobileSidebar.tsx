@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
-import { menuItemsMobile, normalize } from '@/shared/utils'
+import { menuItemsMobile, normalize, slugify } from '@/shared/utils'
 import { cats } from '@/shared/signals'
 import X from '@/assets/close.svg'
 import down from '@/assets/down.svg'
@@ -72,7 +72,7 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: Props) {
                             {cats.value.map((category) => (
                               <li key={category} className={styles.dropdownItem}>
                                 <Link
-                                  to={`/products?category=${encodeURIComponent(category)}`}
+                                  to={`/products/${slugify(category)}`}
                                   className={styles.dropdownLink}
                                   onClick={() => {
                                     setIsDropdownOpen(false)

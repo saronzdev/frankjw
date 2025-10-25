@@ -3,7 +3,7 @@ import { MobileSidebar } from './MobileSidebar'
 import { Link, useLocation } from 'wouter'
 import Menu from '@/assets/menu.svg'
 import down from '@/assets/down.svg'
-import { menuItems, titles, normalize } from '@/shared/utils'
+import { menuItems, titles, normalize, slugify } from '@/shared/utils'
 import { isAdmin, cats } from '@/shared/signals'
 import styles from '@/styles/Header.module.css'
 
@@ -59,7 +59,7 @@ export function Header() {
                             {cats.value.map((category) => (
                               <li key={category} className={styles.dropdownItem}>
                                 <Link
-                                  to={`/products?category=${encodeURIComponent(category)}`}
+                                  to={`/products/${slugify(category)}`}
                                   className={styles.dropdownLink}
                                   onClick={() => setIsDropdownOpen(false)}
                                 >

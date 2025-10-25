@@ -142,6 +142,26 @@ export const api = axios.create({
 
 export const normalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
+export const slugify = (string: string): string => {
+  return string
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '')
+}
+
+export const unslugify = (slug: string): string => {
+  // Normalizar el slug de entrada
+  const normalizedSlug = slug.toLowerCase().trim()
+
+  const category = CATEGORIES.find((cat) => {
+    const catSlug = slugify(cat.title)
+    return catSlug === normalizedSlug
+  })
+
+  return category?.title || ''
+}
+
 export const menuItems = [
   { label: 'Inicio', href: '/' },
   { label: 'Productos', href: '/products' },

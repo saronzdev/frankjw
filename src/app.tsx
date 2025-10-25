@@ -19,7 +19,7 @@ export function App() {
       <Header />
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route path="/products" component={Products} />
+        <Route path="/products/:category?" component={Products} />
         <Route path="/dashboard" component={() => <ProtectedRoute component={Dashboard} />} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
