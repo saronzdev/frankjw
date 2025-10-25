@@ -2,20 +2,11 @@
   margin: 0;
 }
 
-.section.selected {
-  scroll-margin-top: 80px;
-}
-
 .header {
   width: 100vw;
   padding: 1rem 0;
   margin: 0;
   margin-bottom: 0.5rem;
-}
-
-.section.selected .header {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-bottom: 2px solid #e2e8f0;
 }
 
 .title {
@@ -25,11 +16,6 @@
   font-weight: 500;
   margin: 0;
   color: #111827;
-}
-
-.section.selected .title {
-  color: #1e293b;
-  font-weight: 600;
 }
 
 .grid {

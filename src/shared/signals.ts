@@ -53,7 +53,7 @@ export const cats = computed(() => [...new Set(products.value.map((p) => p.categ
 export const mostRecents = computed(() =>
   [...products.value]
     .sort((a, b) => {
-      const dateComparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      const dateComparison = b.createdAt - a.createdAt
       if (dateComparison !== 0) return dateComparison
       return b.id - a.id
     })
@@ -64,7 +64,7 @@ export const bestSellers = computed(() =>
   [...products.value]
     .sort((a, b) => {
       if (b.sales !== a.sales) return b.sales - a.sales
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      return b.createdAt - a.createdAt
     })
     .slice(0, 4)
 )

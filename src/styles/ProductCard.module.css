@@ -4,21 +4,22 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-  border: #aaa solid 1px;
-  margin: -1px -1px 0 0;
+  border: 1px solid #e0e0e0;
+  margin: 0;
   padding: 0;
-  border-radius: 2px;
-  transition: all 0.1s ease;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .card:hover:not(.popup-open) {
-  border: black solid 3px;
-  margin: 0;
+  border: 1px solid #d4af37;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+  transform: translateY(-4px);
 }
 
 .picture {
-  position: relative;;
-  border-bottom: #d8d8d8 solid 1px;
+  position: relative;
   aspect-ratio: 1;
   width: 100%;
   cursor: pointer;
@@ -39,22 +40,14 @@
 }
 
 .details {
-  position: absolute;
-  z-index: 10;
   height: 1.5rem;
   width: 1.5rem;
-  bottom: 1rem;
-  right: 0.5rem;
   cursor: pointer;
 }
 
 .shop {
-  position: absolute;
-  z-index: 10;
   height: 1.5rem;
   width: 1.5rem;
-  bottom: 1rem;
-  right: 2.5rem;
   cursor: pointer;
 }
 
@@ -101,10 +94,27 @@
   margin: 10px;
 }
 
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px 10px 10px;
+  gap: 10px;
+}
+
 .price {
   font-size: 1.3rem;
-  text-align: center;
-  margin: 0 0 10px 0;
+  font-weight: 500;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
 }
 
 .editActions {

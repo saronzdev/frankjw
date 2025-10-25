@@ -13,6 +13,15 @@ import fb from '@/assets/fb.svg'
 import ws from '@/assets/ws.svg'
 import ig from '@/assets/ig.svg'
 import mail from '@/assets/mail.svg'
+import dijes from '@/assets/dijes.avif'
+import pulseras from '@/assets/pulseras.avif'
+import cadenas from '@/assets/cadenas.avif'
+import pendientes from '@/assets/pendientes.avif'
+import gargantillas from '@/assets/gargantillas.avif'
+import anillosm from '@/assets/anillosm.avif'
+import anillosh from '@/assets/anillosh.avif'
+import anilloscm from '@/assets/anilloscm.avif'
+import anillosch from '@/assets/anillosch.avif'
 
 export const socialLinks = [
   {
@@ -52,17 +61,64 @@ export const highlights = [
   }
 ]
 
-export const categories = [
-  'Anillos para hombre',
-  'Anillos para mujer',
-  'Anillos de compromiso para mujer',
-  'Anillo de compromiso para hombre',
-  'Gargantillas',
-  'Pendientes y argollas',
-  'Cadenas',
-  'Dijes',
-  'Pulseras'
+export const CATEGORIES = [
+  {
+    title: 'Anillos para hombre',
+    description:
+      'Diseñados para reflejar fuerza y estilo, nuestros anillos para hombre combinan elegancia contemporánea con detalles atemporales. Piezas que transmiten carácter y distinción en cada ocasión.',
+    img: anillosh
+  },
+  {
+    title: 'Anillos para mujer',
+    description:
+      'Un símbolo de feminidad y sofisticación. Los anillos para mujer destacan por su delicadeza y brillo, creados para resaltar la belleza única de quien los lleva.',
+    img: anillosm
+  },
+  {
+    title: 'Anillos de compromiso para hombre',
+    description:
+      'El compromiso también tiene su expresión masculina. Nuestros anillos de compromiso para hombre representan firmeza, lealtad y un estilo que perdura en el tiempo.',
+    img: anillosch
+  },
+  {
+    title: 'Anillos de compromiso para mujer',
+    description:
+      'La promesa de un amor eterno merece una joya inolvidable. Cada anillo de compromiso para mujer captura la esencia de la unión, con diseños que simbolizan pureza y elegancia.',
+    img: anilloscm
+  },
+  {
+    title: 'Gargantillas',
+    description:
+      'Piezas que enmarcan el cuello con sutileza y distinción. Las gargantillas realzan la elegancia natural y son el complemento perfecto para cualquier look, desde lo cotidiano hasta lo más especial.',
+    img: gargantillas
+  },
+  {
+    title: 'Pendientes y argollas',
+    description:
+      'Versátiles y atemporales, nuestros pendientes y argollas son el detalle que transforma cualquier estilo. Diseños que van desde la sencillez delicada hasta el brillo deslumbrante.',
+    img: pendientes
+  },
+  {
+    title: 'Cadenas',
+    description:
+      'Un clásico imprescindible. Las cadenas son el punto de partida para crear combinaciones únicas o lucir solas con un encanto propio. Elegancia pura en cada eslabón.',
+    img: cadenas
+  },
+  {
+    title: 'Dijes',
+    description:
+      'Pequeños símbolos con gran significado. Los dijes permiten personalizar tu estilo y llevar contigo recuerdos, creencias o emociones en una joya única.',
+    img: dijes
+  },
+  {
+    title: 'Pulseras y tobilleras',
+    description:
+      'Diseños que rodean la muñeca con estilo y distinción. Nuestras pulseras y tobilleras unen delicadeza, brillo y personalidad, convirtiéndose en el detalle ideal para expresar quién eres.',
+    img: pulseras
+  }
 ]
+
+export const categories = CATEGORIES.map((cat) => cat.title)
 
 export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
   await increaseSales(product.id)

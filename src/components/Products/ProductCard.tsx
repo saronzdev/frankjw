@@ -49,12 +49,6 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
           onLoad={() => setIsLoading(false)}
           onError={() => setIsLoading(false)}
         />
-        {!editable && (
-          <>
-            <img className={styles.shop} src={shop} onClick={() => handleReservation(data)} />
-            <img className={styles.details} src={info} onClick={() => setIsOpen(true)} />
-          </>
-        )}
         {editable && (
           <div className={styles.editActions}>
             <button className={styles.iconButton} aria-label={`Editar ${data.productId}`} onClick={() => onEdit?.(data)}>
@@ -69,7 +63,15 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
       </div>
       <div>
         <p className={styles.name}>{name}</p>
+      </div>
+      <div className={styles.footer}>
         <p className={styles.price}>${data.price}</p>
+        {!editable && (
+          <div className={styles.actions}>
+            <img className={styles.shop} src={shop} onClick={() => handleReservation(data)} title="Reservar" />
+            <img className={styles.details} src={info} onClick={() => setIsOpen(true)} title="Ver detalles" />
+          </div>
+        )}
       </div>
       {isOpen && <ProductPopup product={data} image={firstImage} onClose={close} />}
     </div>
