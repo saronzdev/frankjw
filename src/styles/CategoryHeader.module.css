@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  height: 70vh;
+  height: 50vh;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -16,6 +16,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   z-index: 1;
   transition: transform 0.9s cubic-bezier(0.23, 1, 0.320, 1);
   filter: brightness(0.85) saturate(1.1);
@@ -145,7 +146,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .container {
-    height: 55vh;
+    height: 45vh;
     padding: 0;
   }
 
@@ -173,7 +174,7 @@
 
 @media (max-width: 480px) {
   .container {
-    height: 45vh;
+    height: 30vh;
   }
 
   .textOverlay {

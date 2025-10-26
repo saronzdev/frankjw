@@ -39,16 +39,19 @@
   right: 0.5rem;
 }
 
-.details {
-  height: 1.5rem;
-  width: 1.5rem;
+.details,
+.shop {
+  width: clamp(1rem, 3.2vw, 1.35rem);
+  height: clamp(1rem, 3.2vw, 1.35rem);
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.shop {
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;
+@media (hover: hover) {
+  .details:hover,
+  .shop:hover {
+    transform: scale(1.06);
+  }
 }
 
 .product {
@@ -87,14 +90,33 @@
 /* TEXTS */
 
 .name {
-  font-size: 1.2rem;
+  /* Responsive font size and clamping */
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  line-height: 1.35;
   font-weight: 300;
   text-align: center;
   color: #464646;
-  margin: 10px;
+  margin: 8px 10px;
+  letter-spacing: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 2; /* standard property */
+  -webkit-line-clamp: 2; /* show up to 2 lines on most screens */
+  -webkit-box-orient: vertical;
+}
+
+@media (max-width: 420px) {
+  .name {
+    /* On very small screens, keep it to one line to avoid overflow */
+    line-clamp: 1; /* standard property */
+    -webkit-line-clamp: 1;
+  }
 }
 
 .footer {
+  position: relative;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -104,10 +126,11 @@
 }
 
 .price {
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: clamp(1rem, 2.4vw, 1.25rem);
+  font-weight: 600;
   margin: 0;
   flex-shrink: 0;
+  letter-spacing: 0.2px;
 }
 
 .actions {
@@ -131,8 +154,8 @@
   background: rgba(255,255,255,0.9);
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: clamp(1.25rem, 3vw, 1.5rem);
+  height: clamp(1.25rem, 3vw, 1.5rem);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -145,8 +168,8 @@
 }
 
 .iconButton img {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 100%;
+  height: 100%;
 }
 
 .productId {
@@ -154,6 +177,16 @@
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   padding: 2px 6px;
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.6vw, 0.85rem);
   color: #555;
+}
+
+@media (max-width: 380px) {
+  .footer {
+    padding: 0 8px 8px 8px;
+    gap: 6px;
+  }
+  .actions {
+    gap: 0.35rem;
+  }
 }

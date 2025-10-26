@@ -3,6 +3,7 @@ import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
 import { categories, normalize } from '@/shared/utils'
 import styles from '@/styles/ProductForm.module.css'
+import { toast } from 'sonner'
 
 interface Props {
   product?: ProductType
@@ -53,11 +54,26 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
       [name]: checked
     }))
   }
-
   const handleImageChange = (e: Event) => {
     const target = e.target as HTMLInputElement
-    const files = target.files as unknown as File[]
-    setImages((prev) => [...prev, ...files])
+    const files = target.files ? Array.from(target.files) : []
+
+    const overs = files.filter((f) => f.size > 100 * 1024)
+    if (overs.length) {
+      toast.error(`Estas imágenes superan 100KB: ${overs.map((f) => f.name).join(', ')}`)
+    }
+
+    const currentTotal = images.length + imagesUrls.length
+    const remaining = Math.max(0, 2 - currentTotal)
+    const acceptable = files.filter((f) => f.size <= 100 * 1024)
+    const toAdd = acceptable.slice(0, remaining)
+
+    if (acceptable.length > remaining) {
+      toast.error(`Solo puedes subir ${remaining} imagen(es) más`)
+    }
+
+    if (toAdd.length) setImages((prev) => [...prev, ...toAdd])
+    target.value = ''
   }
 
   const removeNewImage = (index: number) => {
@@ -172,7 +188,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
               </div>
 
               <div className={styles.fieldGroup}>
-                <label className={styles.label}>Quilates *</label>
+                <label className={styles.label}>Kilates *</label>
                 <input
                   name="karats"
                   type="text"
@@ -211,7 +227,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                     onChange={handleImageChange}
                     className={styles.fileInput}
                   />
-                  <p className={styles.helpText}>Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB por imagen</p>
+                  <p className={styles.helpText}>Formatos: JPG, PNG, GIF. Tamaño máximo: 100KB por imagen</p>
                 </div>
               )}
 

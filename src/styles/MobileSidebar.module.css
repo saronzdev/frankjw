@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -17,6 +19,9 @@
   z-index: 50;
   transform: translateX(-100%);
   transition: transform 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .sidebarOpen { transform: translateX(0); }
@@ -25,14 +30,32 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to right, #eab308, #d97706);
+  background: linear-gradient(to right, #000000, #111827, #000000);
   color: white;
-  padding: 1.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(202, 138, 4, 0.2);
+  backdrop-filter: blur(4px);
 }
 
 .headerTitle {
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #fef3c7 30%, #fbbf24 50%, #fef3c7 70%, #ffffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background-size: 200% 200%;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .closeButton {
@@ -41,14 +64,34 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
 }
 
-.closeButton:hover { background: rgba(255, 255, 255, 0.2); }
+.closeButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(202, 138, 4, 0.3), transparent);
+  transition: left 0.6s ease;
+}
 
-.closeIcon { width: 1.5rem; height: 1.5rem; }
+.closeButton:hover::before { left: 100%; }
+.closeButton:hover { transform: scale(1.05); background: rgba(255,255,255,0.08); }
 
-.nav { padding: 1.5rem; }
+.closeIcon { width: 1.5rem; height: 1.5rem; filter: brightness(0) invert(1); }
+
+.nav {
+  padding: 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0; /* allow child scroll in flex container */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .navList {
   list-style: none;
@@ -113,7 +156,9 @@
   background: #f8f9fa;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  overflow: hidden;
+  max-height: 55vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dropdownList {
@@ -144,10 +189,6 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 1.5rem;
   border-top: 1px solid #e5e7eb;
 }

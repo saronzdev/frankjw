@@ -9,6 +9,7 @@ import info from '@/assets/info.svg'
 import editIcon from '@/assets/edit.svg'
 import trashIcon from '@/assets/trash.svg'
 import styles from '@/styles/ProductCard.module.css'
+import { normalize } from '@/shared/utils'
 
 interface Props {
   data: ProductType
@@ -24,7 +25,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
   const close = () => setIsOpen(false)
 
   const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
-  const name = data.description.split(',')[0]
+  const name = normalize(data.description.split(',')[0])
 
   const handleDelete = () => {
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {

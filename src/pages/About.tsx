@@ -105,7 +105,7 @@ export function About() {
             <div className={styles.serviceCard}>
               <h3 className={styles.serviceTitle}>Comercialización</h3>
               <p className={styles.serviceDescription}>
-                Especialistas en la venta de joyas de oro de diversos quilates y diseños, desde piezas clásicas hasta
+                Especialistas en la venta de joyas de oro de diversos kilates y diseños, desde piezas clásicas hasta
                 creaciones contemporáneas.
               </p>
               <ul className={styles.serviceList}>

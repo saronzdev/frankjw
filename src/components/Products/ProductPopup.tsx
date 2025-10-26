@@ -52,7 +52,7 @@ export function ProductPopup({ product, image, onClose }: Props) {
           )}
           {product.karats && (
             <div>
-              <span>Quilates</span>
+              <span>Kilates</span>
               <strong>{product.karats.join(' ')} K</strong>
             </div>
           )}
