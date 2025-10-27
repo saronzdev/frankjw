@@ -34,7 +34,7 @@ Proyecto web para la gestión y exhibición de productos de joyería, desarrolla
  Crea un archivo `.env` con tus variables de entorno (ver `.env.example`).
 
  Inicia el servidor de desarrollo:
-   
+
   ```sh
    npm run dev
    # o

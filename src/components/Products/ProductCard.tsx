@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks'
+import { createPortal } from 'preact/compat'
 import { ProductPopup } from './ProductPopup'
 import type { ProductType } from '@/types'
 import { handleReservation } from '@/shared/utils'
@@ -74,7 +75,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
           </div>
         )}
       </div>
-      {isOpen && <ProductPopup product={data} image={firstImage} onClose={close} />}
+      {isOpen && createPortal(<ProductPopup product={data} image={firstImage} onClose={close} />, document.body)}
     </div>
   )
 }
