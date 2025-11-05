@@ -1,15 +1,22 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import type { ProductType } from '@/types'
 import styles from '@/styles/ProductPopup.module.css'
 import noImage from '@/assets/no-image.svg'
+import leftArrow from '@/assets/left.svg'
+import rightArrow from '@/assets/right.svg'
 
 type Props = {
   product: ProductType
-  image: string
   onClose: () => void
+  allProducts?: ProductType[]
+  currentIndex?: number
+  onNavigate?: (index: number) => void
 }
 
-export function ProductPopup({ product, image, onClose }: Props) {
+export function ProductPopup({ product, onClose, allProducts = [], currentIndex = 0, onNavigate }: Props) {
+  const images = product.pictures && product.pictures.length > 0 ? product.pictures : [noImage]
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
   const handleOverlayClick = (e: MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose()
@@ -19,6 +26,34 @@ export function ProductPopup({ product, image, onClose }: Props) {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       onClose()
+    } else if (e.key === 'ArrowLeft') {
+      prevImage()
+    } else if (e.key === 'ArrowRight') {
+      nextImage()
+    }
+  }
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+  }
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+  }
+
+  const prevProduct = () => {
+    if (onNavigate && allProducts.length > 0) {
+      const newIndex = currentIndex === 0 ? allProducts.length - 1 : currentIndex - 1
+      onNavigate(newIndex)
+      setCurrentImageIndex(0)
+    }
+  }
+
+  const nextProduct = () => {
+    if (onNavigate && allProducts.length > 0) {
+      const newIndex = currentIndex === allProducts.length - 1 ? 0 : currentIndex + 1
+      onNavigate(newIndex)
+      setCurrentImageIndex(0)
     }
   }
 
@@ -27,7 +62,7 @@ export function ProductPopup({ product, image, onClose }: Props) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [currentImageIndex])
 
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
@@ -36,7 +71,31 @@ export function ProductPopup({ product, image, onClose }: Props) {
           ✕
         </button>
         <h2 className={styles.title}>Detalles del producto</h2>
-        <img className={styles.image} src={image || noImage} alt={product.description} />
+
+        <div className={styles.imageContainer}>
+          {images.length > 1 && (
+            <button onClick={prevImage} className={styles.imageNavLeft} aria-label="Imagen anterior">
+              <img src={leftArrow} alt="Anterior" />
+            </button>
+          )}
+          <img
+            className={styles.image}
+            src={images[currentImageIndex] || noImage}
+            alt={`${product.description} - imagen ${currentImageIndex + 1}`}
+          />
+          {images.length > 1 && (
+            <button onClick={nextImage} className={styles.imageNavRight} aria-label="Siguiente imagen">
+              <img src={rightArrow} alt="Siguiente" />
+            </button>
+          )}
+        </div>
+
+        {images.length > 1 && (
+          <div className={styles.imageIndicator}>
+            {currentImageIndex + 1} / {images.length}
+          </div>
+        )}
+
         <p className={styles.description}>{product.description}</p>
 
         <div className={styles.info}>
@@ -59,6 +118,22 @@ export function ProductPopup({ product, image, onClose }: Props) {
         </div>
 
         <button className={styles.reserve}>Reservar</button>
+
+        {allProducts.length > 1 && onNavigate && (
+          <div className={styles.productNav}>
+            <button onClick={prevProduct} className={styles.productNavButton} aria-label="Producto anterior">
+              <img src={leftArrow} alt="Anterior" />
+              <span>Anterior</span>
+            </button>
+            <span className={styles.productCounter}>
+              {currentIndex + 1} / {allProducts.length}
+            </span>
+            <button onClick={nextProduct} className={styles.productNavButton} aria-label="Siguiente producto">
+              <span>Siguiente</span>
+              <img src={rightArrow} alt="Siguiente" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

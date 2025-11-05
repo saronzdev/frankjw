@@ -30,8 +30,8 @@ export function Category({ category }: Props) {
     <section className={styles.section}>
       <CategoryHeader title={categoryData.title} description={categoryData.description} image={categoryData.img} />
       <div className={styles.grid}>
-        {matchProducts.map((p) => (
-          <ProductCard key={p.id} data={p} />
+        {matchProducts.map((p, index) => (
+          <ProductCard key={p.id} data={p} allProducts={matchProducts} productIndex={index} />
         ))}
       </div>
     </section>

@@ -17,13 +17,22 @@ interface Props {
   editable?: boolean
   onEdit?: (product: ProductType) => void
   onDelete?: (id: number) => void
+  allProducts?: ProductType[]
+  productIndex?: number
 }
 
-export function ProductCard({ data, editable = false, onEdit, onDelete }: Props) {
+export function ProductCard({ data, editable = false, onEdit, onDelete, allProducts = [], productIndex = 0 }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
+  const [currentProductIndex, setCurrentProductIndex] = useState(productIndex)
 
   const close = () => setIsOpen(false)
+
+  const handleNavigate = (newIndex: number) => {
+    setCurrentProductIndex(newIndex)
+  }
+
+  const currentProduct = allProducts.length > 0 ? allProducts[currentProductIndex] : data
 
   const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
   const name = normalize(data.description.split(',')[0])
@@ -75,7 +84,17 @@ export function ProductCard({ data, editable = false, onEdit, onDelete }: Props)
           </div>
         )}
       </div>
-      {isOpen && createPortal(<ProductPopup product={data} image={firstImage} onClose={close} />, document.body)}
+      {isOpen &&
+        createPortal(
+          <ProductPopup
+            product={currentProduct}
+            onClose={close}
+            allProducts={allProducts}
+            currentIndex={currentProductIndex}
+            onNavigate={handleNavigate}
+          />,
+          document.body
+        )}
     </div>
   )
 }
