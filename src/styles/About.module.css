@@ -1,0 +1,277 @@
+.container {
+  min-height: 100vh;
+  background: white;
+}
+
+.hero {
+  padding: 5rem 1rem;
+}
+
+.heroContent {
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 3.75rem;
+  }
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  color: #4b5563;
+  font-weight: 300;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .heroDescription {
+    font-size: 1.5rem;
+  }
+}
+
+.content {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem 5rem;
+}
+
+.section {
+  margin-bottom: 5rem;
+}
+
+.companySection {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .companySection {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.companyTitle {
+  font-size: 1.875rem;
+  font-weight: 300;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.companyText {
+  font-size: 1.125rem;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.companyText:last-child {
+  margin-bottom: 0;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.companyImage {
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.875rem;
+  font-weight: 300;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.sectionDescription {
+  font-size: 1.125rem;
+  color: #4b5563;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.productsGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .productsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.productCard {
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.productCard:hover {
+  background: #f9fafb;
+}
+
+.productIcon {
+  width: 4rem;
+  height: 4rem;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.productIconImage {
+  width: 3rem;
+  height: 3rem;
+}
+
+.productTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.productDescription {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.servicesGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.serviceCard {
+  background: #f9fafb;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+
+.serviceTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.serviceDescription {
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.serviceList {
+  color: #4b5563;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.serviceList li {
+  margin-bottom: 0.5rem;
+}
+
+.serviceList li:last-child {
+  margin-bottom: 0;
+}
+
+.valuesGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .valuesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.valueCard {
+  text-align: center;
+}
+
+.valueIcon {
+  width: 5rem;
+  height: 5rem;
+  background: #111827;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.valueIconImage {
+  width: 3rem;
+  height: 3rem;
+}
+
+.valueTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.valueDescription {
+  color: #4b5563;
+}
+
+.qualitySection {
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 3rem;
+  text-align: center;
+}
+
+.qualityTitle {
+  font-size: 1.875rem;
+  font-weight: 300;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.qualityDescription {
+  font-size: 1.125rem;
+  color: #374151;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}

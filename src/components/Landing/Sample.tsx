@@ -1,20 +1,17 @@
-interface SampleProps {
+import styles from '@/styles/Sample.module.css'
+
+interface Props {
   text: string
   src: string
 }
 
-export function Sample({ text, src }: SampleProps) {
+export function Sample({ text, src }: Props) {
   return (
-    <div className="group bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-      <div className="overflow-hidden rounded-xl mb-4">
-        <img
-          src={src}
-          alt={`Producto ${text}`}
-          className="w-full h-60 object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy"
-        />
+    <main className={styles.main}>
+      <div className={styles.imgctn}>
+        <img src={src} alt={`Producto ${text}`} className={styles.img} loading="lazy" />
       </div>
-      <h4 className="text-center text-lg font-medium text-gray-800 group-hover:text-yellow-600 transition-colors">{text}</h4>
-    </div>
+      <h4 className={styles.h4}>{text}</h4>
+    </main>
   )
 }

@@ -1,6 +1,5 @@
 export type ProductIn = {
   productId: string
-  name: string
   description: string
   category: string
   price: number
@@ -13,7 +12,7 @@ export type ProductIn = {
 
 type Product = {
   id: number
-  createdAt: string
+  createdAt: number
 }
 
 export type ProductType = Product & Omit<ProductIn, 'karats'> & { karats: string[] }

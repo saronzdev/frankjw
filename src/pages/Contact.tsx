@@ -1,31 +1,32 @@
-import { ContactMe } from '@/components/Landing/ContactMe'
+import { Social } from '@/components/Landing/Social'
+import styles from '@/styles/Contact.module.css'
 
 export function Contact() {
   return (
     <>
-      <div class="min-h-screen bg-white">
-        <section class="py-20 px-4">
-          <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-5xl md:text-6xl font-light tracking-tight text-gray-900 mb-6">Contáctanos</h1>
-            <p class="text-xl md:text-2xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
+      <div className={styles.container}>
+        <section className={styles.hero}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>Contáctanos</h1>
+            <p className={styles.heroDescription}>
               Estamos aquí para ayudarte a encontrar la joya perfecta o responder cualquier consulta que tengas.
             </p>
           </div>
         </section>
 
-        <div class="mb-8 flex flex-col justify-center items-center space-y-8">
-          <div>
-            <h2 class="text-2xl font-light text-center text-black mb-6">Información de contacto</h2>
-            <div class="space-y-6">
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">📞</span>
+        <div className={styles.contactSection}>
+          <div className={styles.contactInfo}>
+            <h2 className={styles.contactTitle}>Información de contacto</h2>
+            <div className={styles.contactList}>
+              <div className={styles.contactItem}>
+                <div className={styles.contactIcon}>
+                  <span>📞</span>
                 </div>
-                <div>
-                  <h3 class="font-medium text-gray-900 mb-1">Teléfono</h3>
+                <div className={styles.contactDetails}>
+                  <h3>Teléfono</h3>
                   <a
                     href="tel:+5353444690"
-                    class="text-gray-600 hover:text-gray-900 transition-colors"
+                    className={styles.contactLink}
                     aria-label="Llamar al teléfono +5353444690"
                     title="Llamar al teléfono"
                   >
@@ -34,15 +35,15 @@ export function Contact() {
                 </div>
               </div>
 
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">✉️</span>
+              <div className={styles.contactItem}>
+                <div className={styles.contactIcon}>
+                  <span>✉️</span>
                 </div>
-                <div>
-                  <h3 class="font-medium text-gray-900 mb-1">Email</h3>
+                <div className={styles.contactDetails}>
+                  <h3>Email</h3>
                   <a
                     href="mailto:frankjoyeriacuba@gmail.com"
-                    class="text-gray-600 hover:text-gray-900 transition-colors"
+                    className={styles.contactLink}
                     aria-label="Enviar correo a frankjoyeriacuba@gmail.com"
                     title="Enviar correo"
                   >
@@ -51,13 +52,13 @@ export function Contact() {
                 </div>
               </div>
 
-              <div class="flex items-start space-x-4">
-                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">📍</span>
+              <div className={styles.contactItem}>
+                <div className={styles.contactIcon}>
+                  <span>📍</span>
                 </div>
-                <div>
-                  <h3 class="font-medium text-gray-900 mb-1">Ubicación</h3>
-                  <div class="text-gray-600 space-y-1">
+                <div className={styles.contactDetails}>
+                  <h3>Ubicación</h3>
+                  <div className={styles.contactAddress}>
                     <p>
                       <strong>Calle Medio</strong> entre <strong>2 de Mayo</strong> y <strong>América</strong>
                     </p>
@@ -67,48 +68,50 @@ export function Contact() {
               </div>
             </div>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Síguenos en redes sociales</h3>
-          <ContactMe />
+          <div>
+            <h3 className={styles.socialTitle}>Síguenos en redes sociales</h3>
+            <Social />
+          </div>
         </div>
       </div>
 
-      <section class="bg-gray-50 rounded-lg p-8 mb-20">
-        <div class="text-center mb-8">
-          <h2 class="text-2xl font-light text-gray-900 mb-4">Horarios de atención</h2>
-          <p class="text-gray-600">Estamos disponibles para atenderte en los siguientes horarios</p>
+      <section className={styles.scheduleSection}>
+        <div className={styles.scheduleHeader}>
+          <h2 className={styles.scheduleTitle}>Horarios de atención</h2>
+          <p className={styles.scheduleDescription}>Estamos disponibles para atenderte en los siguientes horarios</p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="text-center">
-            <h3 class="font-medium text-gray-900 mb-2">Lunes - Viernes</h3>
-            <p class="text-gray-600">9:00 AM - 6:00 PM</p>
+        <div className={styles.scheduleGrid}>
+          <div className={styles.scheduleItem}>
+            <h3>Lunes - Viernes</h3>
+            <p>9:00 AM - 6:00 PM</p>
           </div>
-          <div class="text-center">
-            <h3 class="font-medium text-gray-900 mb-2">Sábados</h3>
-            <p class="text-gray-600">9:00 AM - 4:00 PM</p>
+          <div className={styles.scheduleItem}>
+            <h3>Sábados</h3>
+            <p>9:00 AM - 4:00 PM</p>
           </div>
-          <div class="text-center">
-            <h3 class="font-medium text-gray-900 mb-2">Domingos</h3>
-            <p class="text-gray-600">Cerrado</p>
+          <div className={styles.scheduleItem}>
+            <h3>Domingos</h3>
+            <p>Cerrado</p>
           </div>
-          <div class="text-center">
-            <h3 class="font-medium text-gray-900 mb-2">WhatsApp</h3>
-            <p class="text-gray-600">24/7 Disponible</p>
+          <div className={styles.scheduleItem}>
+            <h3>WhatsApp</h3>
+            <p>24/7 Disponible</p>
           </div>
         </div>
       </section>
 
-      <section class="text-center mx-4">
-        <h2 class="text-3xl font-light text-gray-900 mb-4">¿Listo para crear algo especial?</h2>
-        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+      <section className={styles.ctaSection}>
+        <h2 className={styles.ctaTitle}>¿Listo para crear algo especial?</h2>
+        <p className={styles.ctaDescription}>
           Contáctanos hoy mismo y descubre cómo podemos ayudarte a crear la joya perfecta para ti o tus seres queridos.
         </p>
-        <div class="mb-4">
+        <div>
           <a
             href="https://api.whatsapp.com/send?phone=5353444690"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center px-8 py-4 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors duration-200 font-medium"
+            className={styles.ctaButton}
             aria-label="Chatear por WhatsApp"
             title="Chatear por WhatsApp"
           >

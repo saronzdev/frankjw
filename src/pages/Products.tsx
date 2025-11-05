@@ -1,37 +1,32 @@
-import { useState } from 'preact/hooks'
+import { useRoute } from 'wouter'
 import { cats, error, loading } from '@/shared/signals'
 import { Category } from '@/components/Products/Category'
-import { CategoryFilter } from '@/components/Products/CategoryFilter'
 import { ErrorCard } from '@/components/Products/ErrorCard'
 import { LoadingCard } from '@/components/Products/LoadigCard'
-import { getErrorMessage } from '@/shared/utils'
-import { NotProducts } from '@/components/Products/NotProducts'
+import { getErrorMessage, unslugify } from '@/shared/utils'
+import { NoProducts } from '@/components/Products/NoProducts'
+import styles from '@/styles/Products.module.css'
 
 export function Products() {
-  const [filterCategory, setFilterCategory] = useState('')
+  const [_, params] = useRoute('/products/:category?')
+  const categoryParam = params?.category || ''
+
+  // Si hay categoría en la URL, buscar su nombre canónico; si no, mostrar todas
+  const categories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
 
   if (loading.value) return <LoadingCard />
   if (error.value > 0) {
-    if (error.value === 1101) return <NotProducts hasProducts={false} />
+    if (error.value === 1101) return <NoProducts hasProducts={false} />
     return <ErrorCard message={getErrorMessage(error.value)} />
   }
 
-  if (filterCategory && cats.value.filter((cat) => cat === filterCategory).length === 0) {
-    return <NotProducts hasProducts={cats.value.length > 0} />
-  }
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <section>
-        <div className="mt-4 flex justify-center">
-          <CategoryFilter filterCategory={filterCategory} setFilterCategory={setFilterCategory} cats={cats.value} />
-        </div>
-        <div className="space-y-4 mb-4">
-          {cats.value
-            .filter((item) => !filterCategory || filterCategory.includes(item))
-            .map((item) => (
-              <Category key={item} category={item} />
-            ))}
+    <div className={styles.container}>
+      <section className={styles.section}>
+        <div className={styles.categoriesContainer}>
+          {categories.map((category) => (
+            <Category key={category} category={category} />
+          ))}
         </div>
       </section>
     </div>

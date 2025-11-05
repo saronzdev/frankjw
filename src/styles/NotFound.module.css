@@ -1,0 +1,114 @@
+.container {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.content {
+  max-width: 42rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.numberContainer {
+  margin-bottom: 2rem;
+}
+
+.number {
+  font-size: 9rem;
+  font-weight: 300;
+  color: #e5e7eb;
+  line-height: 1;
+  user-select: none;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .number {
+    font-size: 12rem;
+  }
+}
+
+.textContainer {
+  margin-bottom: 3rem;
+}
+
+.textContainer>*+* {
+  margin-top: 1.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 300;
+  color: #111827;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.25rem;
+  }
+}
+
+.description {
+  font-size: 1.125rem;
+  color: #4b5563;
+  max-width: 32rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .description {
+    font-size: 1.25rem;
+  }
+}
+
+.homeButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #111827;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.homeButton:hover {
+  background: #1f2937;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.footerText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.footerLink {
+  color: #4b5563;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: #111827;
+}

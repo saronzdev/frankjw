@@ -1,15 +1,35 @@
 import { ProductCard } from './ProductCard'
-import { capitalize } from '@/shared/utils'
+import { CategoryHeader } from './CategoryHeader'
 import { products } from '@/shared/signals'
+import styles from '@/styles/Category.module.css'
+import { CATEGORIES, slugify } from '@/shared/utils'
 
-export function Category({ category }: { category: string }) {
+interface Props {
+  category: string
+}
+
+export function Category({ category }: Props) {
+  // Buscar primero por coincidencia exacta (case-insensitive)
+  let categoryData = CATEGORIES.find((cat) => cat.title.toLowerCase().trim() === category.toLowerCase().trim())
+
+  // Si no encuentra, intentar matchear por slug
+  if (!categoryData) {
+    const categorySlug = slugify(category)
+    categoryData = CATEGORIES.find((cat) => slugify(cat.title) === categorySlug)
+  }
+
+  // Si aún no encuentra, devolver null (componente no renderiza nada)
+  if (!categoryData) {
+    console.warn(`Category not found: ${category}`)
+    return null
+  }
+
   const matchProducts = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
+
   return (
-    <section>
-      <div className="w-screen py-8 mb-4 bg-gray-50">
-        <h1 className="text-3xl text-center font-light">{capitalize(category)}</h1>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-6 px-4 sm:px-6 lg:px-8">
+    <section className={styles.section}>
+      <CategoryHeader title={categoryData.title} description={categoryData.description} image={categoryData.img} />
+      <div className={styles.grid}>
         {matchProducts.map((p) => (
           <ProductCard key={p.id} data={p} />
         ))}

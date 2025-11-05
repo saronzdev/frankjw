@@ -1,0 +1,13 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  flex: 1;
+}
+
+.categoriesContainer {
+  margin: 0;
+}

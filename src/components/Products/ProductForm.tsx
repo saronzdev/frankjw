@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
-import { categories } from '@/shared/utils'
+import { categories, normalize } from '@/shared/utils'
+import styles from '@/styles/ProductForm.module.css'
+import { toast } from 'sonner'
 
-interface ProductFormProps {
+interface Props {
   product?: ProductType
   onSave: (data: ProductIn) => void
   onCancel: () => void
 }
 
-export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
+export function ProductForm({ product, onSave, onCancel }: Props) {
   const newProduct = {
-    name: product?.name ?? '',
     productId: product?.productId ?? '',
     description: product?.description ?? '',
-    category: product?.category ?? '',
+    category: product?.category ? normalize(product.category) : '',
     price: product?.price ?? '',
     weight: product?.weight ?? '',
     karats: product?.karats.join(' ') ?? '',
@@ -29,6 +30,8 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     if (product?.pictures) {
       const urls = product.pictures.filter((pic): pic is string => typeof pic === 'string')
       setImagesUrls(urls)
+    } else {
+      setImagesUrls([])
     }
   }, [])
 
@@ -51,15 +54,34 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
       [name]: checked
     }))
   }
-
   const handleImageChange = (e: Event) => {
     const target = e.target as HTMLInputElement
-    const files = target.files as unknown as File[]
-    setImages((prev) => [...prev, ...files])
+    const files = target.files ? Array.from(target.files) : []
+
+    const overs = files.filter((f) => f.size > 100 * 1024)
+    if (overs.length) {
+      toast.error(`Estas imágenes superan 100KB: ${overs.map((f) => f.name).join(', ')}`)
+    }
+
+    const currentTotal = images.length + imagesUrls.length
+    const remaining = Math.max(0, 2 - currentTotal)
+    const acceptable = files.filter((f) => f.size <= 100 * 1024)
+    const toAdd = acceptable.slice(0, remaining)
+
+    if (acceptable.length > remaining) {
+      toast.error(`Solo puedes subir ${remaining} imagen(es) más`)
+    }
+
+    if (toAdd.length) setImages((prev) => [...prev, ...toAdd])
+    target.value = ''
+  }
+
+  const removeNewImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
   const removeExistingImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index))
+    setImagesUrls((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: Event) => {
@@ -68,75 +90,62 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     const uploadResults = await Promise.all(uploadPromises ?? [])
     const errors = uploadResults.filter((result) => typeof result !== 'string')
     if (errors.length > 0) alert('Ha ocurrido un error al subir las imagenes')
-    const imagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
+    const newImagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
 
     const newProduct: ProductIn = {
       ...productData,
-      pictures: [...imagesUrls, ...(productData.pictures as string[])]
+      pictures: [...newImagesUrls, ...imagesUrls]
     }
     onSave(newProduct)
   }
 
   return (
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-light text-gray-900">{product ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-            <button onClick={onCancel} class="text-gray-400 hover:text-gray-600 text-2xl" aria-label="Cerrar formulario">
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <div className={styles.modalContent}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>{product ? 'Editar Producto' : 'Nuevo Producto'}</h2>
+            <button onClick={onCancel} className={styles.closeButton} aria-label="Cerrar formulario">
               ×
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del producto *</label>
-              <input
-                type="text"
-                name="name"
-                value={productData.name}
-                onInput={handleInputChange}
-                required
-                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
-                placeholder="Ej: Anillo de compromiso"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">ID del producto *</label>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>ID del producto *</label>
               <input
                 type="text"
                 name="productId"
                 value={productData.productId}
                 onInput={handleInputChange}
                 required
-                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                className={styles.input}
                 placeholder="Ej: ABC123"
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Descripción *</label>
               <textarea
                 name="description"
                 value={productData.description}
                 onInput={handleInputChange}
                 required
                 rows={3}
-                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none resize-none"
+                className={styles.textarea}
                 placeholder="Describe las características del producto..."
               />
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+            <div className={styles.gridTwoColumns}>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Categoría *</label>
                 <select
                   name="category"
                   value={productData.category}
                   onChange={handleInputChange}
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                  className={styles.select}
                 >
                   <option value="">Seleccionar categoría</option>
                   {categories.map((cat) => (
@@ -147,8 +156,8 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                 </select>
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Precio (USD) *</label>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Precio (USD) *</label>
                 <input
                   type="number"
                   name="price"
@@ -157,15 +166,15 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                   required
                   min="0"
                   step="0.01"
-                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                  className={styles.input}
                   placeholder="0.00"
                 />
               </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Peso (gramos) *</label>
+            <div className={styles.gridTwoColumns}>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Peso (gramos) *</label>
                 <input
                   type="text"
                   pattern="^\d*([,.]\d+)?$"
@@ -173,43 +182,41 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                   value={productData.weight}
                   onInput={handleInputChange}
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                  className={styles.input}
                   placeholder="0.00"
                 />
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Quilates *</label>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Kilates *</label>
                 <input
                   name="karats"
                   type="text"
                   value={productData.karats}
                   onChange={handleInputChange}
                   required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                  className={styles.input}
                   placeholder="0"
                 />
               </div>
             </div>
 
-            <div>
-              <label class="flex items-center space-x-3">
+            <div className={styles.fieldGroup}>
+              <label className={styles.checkboxContainer}>
                 <input
                   type="checkbox"
                   name="isActive"
                   checked={productData.isActive}
                   onChange={handleCheckboxChange}
-                  class="w-5 h-5 text-gray-900 border-gray-300 rounded focus:ring-gray-900 focus:ring-2"
+                  className={styles.checkbox}
                 />
-                <span class="text-sm font-medium text-gray-700">Producto disponible</span>
+                <span className={styles.checkboxLabel}>Producto disponible</span>
               </label>
-              <p class="mt-1 text-xs text-gray-500">Desmarca si el producto está agotado</p>
+              <p className={styles.helpText}>Desmarca si el producto está agotado</p>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Imágenes (máximo 2) {images.length + imagesUrls.length}/2
-              </label>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Imágenes (máximo 2) {images.length + imagesUrls.length}/2</label>
               {images.length + imagesUrls.length < 2 && (
                 <div>
                   <input
@@ -218,28 +225,57 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
                     accept="image/*"
                     multiple
                     onChange={handleImageChange}
-                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
+                    className={styles.fileInput}
                   />
-                  <p class="mt-1 text-xs text-gray-500">Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB por imagen</p>
+                  <p className={styles.helpText}>Formatos: JPG, PNG, GIF. Tamaño máximo: 100KB por imagen</p>
                 </div>
               )}
 
+              {/* Mostrar imágenes nuevas */}
+              {images.length > 0 && (
+                <div className={styles.imageGrid}>
+                  {images.map((image, index) => (
+                    <div key={`new-${index}`} className={styles.imageContainer}>
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`Nueva imagen ${index + 1}`}
+                        className={styles.existingImage}
+                        loading="lazy"
+                      />
+                      <div className={styles.imageOverlay}>
+                        <span className={styles.imageOverlayText}>Nueva imagen</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeNewImage(index)}
+                        className={styles.removeImageButton}
+                        aria-label="Eliminar imagen"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Mostrar imágenes existentes */}
               {imagesUrls.length > 0 && (
-                <div class="grid grid-cols-3 gap-4 mt-4">
+                <div className={styles.imageGrid}>
                   {imagesUrls.map((imageUrl, index) => (
-                    <div key={`existing-${index}`} class="relative group">
+                    <div key={`existing-${index}`} className={styles.imageContainer}>
                       <img
                         src={imageUrl}
                         alt={`Imagen existente ${index + 1}`}
-                        class="w-full h-24 object-cover rounded-lg border border-gray-200"
+                        className={styles.existingImage}
                         loading="lazy"
                       />
-                      <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <span class="text-white text-xs text-center px-2">Imagen existente</span>
+                      <div className={styles.imageOverlay}>
+                        <span className={styles.imageOverlayText}>Imagen existente</span>
                       </div>
                       <button
+                        type="button"
                         onClick={() => removeExistingImage(index)}
-                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 transition-colors"
+                        className={styles.removeImageButton}
                         aria-label="Eliminar imagen"
                       >
                         ×
@@ -250,20 +286,15 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
               )}
             </div>
 
-            <div class="flex gap-4 pt-4">
+            <div className={styles.buttonContainer}>
               <button
                 type="submit"
-                class="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium"
-                aria-label={product ? 'Actualizar' : 'Crear' + 'Producto'}
+                className={styles.submitButton}
+                aria-label={`${product ? 'Actualizar' : 'Crear'} Producto`}
               >
                 {product ? 'Actualizar' : 'Crear'}
               </button>
-              <button
-                type="button"
-                onClick={onCancel}
-                class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium"
-                aria-label="Cancelar el formulario"
-              >
+              <button type="button" onClick={onCancel} className={styles.cancelButton} aria-label="Cancelar el formulario">
                 Cancelar
               </button>
             </div>

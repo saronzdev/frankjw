@@ -1,0 +1,19 @@
+.main {
+  min-height: 100vh;
+  background-color: white;
+}
+
+.footer {
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: #f3f4f6;
+  font-size: 1.1rem;
+}
+
+.a {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

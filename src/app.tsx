@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard'
 import { NotFound } from './pages/NotFound'
 import { Login } from './pages/Login'
 import { Header } from './components/Header'
+import { ProtectedRoute } from './components/ProtectedRoute'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
 
@@ -18,8 +19,8 @@ export function App() {
       <Header />
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route path="/products" component={Products} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/products/:category?" component={Products} />
+        <Route path="/dashboard" component={() => <ProtectedRoute component={Dashboard} />} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/login" component={Login} />

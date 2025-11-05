@@ -1,63 +1,61 @@
 import { bestSellers, mostRecents } from '@/shared/signals'
 import { Link } from 'wouter'
-import { ContactMe } from './ContactMe'
 import { Carousel } from './Carousel'
+import styles from '@/styles/Hero.module.css'
 const logo = '/logo.webp'
 
 export function Hero() {
   return (
-    <section className="bg-gradient-to-b from-yellow-100 via-white to-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="min-h-screen -mt-10 flex flex-col justify-center items-center text-center">
-          <div className="flex justify-center mb-4">
-            <img
-              src={logo}
-              fetchPriority="high"
-              width={375}
-              height={250}
-              className="rounded-lg p-2 bg-black object-contain w-[375px] h-[250px] block"
-              alt="Frank Joyería Logo"
-            />
-          </div>
-          <div className="space-y-6">
-            <h2 className="text-2xl md:text-4xl font-semibold uppercase tracking-tight text-gray-900 leading-tight">
-              Tu joyería de confianza
-            </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              No solo vendemos joyas, sino creamos símbolos de emociones y momentos inolvidables.
-            </p>
-          </div>
+    <>
+      <section className={styles.hero}>
+        <div className={styles.container}>
+          <div className={styles.heroContent}>
+            <div className={styles.logoContainer}>
+              <img
+                src={logo}
+                fetchPriority="high"
+                className={styles.logo}
+                alt="Frank Joyería Logo"
+                width={300}
+                height={200}
+              />
+            </div>
+            <div className={styles.textContent}>
+              <h2 className={styles.title}>Diseño y Excelencia</h2>
+              <p className={styles.description}>
+                Joyas cuidadosamente elaboradas para acompañarte en cada capítulo de tu vida
+              </p>
+            </div>
 
-          <div className="pt-8">
-            <Link
-              to="/products"
-              className="group inline-flex items-center px-10 py-4 text-lg font-semibold text-white bg-gradient-to-r from-gray-900 to-gray-800 rounded-full hover:from-gray-800 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
-            >
-              <p>Ver Productos</p>
-              <svg
-                className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+            <div className={styles.buttonContainer}>
+              <Link to="/products" className={styles.ctaButton}>
+                <p className={styles.buttonText}>Ver Colecciones</p>
+                <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link to="/contact" className={styles.ctaButtonSecondary}>
+                <p className={styles.buttonText}>Contáctanos</p>
+                <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="space-y-20 md:space-y-24">
+      <section className={styles.carouselsSection}>
+        <div className={styles.container}>
           <Carousel title="Últimos Productos" items={mostRecents.value} />
           <Carousel title="Los Más Comprados" items={bestSellers.value} />
         </div>
-
-        <div className="mt-20 md:mt-24 flex justify-center">
-          <div className="text-center">
-            <h3 className="text-2xl font-light text-gray-800 mb-6">Contáctanos</h3>
-            <ContactMe />
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

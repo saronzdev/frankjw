@@ -1,23 +1,7 @@
 import axios from 'axios'
-import Home from '@/assets/home.svg'
-import Products from '@/assets/products.svg'
-import About from '@/assets/about.svg'
-import Contact from '@/assets/contact.svg'
-import Dashboard from '@/assets/dashboard.svg'
 import { increaseSales } from './fetching'
 import type { ProductType } from '../types'
-
-export const categories = [
-  'Anillo de hombre',
-  'Anillo de mujer',
-  'Anillo de compromiso mujer',
-  'Anillo de compromiso hombre',
-  'Gargantillas',
-  'Aretes y argollas',
-  'Cadenas',
-  'Dijes',
-  'Manillas'
-]
+import { CATEGORIES } from './constants'
 
 export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
   await increaseSales(product.id)
@@ -39,32 +23,25 @@ export const api = axios.create({
   withCredentials: true
 })
 
-export const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+export const normalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
-export const menuItems = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Productos', href: '/products' },
-  { label: 'Nosotros', href: '/about' },
-  { label: 'Contacto', href: '/contact' },
-  { label: 'Dashboard', href: '/dashboard' }
-]
+export const slugify = (string: string): string => {
+  return string
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '')
+}
 
-export const menuItemsMobile = [
-  { label: 'Inicio', href: '/', icon: Home },
-  { label: 'Productos', href: '/products', icon: Products },
-  { label: 'Nosotros', href: '/about', icon: About },
-  { label: 'Contacto', href: '/contact', icon: Contact },
-  { label: 'Dashboard', href: '/dashboard', icon: Dashboard }
-]
+export const unslugify = (slug: string): string => {
+  const normalizedSlug = slug.toLowerCase().trim()
 
-export const titles = {
-  '/': 'Frank Joyería',
-  '/products': 'Productos',
-  '/about': 'Nuestra Historia',
-  '/contact': 'Contacto',
-  '/dashboard': 'Dashboard',
-  '/404': 'Página no encontrada',
-  '/login': 'Iniciar sesión'
+  const category = CATEGORIES.find((cat) => {
+    const catSlug = slugify(cat.title)
+    return catSlug === normalizedSlug
+  })
+
+  return category?.title || ''
 }
 
 export const isValidEmail = (email: string) => {
@@ -72,53 +49,24 @@ export const isValidEmail = (email: string) => {
   return re.test(email)
 }
 
-export function getErrorMessage(code: number): string {
-  switch (code) {
-    // General Errors
-    case 1:
-      return 'Ha ocurrido un error inesperado. Intenta de nuevo.'
-    case 1000:
-      return 'No se pudo conectar al servidor. Verifica tu conexión a internet.'
-
-    // Auth Errors
-    case 1001:
-      return 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.'
-    case 1002:
-      return 'Credenciales inválidas. Verifica tu correo y contraseña.'
-    case 1003:
-      return 'Acceso denegado. No tienes permisos para realizar esta acción.'
-    case 1004:
-      return 'Usuario no encontrado. Verifica tu correo electrónico.'
-    case 1005:
-      return 'Contraseña incorrecta. Intenta nuevamente.'
-    case 1006:
-      return 'Error de autenticación. Intenta de nuevo más tarde.'
-
-    // Products Errors
-    case 1101:
-      return 'Producto no encontrado.'
-    case 1102:
-      return 'Ya existe un producto con este ID.'
-    case 1103:
-      return 'El ID del producto no es válido.'
-
-    // Validations Errors
-    case 2001:
-      return 'El correo electrónico ingresado no es válido.'
-    case 2002:
-      return 'Faltan campos obligatorios. Completa todos los datos requeridos.'
-    case 2003:
-      return 'Ya existe un registro con estos datos.'
-    case 2004:
-      return 'El ID proporcionado no es válido.'
-
-    // Server Errors
-    case 3001:
-      return 'Error interno del servidor. Intenta de nuevo más tarde.'
-    case 3002:
-      return 'Error al subir el archivo. Intenta nuevamente.'
-
-    default:
-      return 'Ha ocurrido un error inesperado. Intenta de nuevo.'
-  }
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+export function shouldRetry(errorCode?: number) {
+  return errorCode === 1000 || errorCode === 1 || errorCode === 3001 || errorCode === 3002
+}
+
+// Re-export constants
+export {
+  socialLinks,
+  highlights,
+  CATEGORIES,
+  categories,
+  menuItems,
+  menuItemsMobile,
+  titles,
+  MAX_RETRIES,
+  INITIAL_BACKOFF_MS,
+  getErrorMessage
+} from './constants'

@@ -1,0 +1,206 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  backdrop-filter: blur(4px);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20rem;
+  background: white;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebarOpen { transform: translateX(0); }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #000000, #111827, #000000);
+  color: white;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(202, 138, 4, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.headerTitle {
+  font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #fef3c7 30%, #fbbf24 50%, #fef3c7 70%, #ffffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background-size: 200% 200%;
+  animation: goldShimmer 4s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.closeButton {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.closeButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(202, 138, 4, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.closeButton:hover::before { left: 100%; }
+.closeButton:hover { transform: scale(1.05); background: rgba(255,255,255,0.08); }
+
+.closeIcon { width: 1.5rem; height: 1.5rem; filter: brightness(0) invert(1); }
+
+.nav {
+  padding: 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0; /* allow child scroll in flex container */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.navItem { margin: 0; }
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  color: #374151;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background: #f3f4f6;
+  color: #d97706;
+}
+
+.navIcon { width: 1.25rem; height: 1.25rem; }
+
+.navIconHover { transition: color 0.2s ease; }
+
+.navLink:hover .navIconHover { color: #d97706; }
+
+.navLabel { font-weight: 500; }
+
+/* Dropdown de productos en mobile */
+.productsDropdown {
+  position: relative;
+  width: 100%;
+}
+
+.productsTrigger {
+  width: 100%;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  transition: transform 0.2s ease;
+  margin-left: auto;
+}
+
+.dropdownIcon.rotated { transform: rotate(180deg); }
+
+.dropdown {
+  margin-top: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  max-height: 55vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dropdownList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdownItem {
+  margin: 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dropdownItem:last-child { border-bottom: none; }
+
+.dropdownLink {
+  display: block;
+  padding: 0.75rem 1rem 0.75rem 3.25rem;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease;
+}
+
+.dropdownLink:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footerText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.hidden { display: none; }
+
+@media (min-width: 1024px) {
+  .overlay, .sidebar { display: none; }
+}

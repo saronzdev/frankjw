@@ -7,20 +7,12 @@ import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
 import { getErrorMessage } from '@/shared/utils'
 import { LoadingCard } from '@/components/Products/LoadigCard'
 import { ErrorCard } from '@/components/Products/ErrorCard'
-import { NotProducts } from '@/components/Products/NotProducts'
+import { NoProducts } from '@/components/Products/NoProducts'
 import { Toaster, toast } from 'sonner'
-import { useLocation } from 'wouter'
 import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
+import styles from '@/styles/Dashboard.module.css'
 
 export function Dashboard() {
-  const [_, setLocation] = useLocation()
-
-  useEffect(() => {
-    if (isAdmin.value === false) setLocation('/login')
-  }, [isAdmin.value, setLocation])
-
-  if (isAdmin.value === null) return <LoadingCard />
-
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
   const [searchTerm, setSearchTerm] = useState('')
@@ -33,17 +25,15 @@ export function Dashboard() {
 
   const handlerSearch = (term: string) => {
     setSearchTerm(term)
-    if (!term.trim()) {
+    const trimmed = term.trim().toLowerCase()
+    if (!trimmed) {
       setFilteredProducts(products.value)
       setIsSearching(false)
       return
     }
 
     setIsSearching(true)
-    const searchTerm = term.toLowerCase().trim()
-    const data = products.value.filter((product) => {
-      return product.name.toLowerCase().includes(searchTerm) || product.productId.toLowerCase().includes(searchTerm)
-    })
+    const data = products.value.filter((product) => product.productId.toLowerCase().includes(trimmed))
     setFilteredProducts(data)
     setIsSearching(false)
   }
@@ -87,6 +77,7 @@ export function Dashboard() {
     setEditingProduct(undefined)
   }
 
+  if (isAdmin.value === null) return <LoadingCard />
   if (loading.value && products.value.length === 0) return <LoadingCard />
   if (error.value > 0 && error.value !== 1101) {
     return <ErrorCard message={getErrorMessage(error.value)} />
@@ -94,14 +85,10 @@ export function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className={styles.container}>
         <Toaster richColors position="bottom-center" />
-        <div className="flex flex-col gap-4 items-center justify-center m-6">
-          <button
-            onClick={handleCreateProduct}
-            className="w-fit bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
-            aria-label="Agregar un producto"
-          >
+        <div className={styles.header}>
+          <button onClick={handleCreateProduct} className={styles.newProductButton} aria-label="Agregar un producto">
             + Nuevo Producto
           </button>
           {products.value.length > 0 && (
@@ -109,19 +96,19 @@ export function Dashboard() {
               searchTerm={searchTerm}
               handlerSearch={handlerSearch}
               setSearchTerm={setSearchTerm}
-              placeholder="Bucar por ID o Nombre"
+              placeholder="Buscar por ID"
             />
           )}
         </div>
-        <div className="m-4">
+        <div className={styles.content}>
           {isSearching ? (
-            <div className="flex justify-center items-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+            <div className={styles.searchingContainer}>
+              <div className={styles.searchingSpinner}></div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <NotProducts searchTerm={searchTerm} hasProducts={products.value.length > 0} />
+            <NoProducts searchTerm={searchTerm} hasProducts={products.value.length > 0} />
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className={styles.grid}>
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
