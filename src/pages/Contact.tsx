@@ -83,11 +83,7 @@ export function Contact() {
 
         <div className={styles.scheduleGrid}>
           <div className={styles.scheduleItem}>
-            <h3>Lunes - Viernes</h3>
-            <p>9:00 AM - 6:00 PM</p>
-          </div>
-          <div className={styles.scheduleItem}>
-            <h3>Sábados</h3>
+            <h3>Lunes - Sábado</h3>
             <p>9:00 AM - 4:00 PM</p>
           </div>
           <div className={styles.scheduleItem}>
