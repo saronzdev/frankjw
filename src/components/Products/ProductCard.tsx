@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 import { createPortal } from 'preact/compat'
 import { ProductPopup } from './ProductPopup'
-import { ContactPopup } from '../ContactPopup'
+import { ReservePopup } from '../ReservePopup'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import noStock from '@/assets/nostock.svg'
@@ -100,7 +100,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           />,
           document.body
         )}
-      {isReserve && createPortal(<ContactPopup data={data} onClose={toogleReserve} />, document.body)}
+      {isReserve && createPortal(<ReservePopup data={data} onClose={toogleReserve} />, document.body)}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { bestSellers, mostRecents } from '@/shared/signals'
+import { mostRecents } from '@/shared/signals'
 import { Link } from 'wouter'
 import { Carousel } from './Carousel'
 import styles from '@/styles/Hero.module.css'

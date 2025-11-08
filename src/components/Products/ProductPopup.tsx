@@ -5,7 +5,7 @@ import styles from '@/styles/ProductPopup.module.css'
 import noImage from '@/assets/no-image.svg'
 import leftArrow from '@/assets/left.svg'
 import rightArrow from '@/assets/right.svg'
-import { ContactPopup } from '../ContactPopup'
+import { ReservePopup } from '../ReservePopup'
 
 type Props = {
   product: ProductType
@@ -144,7 +144,7 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
           </div>
         )}
       </div>
-      {isReserve && createPortal(<ContactPopup onClose={toggleReserve} data={product} />, document.body)}
+      {isReserve && createPortal(<ReservePopup onClose={toggleReserve} data={product} />, document.body)}
     </div>
   )
 }

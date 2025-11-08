@@ -1,11 +1,11 @@
 import { handleReservation } from '@/shared/utils'
 import type { ProductType, Seller } from '@/types'
-import styles from '@/styles/ContactCard.module.css'
+import styles from '@/styles/ReserveCard.module.css'
 import wsIcon from '@/assets/ws.svg'
 
 type Props = Seller & { data: ProductType }
 
-export function ContactCard({ name, number, location, data }: Props) {
+export function ReserveCard({ name, number, location, data }: Props) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>

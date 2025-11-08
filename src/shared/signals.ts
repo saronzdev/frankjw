@@ -60,14 +60,5 @@ export const mostRecents = computed(() =>
     .slice(0, 4)
 )
 
-export const bestSellers = computed(() =>
-  [...products.value]
-    .sort((a, b) => {
-      if (b.sales !== a.sales) return b.sales - a.sales
-      return b.createdAt - a.createdAt
-    })
-    .slice(0, 4)
-)
-
 export const refreshProducts = async () => await getProducts()
 export const refreshRole = async () => await checkAdmin()
