@@ -42,20 +42,7 @@ export const login = async (email: string, password: string) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
-  }
-}
-
-export const increaseSales = async (id: number) => {
-  try {
-    await api.patch('products/sales/' + id)
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        console.log(data.code)
-      } else if (error.request) console.log(1000)
-      else console.log('Error')
-    }
+    return { ok: false, error: 1 }
   }
 }
 

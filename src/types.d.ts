@@ -31,3 +31,8 @@ export interface LoginResponse {
   }
   status: number
 }
+export interface Seller {
+  name: string
+  number: number
+  location: string
+}

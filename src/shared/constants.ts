@@ -1,3 +1,4 @@
+import type { Seller } from '@/types'
 import Home from '@/assets/home.svg'
 import Products from '@/assets/products.svg'
 import About from '@/assets/about.svg'
@@ -19,6 +20,19 @@ import anillosm from '@/assets/anillosm.avif'
 import anillosh from '@/assets/anillosh.avif'
 import anilloscm from '@/assets/anilloscm.avif'
 import anillosch from '@/assets/anillosch.avif'
+
+export const SELLERS: Seller[] = [
+  {
+    name: 'Zenia Pérez',
+    number: 5356469531,
+    location: 'Calle Medio/ Dos de Mayo & América, Matanzas, Cuba'
+  },
+  {
+    name: 'Ariel Rivero',
+    number: 5352501232,
+    location: 'Calle San Benigno/ Serafines y Vía Blanca, La Habana, Cuba'
+  }
+]
 
 export const socialLinks = [
   {

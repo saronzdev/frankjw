@@ -1,12 +1,10 @@
 import axios from 'axios'
-import { increaseSales } from './fetching'
 import type { ProductType } from '../types'
 import { CATEGORIES } from './constants'
 
-export const handleReservation = async (product: Omit<ProductType, 'pictures'>) => {
-  await increaseSales(product.id)
-  const message = `Hola! Me interesa reservar: ${product.description} - ID: ${product.productId}`
-  const whatsappUrl = `https://wa.me/5353444690?text=${encodeURIComponent(message)}`
+export const handleReservation = async (number: number, product: Omit<ProductType, 'pictures'>) => {
+  const message = `Hola! Me interesa reservar: ${product.description} - ID: ${product.productId} - Número: ${number}`
+  const whatsappUrl = `https://wa.me/${number.toString()}?text=${encodeURIComponent(message)}`
   window.open(whatsappUrl, '_blank')
 }
 
@@ -57,7 +55,6 @@ export function shouldRetry(errorCode?: number) {
   return errorCode === 1000 || errorCode === 1 || errorCode === 3001 || errorCode === 3002
 }
 
-// Re-export constants
 export {
   socialLinks,
   highlights,

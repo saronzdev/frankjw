@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'preact/hooks'
+import { createPortal } from 'preact/compat'
 import type { ProductType } from '@/types'
 import styles from '@/styles/ProductPopup.module.css'
 import noImage from '@/assets/no-image.svg'
 import leftArrow from '@/assets/left.svg'
 import rightArrow from '@/assets/right.svg'
+import { ContactPopup } from '../ContactPopup'
 
 type Props = {
   product: ProductType
@@ -16,20 +18,11 @@ type Props = {
 export function ProductPopup({ product, onClose, allProducts = [], currentIndex = 0, onNavigate }: Props) {
   const images = product.pictures && product.pictures.length > 0 ? product.pictures : [noImage]
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isReserve, setIsReserve] = useState(false)
 
   const handleOverlayClick = (e: MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose()
-    }
-  }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose()
-    } else if (e.key === 'ArrowLeft') {
-      prevImage()
-    } else if (e.key === 'ArrowRight') {
-      nextImage()
     }
   }
 
@@ -57,12 +50,26 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
     }
   }
 
+  const toggleReserve = () => {
+    setIsReserve(!isReserve)
+  }
+
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      } else if (e.key === 'ArrowLeft') {
+        prevImage()
+      } else if (e.key === 'ArrowRight') {
+        nextImage()
+      }
+    }
+
     document.addEventListener('keydown', handleKeyDown)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [currentImageIndex])
+  }, [currentImageIndex, onClose])
 
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
@@ -117,7 +124,9 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
           )}
         </div>
 
-        <button className={styles.reserve}>Reservar</button>
+        <button className={styles.reserve} onClick={toggleReserve}>
+          Reservar
+        </button>
 
         {allProducts.length > 1 && onNavigate && (
           <div className={styles.productNav}>
@@ -135,6 +144,7 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
           </div>
         )}
       </div>
+      {isReserve && createPortal(<ContactPopup onClose={toggleReserve} data={product} />, document.body)}
     </div>
   )
 }

@@ -1,8 +1,8 @@
 import { useState } from 'preact/hooks'
 import { createPortal } from 'preact/compat'
 import { ProductPopup } from './ProductPopup'
+import { ContactPopup } from '../ContactPopup'
 import type { ProductType } from '@/types'
-import { handleReservation } from '@/shared/utils'
 import noImage from '@/assets/no-image.svg'
 import noStock from '@/assets/nostock.svg'
 import shop from '@/assets/shop.svg'
@@ -25,6 +25,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
   const [isLoading, setIsLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [currentProductIndex, setCurrentProductIndex] = useState(productIndex)
+  const [isReserve, setIsReserve] = useState(false)
 
   const close = () => setIsOpen(false)
 
@@ -41,6 +42,10 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
       onDelete?.(data.id)
     }
+  }
+
+  const toogleReserve = () => {
+    setIsReserve(!isReserve)
   }
 
   return (
@@ -79,7 +84,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
         <p className={styles.price}>${data.price}</p>
         {!editable && (
           <div className={styles.actions}>
-            <img className={styles.shop} src={shop} onClick={() => handleReservation(data)} title="Reservar" />
+            <img className={styles.shop} src={shop} onClick={toogleReserve} title="Reservar" />
             <img className={styles.details} src={info} onClick={() => setIsOpen(true)} title="Ver detalles" />
           </div>
         )}
@@ -95,6 +100,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           />,
           document.body
         )}
+      {isReserve && createPortal(<ContactPopup data={data} onClose={toogleReserve} />, document.body)}
     </div>
   )
 }
