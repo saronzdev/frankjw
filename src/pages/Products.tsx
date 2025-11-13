@@ -23,10 +23,13 @@ export function Products() {
         sortContainerRef.current.style.top = `${headerHeight}px`
       }
     }
+    const timer = setTimeout(updateStickyTop, 100)
 
-    updateStickyTop()
     window.addEventListener('resize', updateStickyTop)
-    return () => window.removeEventListener('resize', updateStickyTop)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', updateStickyTop)
+    }
   }, [])
 
   const rawCategories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
