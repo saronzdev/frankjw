@@ -1,7 +1,4 @@
-import { useState } from 'preact/hooks'
-import { createPortal } from 'preact/compat'
-import { ProductPopup } from './ProductPopup'
-import { ReservePopup } from '../ReservePopup'
+import { useState, lazy, Suspense, createPortal } from 'preact/compat'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import noStock from '@/assets/nostock.svg'
@@ -11,6 +8,9 @@ import editIcon from '@/assets/edit.svg'
 import trashIcon from '@/assets/trash.svg'
 import styles from '@/styles/ProductCard.module.css'
 import { normalize } from '@/shared/utils'
+
+const ProductPopup = lazy(() => import('./ProductPopup').then((m) => ({ default: m.ProductPopup })))
+const ReservePopup = lazy(() => import('../ReservePopup').then((m) => ({ default: m.ReservePopup })))
 
 interface Props {
   data: ProductType
@@ -91,16 +91,30 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
       </div>
       {isOpen &&
         createPortal(
-          <ProductPopup
-            product={currentProduct}
-            onClose={close}
-            allProducts={allProducts}
-            currentIndex={currentProductIndex}
-            onNavigate={handleNavigate}
-          />,
+          <Suspense
+            fallback={
+              <div style="display:flex;align-items:center;justify-content:center;height:100vh;">
+                <div>Cargando...</div>
+              </div>
+            }
+          >
+            <ProductPopup
+              product={currentProduct}
+              onClose={close}
+              allProducts={allProducts}
+              currentIndex={currentProductIndex}
+              onNavigate={handleNavigate}
+            />
+          </Suspense>,
           document.body
         )}
-      {isReserve && createPortal(<ReservePopup data={data} onClose={toogleReserve} />, document.body)}
+      {isReserve &&
+        createPortal(
+          <Suspense fallback={<div>Cargando...</div>}>
+            <ReservePopup data={data} onClose={toogleReserve} />
+          </Suspense>,
+          document.body
+        )}
     </div>
   )
 }

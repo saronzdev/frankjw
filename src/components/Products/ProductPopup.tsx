@@ -89,6 +89,8 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
             className={styles.image}
             src={images[currentImageIndex] || noImage}
             alt={`${product.description} - imagen ${currentImageIndex + 1}`}
+            loading="eager"
+            decoding="async"
           />
           {images.length > 1 && (
             <button onClick={nextImage} className={styles.imageNavRight} aria-label="Siguiente imagen">

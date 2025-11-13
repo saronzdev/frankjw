@@ -5,7 +5,7 @@ import { Category } from '@/components/Products/Category'
 import { SortSelect } from '@/components/Products/SortSelect'
 import { ErrorCard } from '@/components/Products/ErrorCard'
 import { LoadingCard } from '@/components/Products/LoadigCard'
-import { getErrorMessage, unslugify, CATEGORIES, slugify } from '@/shared/utils'
+import { getErrorMessage, unslugify } from '@/shared/utils'
 import { NoProducts } from '@/components/Products/NoProducts'
 import styles from '@/styles/Products.module.css'
 
@@ -23,29 +23,24 @@ export function Products() {
         sortContainerRef.current.style.top = `${headerHeight}px`
       }
     }
+
     const timer = setTimeout(updateStickyTop, 100)
 
-    window.addEventListener('resize', updateStickyTop)
+    let resizeTimer: number
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(updateStickyTop, 150) as unknown as number
+    }
+
+    window.addEventListener('resize', debouncedResize)
     return () => {
       clearTimeout(timer)
-      window.removeEventListener('resize', updateStickyTop)
+      clearTimeout(resizeTimer)
+      window.removeEventListener('resize', debouncedResize)
     }
   }, [])
 
-  const rawCategories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
-
-  const categories = rawCategories
-    .map((cat) => {
-      const categoryMeta = CATEGORIES.find(
-        (c) => slugify(c.title) === slugify(cat) || c.title.toLowerCase().trim() === cat.toLowerCase().trim()
-      )
-      return {
-        name: cat,
-        order: categoryMeta?.order ?? 999
-      }
-    })
-    .sort((a, b) => a.order - b.order)
-    .map((c) => c.name)
+  const categories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
 
   if (loading.value) return <LoadingCard />
   if (error.value > 0) {

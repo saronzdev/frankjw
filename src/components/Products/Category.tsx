@@ -1,3 +1,4 @@
+import { useMemo } from 'preact/hooks'
 import { ProductCard } from './ProductCard'
 import { CategoryHeader } from './CategoryHeader'
 import { products } from '@/shared/signals'
@@ -10,40 +11,49 @@ interface Props {
 }
 
 export function Category({ category, sortBy = 'default' }: Props) {
-  let categoryData = CATEGORIES.find((cat) => cat.title.toLowerCase().trim() === category.toLowerCase().trim())
+  const categoryData = useMemo(() => {
+    let data = CATEGORIES.find((cat) => cat.title.toLowerCase().trim() === category.toLowerCase().trim())
 
-  if (!categoryData) {
-    const categorySlug = slugify(category)
-    categoryData = CATEGORIES.find((cat) => slugify(cat.title) === categorySlug)
-  }
+    if (!data) {
+      const categorySlug = slugify(category)
+      data = CATEGORIES.find((cat) => slugify(cat.title) === categorySlug)
+    }
 
-  if (!categoryData) {
-    console.warn(`Category not found: ${category}`)
-    return null
-  }
+    if (!data) {
+      console.warn(`Category not found: ${category}`)
+    }
 
-  let matchProducts = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
+    return data
+  }, [category])
 
-  if (sortBy === 'name') {
-    matchProducts = [...matchProducts].sort((a, b) => a.description.localeCompare(b.description))
-  } else if (sortBy === 'price-asc') {
-    matchProducts = [...matchProducts].sort((a, b) => a.price - b.price)
-  } else if (sortBy === 'price-desc') {
-    matchProducts = [...matchProducts].sort((a, b) => b.price - a.price)
-  } else if (sortBy === 'weight') {
-    matchProducts = [...matchProducts].sort((a, b) => {
-      const weightA = Number(a.weight)
-      const weightB = Number(b.weight)
+  const matchProducts = useMemo(() => {
+    if (!categoryData) return []
 
-      if (isNaN(weightA) && isNaN(weightB)) return 0
-      if (isNaN(weightA)) return 1
-      if (isNaN(weightB)) return -1
+    let filtered = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
 
-      return weightB - weightA
-    })
-  } else {
-    matchProducts = [...matchProducts].sort((a, b) => b.createdAt - a.createdAt)
-  }
+    if (sortBy === 'name') {
+      return [...filtered].sort((a, b) => a.description.localeCompare(b.description))
+    } else if (sortBy === 'price-asc') {
+      return [...filtered].sort((a, b) => a.price - b.price)
+    } else if (sortBy === 'price-desc') {
+      return [...filtered].sort((a, b) => b.price - a.price)
+    } else if (sortBy === 'weight') {
+      return [...filtered].sort((a, b) => {
+        const weightA = Number(a.weight)
+        const weightB = Number(b.weight)
+
+        if (isNaN(weightA) && isNaN(weightB)) return 0
+        if (isNaN(weightA)) return 1
+        if (isNaN(weightB)) return -1
+
+        return weightB - weightA
+      })
+    } else {
+      return [...filtered].sort((a, b) => b.createdAt - a.createdAt)
+    }
+  }, [category, sortBy, products.value])
+
+  if (!categoryData) return null
 
   return (
     <section className={styles.section}>

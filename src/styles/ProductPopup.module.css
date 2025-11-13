@@ -11,6 +11,8 @@
   z-index: 9999;
   padding: 1rem;
   animation: overlayFadeIn 0.25s ease;
+  will-change: opacity;
+  contain: layout style paint;
 }
 
 @keyframes overlayFadeIn {
@@ -28,6 +30,9 @@
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.12);
   animation: modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  will-change: transform, opacity;
+  contain: layout style paint;
+  transform: translateZ(0);
 }
 
 @keyframes modalSlideIn {
@@ -276,6 +281,11 @@
 }
 
 @media (max-width: 640px) {
+  .overlay {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.75);
+  }
+
   .modal {
     max-width: 100%;
     border-radius: 0.5rem;
@@ -320,6 +330,8 @@
   .close {
     top: 0.75rem;
     right: 0.75rem;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 1);
   }
 
   .imageNavLeft,

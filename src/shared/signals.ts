@@ -2,6 +2,7 @@ import { signal, computed } from '@preact/signals'
 import type { ProductType, Result } from '../types'
 import { getProductsSignals, isUserAdmin } from './fetching'
 import { MAX_RETRIES, INITIAL_BACKOFF_MS, delay, shouldRetry } from './utils'
+import { CATEGORIES } from './constants'
 
 export const products = signal<ProductType[]>([])
 export const loading = signal(true)
@@ -48,7 +49,20 @@ async function checkAdmin() {
 getProducts()
 checkAdmin()
 
-export const cats = computed(() => [...new Set(products.value.map((p) => p.category))])
+export const cats = computed(() => {
+  const uniqueCategories = [...new Set(products.value.map((p) => p.category))]
+
+  return uniqueCategories
+    .map((cat) => {
+      const categoryMeta = CATEGORIES.find((c) => c.title.toLowerCase().trim() === cat.toLowerCase().trim())
+      return {
+        name: cat,
+        order: categoryMeta?.order ?? 999
+      }
+    })
+    .sort((a, b) => a.order - b.order)
+    .map((c) => c.name)
+})
 
 export const mostRecents = computed(() =>
   [...products.value]
