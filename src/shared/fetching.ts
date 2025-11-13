@@ -46,7 +46,7 @@ export const login = async (email: string, password: string) => {
   }
 }
 
-//Admin
+// Product management functions
 export const createProduct = async (dataProduct: ProductIn) => {
   try {
     await api.post('products', dataProduct)

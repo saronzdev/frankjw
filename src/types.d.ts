@@ -36,3 +36,10 @@ export interface Seller {
   number: number
   location: string
 }
+
+export interface Category {
+  title: string
+  description: string
+  img: string
+  order: number
+}

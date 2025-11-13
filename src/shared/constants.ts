@@ -1,4 +1,4 @@
-import type { Seller } from '@/types'
+import type { Seller, Category } from '@/types'
 import Home from '@/assets/home.svg'
 import Products from '@/assets/products.svg'
 import About from '@/assets/about.svg'
@@ -31,6 +31,11 @@ export const SELLERS: Seller[] = [
     name: 'Ariel Rivero',
     number: 5352501232,
     location: 'Calle San Benigno/ Serafines y Vía Blanca, La Habana, Cuba'
+  },
+  {
+    name: 'Frank Joyería',
+    number: 5353444690,
+    location: 'Frank Joyería'
   }
 ]
 
@@ -72,60 +77,69 @@ export const highlights = [
   }
 ]
 
-export const CATEGORIES = [
-  {
-    title: 'Anillos para hombre',
-    description:
-      'Diseñados para reflejar fuerza y estilo, nuestros anillos para hombre combinan elegancia contemporánea con detalles atemporales. Piezas que transmiten carácter y distinción en cada ocasión.',
-    img: anillosh
-  },
-  {
-    title: 'Anillos para mujer',
-    description:
-      'Un símbolo de feminidad y sofisticación. Los anillos para mujer destacan por su delicadeza y brillo, creados para resaltar la belleza única de quien los lleva.',
-    img: anillosm
-  },
+export const CATEGORIES: Category[] = [
   {
     title: 'Anillos de compromiso para hombre',
     description:
       'El compromiso también tiene su expresión masculina. Nuestros anillos de compromiso para hombre representan firmeza, lealtad y un estilo que perdura en el tiempo.',
-    img: anillosch
+    img: anillosch,
+    order: 1
   },
   {
     title: 'Anillos de compromiso para mujer',
     description:
       'La promesa de un amor eterno merece una joya inolvidable. Cada anillo de compromiso para mujer captura la esencia de la unión, con diseños que simbolizan pureza y elegancia.',
-    img: anilloscm
+    img: anilloscm,
+    order: 2
   },
   {
-    title: 'Gargantillas',
+    title: 'Anillos para mujer',
     description:
-      'Piezas que enmarcan el cuello con sutileza y distinción. Las gargantillas realzan la elegancia natural y son el complemento perfecto para cualquier look, desde lo cotidiano hasta lo más especial.',
-    img: gargantillas
+      'Un símbolo de feminidad y sofisticación. Los anillos para mujer destacan por su delicadeza y brillo, creados para resaltar la belleza única de quien los lleva.',
+    img: anillosm,
+    order: 3
+  },
+  {
+    title: 'Anillos para hombre',
+    description:
+      'Diseñados para reflejar fuerza y estilo, nuestros anillos para hombre combinan elegancia contemporánea con detalles atemporales. Piezas que transmiten carácter y distinción en cada ocasión.',
+    img: anillosh,
+    order: 4
   },
   {
     title: 'Pendientes y argollas',
     description:
       'Versátiles y atemporales, nuestros pendientes y argollas son el detalle que transforma cualquier estilo. Diseños que van desde la sencillez delicada hasta el brillo deslumbrante.',
-    img: pendientes
+    img: pendientes,
+    order: 5
+  },
+  {
+    title: 'Gargantillas',
+    description:
+      'Piezas que enmarcan el cuello con sutileza y distinción. Las gargantillas realzan la elegancia natural y son el complemento perfecto para cualquier look, desde lo cotidiano hasta lo más especial.',
+    img: gargantillas,
+    order: 6
   },
   {
     title: 'Cadenas',
     description:
       'Un clásico imprescindible. Las cadenas son el punto de partida para crear combinaciones únicas o lucir solas con un encanto propio. Elegancia pura en cada eslabón.',
-    img: cadenas
+    img: cadenas,
+    order: 7
   },
   {
     title: 'Dijes',
     description:
       'Pequeños símbolos con gran significado. Los dijes permiten personalizar tu estilo y llevar contigo recuerdos, creencias o emociones en una joya única.',
-    img: dijes
+    img: dijes,
+    order: 8
   },
   {
     title: 'Pulseras y tobilleras',
     description:
       'Diseños que rodean la muñeca con estilo y distinción. Nuestras pulseras y tobilleras unen delicadeza, brillo y personalidad, convirtiéndose en el detalle ideal para expresar quién eres.',
-    img: pulseras
+    img: pulseras,
+    order: 9
   }
 ]
 

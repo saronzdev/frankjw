@@ -4,10 +4,35 @@
   flex-direction: column;
 }
 
+.sortContainer {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0;
+  z-index: 25;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  will-change: transform;
+}
+
 .section {
   flex: 1;
 }
 
 .categoriesContainer {
   margin: 0;
+}
+
+@media (max-width: 640px) {
+  .sortContainer {
+    padding: 1rem;
+  }
 }

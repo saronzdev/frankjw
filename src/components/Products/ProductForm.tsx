@@ -231,7 +231,6 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 </div>
               )}
 
-              {/* Mostrar imágenes nuevas */}
               {images.length > 0 && (
                 <div className={styles.imageGrid}>
                   {images.map((image, index) => (
@@ -258,7 +257,6 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 </div>
               )}
 
-              {/* Mostrar imágenes existentes */}
               {imagesUrls.length > 0 && (
                 <div className={styles.imageGrid}>
                   {imagesUrls.map((imageUrl, index) => (
