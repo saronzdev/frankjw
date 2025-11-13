@@ -7,11 +7,11 @@
 .sortContainer {
   position: -webkit-sticky;
   position: sticky;
-  top: 145px;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px 20px;
+  padding: 1rem 1.25rem;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -20,7 +20,6 @@
   z-index: 25;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease;
-  will-change: transform;
 }
 
 .section {

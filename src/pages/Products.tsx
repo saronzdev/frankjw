@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { useRoute } from 'wouter'
 import { cats, error, loading } from '@/shared/signals'
 import { Category } from '@/components/Products/Category'
@@ -13,6 +13,21 @@ export function Products() {
   const [_, params] = useRoute('/products/:category?')
   const categoryParam = params?.category || ''
   const [sortBy, setSortBy] = useState('default')
+  const sortContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const updateStickyTop = () => {
+      const header = document.querySelector('header')
+      if (header && sortContainerRef.current) {
+        const headerHeight = header.offsetHeight
+        sortContainerRef.current.style.top = `${headerHeight}px`
+      }
+    }
+
+    updateStickyTop()
+    window.addEventListener('resize', updateStickyTop)
+    return () => window.removeEventListener('resize', updateStickyTop)
+  }, [])
 
   const rawCategories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
 
@@ -38,7 +53,7 @@ export function Products() {
   return (
     <div className={styles.container}>
       {categories.length > 0 && (
-        <div className={styles.sortContainer}>
+        <div ref={sortContainerRef} className={styles.sortContainer}>
           <SortSelect value={sortBy} onChange={setSortBy} />
         </div>
       )}
