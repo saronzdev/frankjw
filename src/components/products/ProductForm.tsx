@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import type { ProductOut, ProductType } from '@/types'
+import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
 import { categories, normalize } from '@/shared/utils'
 import styles from '@/styles/ProductForm.module.css'
@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 
 interface Props {
   product?: ProductType
-  onSave: (data: ProductOut) => void
+  onSave: (data: ProductIn) => void
   onCancel: () => void
 }
 
@@ -24,7 +24,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     hasDiscount: product?.hasDiscount ?? false,
     offerPrice: product?.offerPrice ?? undefined
   }
-  const [productData, setProductData] = useState<ProductOut>(newProduct as ProductOut)
+  const [productData, setProductData] = useState<ProductIn>(newProduct as ProductIn)
   const [images, setImages] = useState<File[]>([])
   const [imagesUrls, setImagesUrls] = useState<string[]>([])
 
@@ -41,7 +41,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     const { name, value, type } = target
 
-    setProductData((prev: ProductOut) => ({
+    setProductData((prev: ProductIn) => ({
       ...prev,
       [name]: type === 'number' ? Number.parseFloat(value) || 0 : value
     }))
@@ -51,7 +51,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     const target = e.target as HTMLInputElement
     const { name, checked } = target
 
-    setProductData((prev: ProductOut) => ({
+    setProductData((prev: ProductIn) => ({
       ...prev,
       [name]: checked
     }))
@@ -128,9 +128,9 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     if (errors.length > 0) alert('Ha ocurrido un error al subir las imagenes')
     const newImagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
 
-    const newProduct: ProductOut = {
+    const newProduct: ProductIn = {
       ...productData,
-      karats: JSON.stringify(karatValues),
+      karats: karatValues,
       pictures: [...newImagesUrls, ...imagesUrls]
     }
     onSave(newProduct)
