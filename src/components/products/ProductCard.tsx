@@ -52,7 +52,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
     <div className={`${styles.card} ${isOpen ? styles['popup-open'] : ''}`}>
       <div className={styles.picture}>
         {isLoading && (
-          <div className={styles.loadingSpinner}>
+          <div className={styles.loadingSpinner} role="status" aria-label="Cargando imagen">
             <div className={styles.spinner}></div>
           </div>
         )}
@@ -68,10 +68,10 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
         {editable && (
           <div className={styles.editActions}>
             <button className={styles.iconButton} aria-label={`Editar ${data.productId}`} onClick={() => onEdit?.(data)}>
-              <img src={editIcon} alt="" />
+              <img src={editIcon} alt="Edit Icon" />
             </button>
             <button className={styles.iconButton} aria-label={`Eliminar ${data.productId}`} onClick={handleDelete}>
-              <img src={trashIcon} alt="" />
+              <img src={trashIcon} alt="Trash Icon" />
             </button>
             <span className={styles.productId}>{data.productId}</span>
           </div>
@@ -81,7 +81,17 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
         <p className={styles.name}>{name}</p>
       </div>
       <div className={styles.footer}>
-        <p className={styles.price}>${data.price}</p>
+        {data.hasDiscount && data.offerPrice ? (
+          <div className={styles.priceContainer}>
+            <div className={styles.priceRow}>
+              <p className={styles.originalPrice}>${data.price}</p>
+              <p className={styles.discount}>-${(data.price - data.offerPrice).toFixed(2)}</p>
+            </div>
+            <p className={styles.price}>${data.offerPrice}</p>
+          </div>
+        ) : (
+          <p className={styles.price}>${data.price}</p>
+        )}
         {!editable && (
           <div className={styles.actions}>
             <img className={styles.shop} src={shop} onClick={toogleReserve} title="Reservar" />

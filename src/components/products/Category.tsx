@@ -8,9 +8,12 @@ import { CATEGORIES, slugify } from '@/shared/utils'
 interface Props {
   category: string
   sortBy?: string
+  priceRange?: [number, number]
+  selectedKarats?: number[]
+  onSale?: boolean
 }
 
-export function Category({ category, sortBy = 'default' }: Props) {
+export function Category({ category, sortBy = 'default', priceRange, selectedKarats, onSale }: Props) {
   const categoryData = useMemo(() => {
     let data = CATEGORIES.find((cat) => cat.title.toLowerCase().trim() === category.toLowerCase().trim())
 
@@ -31,6 +34,28 @@ export function Category({ category, sortBy = 'default' }: Props) {
 
     let filtered = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
 
+    // Aplicar filtros
+    if (priceRange && (priceRange[0] > 0 || priceRange[1] > 0)) {
+      filtered = filtered.filter((p) => {
+        const price = p.offerPrice || p.price
+        if (priceRange[0] > 0 && price < priceRange[0]) return false
+        if (priceRange[1] > 0 && price > priceRange[1]) return false
+        return true
+      })
+    }
+
+    if (selectedKarats && selectedKarats.length > 0) {
+      filtered = filtered.filter((p) => {
+        const productKarats = Array.isArray(p.karats) ? p.karats : []
+        return productKarats.some((k: number) => selectedKarats.includes(k))
+      })
+    }
+
+    if (onSale) {
+      filtered = filtered.filter((p) => p.offerPrice && p.offerPrice < p.price)
+    }
+
+    // Aplicar ordenamiento
     if (sortBy === 'name') {
       return [...filtered].sort((a, b) => a.description.localeCompare(b.description))
     } else if (sortBy === 'price-asc') {
@@ -51,7 +76,7 @@ export function Category({ category, sortBy = 'default' }: Props) {
     } else {
       return [...filtered].sort((a, b) => b.createdAt - a.createdAt)
     }
-  }, [category, sortBy, products.value])
+  }, [category, sortBy, priceRange, selectedKarats, onSale, products.value])
 
   if (!categoryData) return null
 

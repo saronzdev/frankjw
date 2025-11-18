@@ -110,7 +110,17 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
         <div className={styles.info}>
           <div>
             <span>Precio</span>
-            <strong>${product.price}</strong>
+            {product.hasDiscount && product.offerPrice ? (
+              <>
+                <div className={styles.priceOldRow}>
+                  <strong className={styles.oldPrice}>${product.price}</strong>
+                  <span className={styles.save}>-${(product.price - product.offerPrice).toFixed(2)}</span>
+                </div>
+                <strong>${product.offerPrice}</strong>
+              </>
+            ) : (
+              <strong>${product.price}</strong>
+            )}
           </div>
           {product.weight && (
             <div>
@@ -118,10 +128,10 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
               <strong>{product.weight} g</strong>
             </div>
           )}
-          {product.karats && (
+          {product.karats && product.karats.length > 0 && (
             <div>
               <span>Kilates</span>
-              <strong>{product.karats.join(' ')} K</strong>
+              <strong>{product.karats.join('K / ')}K</strong>
             </div>
           )}
         </div>

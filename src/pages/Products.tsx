@@ -1,19 +1,30 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { useRoute } from 'wouter'
 import { cats, error, loading } from '@/shared/signals'
-import { Category } from '@/components/Products/Category'
-import { SortSelect } from '@/components/Products/SortSelect'
-import { ErrorCard } from '@/components/Products/ErrorCard'
-import { LoadingCard } from '@/components/Products/LoadigCard'
+import { Category } from '@/components/products/Category'
+import { SortSelect } from '@/components/products/SortSelect'
+import { ProductFilters } from '@/components/products/ProductFilters'
+import { ErrorCard } from '@/components/products/ErrorCard'
+import { LoadingCard } from '@/components/products/LoadigCard'
 import { getErrorMessage, unslugify } from '@/shared/utils'
-import { NoProducts } from '@/components/Products/NoProducts'
+import { NoProducts } from '@/components/products/NoProducts'
 import styles from '@/styles/Products.module.css'
 
 export function Products() {
   const [_, params] = useRoute('/products/:category?')
   const categoryParam = params?.category || ''
   const [sortBy, setSortBy] = useState('default')
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 0])
+  const [selectedKarats, setSelectedKarats] = useState<number[]>([])
+  const [onSale, setOnSale] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const sortContainerRef = useRef<HTMLDivElement>(null)
+
+  const handleResetFilters = () => {
+    setPriceRange([0, 0])
+    setSelectedKarats([])
+    setOnSale(false)
+  }
 
   useEffect(() => {
     const updateStickyTop = () => {
@@ -53,16 +64,52 @@ export function Products() {
       {categories.length > 0 && (
         <div ref={sortContainerRef} className={styles.sortContainer}>
           <SortSelect value={sortBy} onChange={setSortBy} />
+          <button className={styles.filterButton} onClick={() => setFiltersOpen(true)}>
+            Filtros
+          </button>
         </div>
       )}
 
       <section className={styles.section}>
         <div className={styles.categoriesContainer}>
           {categories.map((category) => (
-            <Category key={category} category={category} sortBy={sortBy} />
+            <Category
+              key={category}
+              category={category}
+              sortBy={sortBy}
+              priceRange={priceRange}
+              selectedKarats={selectedKarats}
+              onSale={onSale}
+            />
           ))}
         </div>
       </section>
+
+      {/* Sidebar overlay */}
+      {filtersOpen && (
+        <>
+          <div className={styles.overlay} onClick={() => setFiltersOpen(false)} />
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarHeader}>
+              <h2 className={styles.sidebarTitle}>Filtros</h2>
+              <button className={styles.closeButton} onClick={() => setFiltersOpen(false)}>
+                ✕
+              </button>
+            </div>
+            <div className={styles.sidebarContent}>
+              <ProductFilters
+                priceRange={priceRange}
+                selectedKarats={selectedKarats}
+                onSale={onSale}
+                onPriceChange={setPriceRange}
+                onKaratsChange={setSelectedKarats}
+                onSaleChange={setOnSale}
+                onReset={handleResetFilters}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

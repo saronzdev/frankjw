@@ -1,4 +1,4 @@
-import { Social } from '@/components/Landing/Social'
+import { Social } from '@/components/landing/Social'
 import styles from '@/styles/Contact.module.css'
 
 export function Contact() {
