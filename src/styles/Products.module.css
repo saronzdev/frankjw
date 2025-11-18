@@ -33,6 +33,13 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filterButton svg {
+  flex-shrink: 0;
 }
 
 .filterButton:hover {

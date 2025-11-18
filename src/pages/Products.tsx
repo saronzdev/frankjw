@@ -8,6 +8,7 @@ import { ErrorCard } from '@/components/products/ErrorCard'
 import { LoadingCard } from '@/components/products/LoadigCard'
 import { getErrorMessage, unslugify } from '@/shared/utils'
 import { NoProducts } from '@/components/products/NoProducts'
+import filterIcon from '@/assets/filter.svg'
 import styles from '@/styles/Products.module.css'
 
 export function Products() {
@@ -65,6 +66,7 @@ export function Products() {
         <div ref={sortContainerRef} className={styles.sortContainer}>
           <SortSelect value={sortBy} onChange={setSortBy} />
           <button className={styles.filterButton} onClick={() => setFiltersOpen(true)}>
+            <img src={filterIcon} alt="Filter icon" height={18} width={18} />
             Filtros
           </button>
         </div>
