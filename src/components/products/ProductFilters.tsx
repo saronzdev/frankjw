@@ -1,4 +1,5 @@
 import styles from '@/styles/ProductFilters.module.css'
+import { commonKarats } from '@/shared/constants'
 
 interface Props {
   priceRange: [number, number]
@@ -9,8 +10,6 @@ interface Props {
   onSaleChange: (onSale: boolean) => void
   onReset: () => void
 }
-
-const commonKarats = [10, 14, 18, 24]
 
 export function ProductFilters({
   priceRange,
@@ -38,7 +37,6 @@ export function ProductFilters({
         </button>
       </div>
 
-      {/* Rango de precio */}
       <div className={styles.section}>
         <label className={styles.label}>Precio (USD)</label>
         <div className={styles.priceInputs}>

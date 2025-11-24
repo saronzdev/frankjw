@@ -21,6 +21,8 @@ import anillosh from '@/assets/anillosh.avif'
 import anilloscm from '@/assets/anilloscm.avif'
 import anillosch from '@/assets/anillosch.avif'
 
+export const commonKarats = [8, 10, 14, 18, 22]
+
 export const SELLERS: Seller[] = [
   {
     name: 'Zenia Pérez',
