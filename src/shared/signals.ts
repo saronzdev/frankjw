@@ -2,7 +2,7 @@ import { signal, computed } from '@preact/signals'
 import type { ProductType, Result } from '../types'
 import { getProductsSignals, isUserAdmin } from './fetching'
 import { MAX_RETRIES, INITIAL_BACKOFF_MS, delay, shouldRetry } from './utils'
-import { CATEGORIES } from './constants'
+import { CATEGORIES, HIDDEN_CATEGORY } from './constants'
 
 export const products = signal<ProductType[]>([])
 export const loading = signal(true)
@@ -51,6 +51,7 @@ checkAdmin()
 
 export const cats = computed(() => {
   const uniqueCategories = [...new Set(products.value.map((p) => p.category))]
+    .filter((cat) => cat !== HIDDEN_CATEGORY)
 
   return uniqueCategories
     .map((cat) => {
@@ -66,6 +67,7 @@ export const cats = computed(() => {
 
 export const mostRecents = computed(() =>
   [...products.value]
+    .filter((p) => p.category !== HIDDEN_CATEGORY)
     .sort((a, b) => {
       const dateComparison = b.createdAt - a.createdAt
       if (dateComparison !== 0) return dateComparison

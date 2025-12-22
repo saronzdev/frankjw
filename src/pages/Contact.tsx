@@ -1,4 +1,5 @@
 import { Social } from '@/components/landing/Social'
+import ws from '@/assets/ws.svg'
 import styles from '@/styles/Contact.module.css'
 
 export function Contact() {
@@ -64,11 +65,17 @@ export function Contact() {
                     </p>
                     <p>Matanzas, Cuba</p>
                   </div>
+                  <div className={styles.contactAddress} style={{ marginTop: '1rem' }}>
+                    <p>
+                      <strong>Calle San Benigno #169</strong> entre <strong>Vía Blanca</strong> y <strong>Serafines</strong>
+                    </p>
+                    <p>Cerro, Habana, Cuba</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div>
+          <div className={styles.socialColumn}>
             <h3 className={styles.socialTitle}>Síguenos en redes sociales</h3>
             <Social />
           </div>
@@ -111,7 +118,8 @@ export function Contact() {
             aria-label="Chatear por WhatsApp"
             title="Chatear por WhatsApp"
           >
-            Chatear por WhatsApp
+            <span>Chatear por WhatsApp</span>
+            <img src={ws} height={20} width={20} />
           </a>
         </div>
       </section>

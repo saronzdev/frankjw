@@ -4,7 +4,8 @@
 }
 
 .hero {
-  padding: 5rem 1rem;
+  padding: 6rem 1rem;
+  background: linear-gradient(to bottom, #f9fafb, #ffffff);
 }
 
 .heroContent {
@@ -24,7 +25,7 @@
 
 @media (min-width: 768px) {
   .heroTitle {
-    font-size: 3.75rem;
+    font-size: 4rem;
   }
 }
 
@@ -37,31 +38,34 @@
   line-height: 1.6;
 }
 
-@media (min-width: 768px) {
-  .heroDescription {
-    font-size: 1.5rem;
+.contactSection {
+  max-width: 72rem;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+}
+
+@media (min-width: 900px) {
+  .contactSection {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
   }
 }
 
-.contactSection {
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-}
-
 .contactInfo {
-  max-width: 32rem;
+  width: 100%;
 }
 
 .contactTitle {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 300;
-  text-align: center;
-  color: #000000;
-  margin-bottom: 1.5rem;
+  text-align: left;
+  color: #111827;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
 }
 
 .contactList {
@@ -73,42 +77,55 @@
 .contactItem {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.contactItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #e5e7eb;
 }
 
 .contactIcon {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
   background: #f3f4f6;
-  border-radius: 50%;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.contactIcon span {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .contactDetails h3 {
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #111827;
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.5rem 0;
 }
 
 .contactLink {
+  font-size: 1.1rem;
   color: #4b5563;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .contactLink:hover {
-  color: #111827;
+  color: #000000;
+  text-decoration: underline;
 }
 
 .contactAddress {
   color: #4b5563;
+  line-height: 1.6;
 }
 
 .contactAddress p {
@@ -120,102 +137,124 @@
   margin-bottom: 0;
 }
 
+.socialColumn {
+  background: #f9fafb;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .socialTitle {
-  font-size: 1.125rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 300;
   color: #111827;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .scheduleSection {
-  background: #f9fafb;
-  border-radius: 0.5rem;
-  padding: 2rem;
-  margin-bottom: 5rem;
+  background: #111827;
+  color: white;
+  padding: 5rem 1rem;
 }
 
 .scheduleHeader {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .scheduleTitle {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 300;
-  color: #111827;
+  color: white;
   margin-bottom: 1rem;
 }
 
 .scheduleDescription {
-  color: #4b5563;
+  color: #9ca3af;
+  font-size: 1.1rem;
 }
 
 .scheduleGrid {
+  max-width: 72rem;
+  margin: 0 auto;
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
+  grid-template-columns: repeat(1, 1fr);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .scheduleGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .scheduleGrid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .scheduleItem {
   text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .scheduleItem h3 {
+  font-size: 1.2rem;
   font-weight: 500;
-  color: #111827;
-  margin-bottom: 0.5rem;
+  color: white;
+  margin-bottom: 0.75rem;
 }
 
 .scheduleItem p {
-  color: #4b5563;
+  color: #d1d5db;
   margin: 0;
+  font-size: 1.1rem;
 }
 
 .ctaSection {
+  padding: 6rem 1rem;
   text-align: center;
-  margin: 0 1rem;
+  background: white;
 }
 
 .ctaTitle {
-  font-size: 1.875rem;
+  font-size: 2.5rem;
   font-weight: 300;
   color: #111827;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .ctaDescription {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: #4b5563;
-  margin-bottom: 2rem;
-  max-width: 32rem;
+  margin-bottom: 2.5rem;
+  max-width: 40rem;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
 }
 
 .ctaButton {
   display: inline-flex;
   align-items: center;
-  padding: 1rem 2rem;
-  background: #16a34a;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background: #25D366;
   color: white;
   border-radius: 9999px;
   text-decoration: none;
-  transition: background-color 0.2s ease;
-  font-weight: 500;
-  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px -1px rgba(37, 211, 102, 0.3);
 }
 
 .ctaButton:hover {
-  background: #15803d;
+  background: #128C7E;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(37, 211, 102, 0.4);
 }

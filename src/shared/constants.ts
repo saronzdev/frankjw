@@ -20,6 +20,9 @@ import anillosm from '@/assets/anillosm.avif'
 import anillosh from '@/assets/anillosh.avif'
 import anilloscm from '@/assets/anilloscm.avif'
 import anillosch from '@/assets/anillosch.avif'
+import sets from '@/assets/sets.avif'
+
+export const HIDDEN_CATEGORY = 'Componentes de Conjunto'
 
 export const commonKarats = [8, 10, 14, 18, 22]
 
@@ -32,7 +35,7 @@ export const SELLERS: Seller[] = [
   {
     name: 'Ariel Rivero',
     number: 5352501232,
-    location: 'Calle San Benigno/ Serafines y Vía Blanca, La Habana, Cuba'
+    location: 'San Benigno #169 entre Vía Blanca y Serafines, Cerro, Habana.'
   },
   {
     name: 'Frank Joyería',
@@ -142,6 +145,19 @@ export const CATEGORIES: Category[] = [
       'Diseños que rodean la muñeca con estilo y distinción. Nuestras pulseras y tobilleras unen delicadeza, brillo y personalidad, convirtiéndose en el detalle ideal para expresar quién eres.',
     img: pulseras,
     order: 9
+  },
+  {
+    title: 'Sets de joyas',
+    description:
+      'Nuestra selección de conjuntos reúne tus piezas favoritas en un solo lugar, cada set está diseñado para ofrecerte un look completo y equilibrado sin esfuerzo. Ya sea un dúo de collar y pendientes o un set completo de anillos, estas combinaciones están pensadas para elevar tu estilo diario con un toque de coherencia y tendencia.',
+    img: sets,
+    order: 10
+  },
+  {
+    title: HIDDEN_CATEGORY,
+    description: 'Productos individuales que forman parte de conjuntos.',
+    img: sets,
+    order: 999
   }
 ]
 
