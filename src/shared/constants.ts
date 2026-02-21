@@ -35,7 +35,7 @@ export const SELLERS: Seller[] = [
   {
     name: 'Ariel Rivero',
     number: 5352501232,
-    location: 'San Benigno #169 entre Vía Blanca y Serafines, Cerro, Habana.'
+    location: 'Calle San Benigno/ Serafines y Vía Blanca, La Habana, Cuba'
   },
   {
     name: 'Frank Joyería',
