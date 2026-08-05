@@ -45,15 +45,8 @@
 .shop {
   width: clamp(1rem, 3.2vw, 1.35rem);
   height: clamp(1rem, 3.2vw, 1.35rem);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-@media (hover: hover) {
-  .details:hover,
-  .shop:hover {
-    transform: scale(1.06);
-  }
+  display: block;
+  pointer-events: none;
 }
 
 .product {
@@ -173,6 +166,25 @@
   gap: 0.5rem;
   align-items: center;
   margin-left: auto;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+@media (hover: hover) {
+  .actionButton:hover {
+    transform: scale(1.06);
+    background: var(--color-surface-2);
+  }
 }
 
 .editActions {

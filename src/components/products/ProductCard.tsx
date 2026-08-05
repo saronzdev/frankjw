@@ -97,8 +97,22 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
         )}
         {!editable && (
           <div className={styles.actions}>
-            <img className={styles.shop} src={shop} onClick={toogleReserve} title="Reservar" />
-            <img className={styles.details} src={info} onClick={() => setIsOpen(true)} title="Ver detalles" />
+            <button
+              className={styles.actionButton}
+              onClick={toogleReserve}
+              title="Reservar"
+              aria-label={`Reservar ${data.productId}`}
+            >
+              <img className={styles.shop} src={shop} alt="" />
+            </button>
+            <button
+              className={styles.actionButton}
+              onClick={() => setIsOpen(true)}
+              title="Ver detalles"
+              aria-label={`Ver detalles de ${data.productId}`}
+            >
+              <img className={styles.details} src={info} alt="" />
+            </button>
           </div>
         )}
       </div>
