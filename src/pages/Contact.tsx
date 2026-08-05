@@ -1,4 +1,5 @@
-import { Social } from '@/components/Landing/Social'
+import { Social } from '@/components/landing/Social'
+import ws from '@/assets/ws.svg'
 import styles from '@/styles/Contact.module.css'
 
 export function Contact() {
@@ -64,11 +65,17 @@ export function Contact() {
                     </p>
                     <p>Matanzas, Cuba</p>
                   </div>
+                  <div className={styles.contactAddress} style={{ marginTop: '1rem' }}>
+                    <p>
+                      <strong>Calle San Benigno #169</strong> entre <strong>Vía Blanca</strong> y <strong>Serafines</strong>
+                    </p>
+                    <p>Cerro, Habana, Cuba</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div>
+          <div className={styles.socialColumn}>
             <h3 className={styles.socialTitle}>Síguenos en redes sociales</h3>
             <Social />
           </div>
@@ -83,11 +90,7 @@ export function Contact() {
 
         <div className={styles.scheduleGrid}>
           <div className={styles.scheduleItem}>
-            <h3>Lunes - Viernes</h3>
-            <p>9:00 AM - 6:00 PM</p>
-          </div>
-          <div className={styles.scheduleItem}>
-            <h3>Sábados</h3>
+            <h3>Lunes - Sábado</h3>
             <p>9:00 AM - 4:00 PM</p>
           </div>
           <div className={styles.scheduleItem}>
@@ -115,7 +118,8 @@ export function Contact() {
             aria-label="Chatear por WhatsApp"
             title="Chatear por WhatsApp"
           >
-            Chatear por WhatsApp
+            <span>Chatear por WhatsApp</span>
+            <img src={ws} height={20} width={20} />
           </a>
         </div>
       </section>

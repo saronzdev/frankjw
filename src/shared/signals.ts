@@ -2,6 +2,7 @@ import { signal, computed } from '@preact/signals'
 import type { ProductType, Result } from '../types'
 import { getProductsSignals, isUserAdmin } from './fetching'
 import { MAX_RETRIES, INITIAL_BACKOFF_MS, delay, shouldRetry } from './utils'
+import { CATEGORIES, HIDDEN_CATEGORY } from './constants'
 
 export const products = signal<ProductType[]>([])
 export const loading = signal(true)
@@ -48,23 +49,29 @@ async function checkAdmin() {
 getProducts()
 checkAdmin()
 
-export const cats = computed(() => [...new Set(products.value.map((p) => p.category))])
+export const cats = computed(() => {
+  const uniqueCategories = [...new Set(products.value.map((p) => p.category))]
+    .filter((cat) => cat !== HIDDEN_CATEGORY)
+
+  return uniqueCategories
+    .map((cat) => {
+      const categoryMeta = CATEGORIES.find((c) => c.title.toLowerCase().trim() === cat.toLowerCase().trim())
+      return {
+        name: cat,
+        order: categoryMeta?.order ?? 999
+      }
+    })
+    .sort((a, b) => a.order - b.order)
+    .map((c) => c.name)
+})
 
 export const mostRecents = computed(() =>
   [...products.value]
+    .filter((p) => p.category !== HIDDEN_CATEGORY)
     .sort((a, b) => {
       const dateComparison = b.createdAt - a.createdAt
       if (dateComparison !== 0) return dateComparison
       return b.id - a.id
-    })
-    .slice(0, 4)
-)
-
-export const bestSellers = computed(() =>
-  [...products.value]
-    .sort((a, b) => {
-      if (b.sales !== a.sales) return b.sales - a.sales
-      return b.createdAt - a.createdAt
     })
     .slice(0, 4)
 )

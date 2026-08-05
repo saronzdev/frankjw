@@ -12,10 +12,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.card:hover:not(.popup-open) {
-  border: 1px solid #d4af37;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
-  transform: translateY(-4px);
+@media (hover: hover) {
+  .card:hover:not(.popup-open) {
+    border: 1px solid #d4af37;
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+    transform: translateY(-4px);
+  }
 }
 
 .picture {
@@ -43,15 +45,8 @@
 .shop {
   width: clamp(1rem, 3.2vw, 1.35rem);
   height: clamp(1rem, 3.2vw, 1.35rem);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-@media (hover: hover) {
-  .details:hover,
-  .shop:hover {
-    transform: scale(1.06);
-  }
+  display: block;
+  pointer-events: none;
 }
 
 .product {
@@ -125,6 +120,19 @@
   gap: 10px;
 }
 
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .price {
   font-size: clamp(1rem, 2.4vw, 1.25rem);
   font-weight: 600;
@@ -133,11 +141,50 @@
   letter-spacing: 0.2px;
 }
 
+.originalPrice {
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  font-weight: 400;
+  margin: 0;
+  color: #999;
+  text-decoration: line-through;
+  letter-spacing: 0.2px;
+}
+
+.discount {
+  font-size: clamp(0.75rem, 1.6vw, 0.85rem);
+  font-weight: 600;
+  margin: 0;
+  color: #b91c1c;
+  background-color: #fecaca;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.2px;
+}
+
 .actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
   margin-left: auto;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+@media (hover: hover) {
+  .actionButton:hover {
+    transform: scale(1.06);
+    background: var(--color-surface-2);
+  }
 }
 
 .editActions {
@@ -163,8 +210,10 @@
   transition: background 0.15s ease;
 }
 
-.iconButton:hover {
-  background: #f5f5f5;
+@media (hover: hover) {
+  .iconButton:hover {
+    background: #f5f5f5;
+  }
 }
 
 .iconButton img {

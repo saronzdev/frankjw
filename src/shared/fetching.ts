@@ -42,24 +42,11 @@ export const login = async (email: string, password: string) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }
 
-export const increaseSales = async (id: number) => {
-  try {
-    await api.patch('products/sales/' + id)
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        console.log(data.code)
-      } else if (error.request) console.log(1000)
-      else console.log('Error')
-    }
-  }
-}
-
-//Admin
+// Product management functions
 export const createProduct = async (dataProduct: ProductIn) => {
   try {
     await api.post('products', dataProduct)
@@ -72,6 +59,7 @@ export const createProduct = async (dataProduct: ProductIn) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }
 
@@ -87,6 +75,7 @@ export const updateProduct = async (id: number, productData: ProductIn) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }
 
@@ -102,5 +91,6 @@ export const deleteProduct = async (id: number) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }

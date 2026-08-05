@@ -18,9 +18,11 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     category: product?.category ? normalize(product.category) : '',
     price: product?.price ?? '',
     weight: product?.weight ?? '',
-    karats: product?.karats.join(' ') ?? '',
+    karats: product?.karats ?? '',
     pictures: product?.pictures ?? ([] as string[]),
-    isActive: product?.isActive ?? true
+    isActive: product?.isActive ?? true,
+    hasDiscount: product?.hasDiscount ?? false,
+    offerPrice: product?.offerPrice ?? undefined
   }
   const [productData, setProductData] = useState<ProductIn>(newProduct as ProductIn)
   const [images, setImages] = useState<File[]>([])
@@ -86,14 +88,49 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
+
+    const karatsInput = productData.karats.toString().trim()
+    const karatValues = karatsInput
+      .split(/[,\s]+/)
+      .filter((v: string) => v.length > 0)
+      .map((v: string) => parseInt(v))
+
+    if (karatValues.length === 0) {
+      toast.error('Debe ingresar al menos un kilate')
+      return
+    }
+
+    if (karatValues.length > 2) {
+      toast.error('Solo puede ingresar 1 o 2 kilates')
+      return
+    }
+
+    for (const karat of karatValues) {
+      if (Number.isNaN(karat) || karat <= 0 || !Number.isInteger(karat)) {
+        toast.error(`"${karat}" no es un kilate válido. Debe ser un número entero positivo`)
+        return
+      }
+    }
+
+    if (productData.hasDiscount && productData.offerPrice) {
+      const normalPrice = Number(productData.price)
+      const offerPrice = Number(productData.offerPrice)
+
+      if (offerPrice >= normalPrice) {
+        toast.error('El precio de oferta debe ser menor al precio normal')
+        return
+      }
+    }
+
     const uploadPromises = images.map((file) => uploadFile(file))
     const uploadResults = await Promise.all(uploadPromises ?? [])
     const errors = uploadResults.filter((result) => typeof result !== 'string')
-    if (errors.length > 0) alert('Ha ocurrido un error al subir las imagenes')
+    if (errors.length > 0) toast.error('Ha ocurrido un error al subir las imagenes')
     const newImagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
 
     const newProduct: ProductIn = {
       ...productData,
+      karats: karatValues,
       pictures: [...newImagesUrls, ...imagesUrls]
     }
     onSave(newProduct)
@@ -192,12 +229,13 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 <input
                   name="karats"
                   type="text"
-                  value={productData.karats}
+                  value={Array.isArray(productData.karats) ? productData.karats.join(' ') : productData.karats}
                   onChange={handleInputChange}
                   required
                   className={styles.input}
-                  placeholder="0"
+                  placeholder="Ej: 18 o 18 24"
                 />
+                <p className={styles.helpText}>Ingresa 1 o 2 valores enteros separados por espacio o coma</p>
               </div>
             </div>
 
@@ -210,9 +248,39 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                   onChange={handleCheckboxChange}
                   className={styles.checkbox}
                 />
-                <span className={styles.checkboxLabel}>Producto disponible</span>
+                <span className={styles.checkboxLabel}>Disponible</span>
               </label>
-              <p className={styles.helpText}>Desmarca si el producto está agotado</p>
+              <p className={styles.helpText}>¿Está disponible?</p>
+            </div>
+
+            <div className={styles.fieldGroup}>
+              <label className={styles.checkboxContainer}>
+                <input
+                  type="checkbox"
+                  name="hasDiscount"
+                  checked={productData.hasDiscount}
+                  onChange={handleCheckboxChange}
+                  className={styles.checkbox}
+                />
+                <span className={styles.checkboxLabel}>Descuento</span>
+              </label>
+              <p className={styles.helpText}>¿Tiene descuento?</p>
+            </div>
+
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Precio de oferta (USD) *</label>
+              <input
+                type="number"
+                name="offerPrice"
+                value={productData.offerPrice}
+                onInput={handleInputChange}
+                required
+                min="0"
+                step="0.01"
+                className={styles.input}
+                placeholder="0.00"
+                disabled={!productData.hasDiscount}
+              />
             </div>
 
             <div className={styles.fieldGroup}>
@@ -231,7 +299,6 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 </div>
               )}
 
-              {/* Mostrar imágenes nuevas */}
               {images.length > 0 && (
                 <div className={styles.imageGrid}>
                   {images.map((image, index) => (
@@ -258,7 +325,6 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                 </div>
               )}
 
-              {/* Mostrar imágenes existentes */}
               {imagesUrls.length > 0 && (
                 <div className={styles.imageGrid}>
                   {imagesUrls.map((imageUrl, index) => (

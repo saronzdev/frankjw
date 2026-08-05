@@ -1,0 +1,147 @@
+import { useState, lazy, Suspense, createPortal } from 'preact/compat'
+import type { ProductType } from '@/types'
+import noImage from '@/assets/no-image.svg'
+import noStock from '@/assets/nostock.svg'
+import shop from '@/assets/shop.svg'
+import info from '@/assets/info.svg'
+import editIcon from '@/assets/edit.svg'
+import trashIcon from '@/assets/trash.svg'
+import styles from '@/styles/ProductCard.module.css'
+import { normalize, optimizeImage, buildSrcSet } from '@/shared/utils'
+
+const ProductPopup = lazy(() => import('./ProductPopup').then((m) => ({ default: m.ProductPopup })))
+const ReservePopup = lazy(() => import('../ReservePopup').then((m) => ({ default: m.ReservePopup })))
+
+interface Props {
+  data: ProductType
+  editable?: boolean
+  onEdit?: (product: ProductType) => void
+  onDelete?: (id: number) => void
+  allProducts?: ProductType[]
+  productIndex?: number
+}
+
+export function ProductCard({ data, editable = false, onEdit, onDelete, allProducts = [], productIndex = 0 }: Props) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+  const [currentProductIndex, setCurrentProductIndex] = useState(productIndex)
+  const [isReserve, setIsReserve] = useState(false)
+
+  const close = () => setIsOpen(false)
+
+  const handleNavigate = (newIndex: number) => {
+    setCurrentProductIndex(newIndex)
+  }
+
+  const currentProduct = allProducts.length > 0 ? allProducts[currentProductIndex] : data
+
+  const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
+  const name = normalize(data.description.split(',')[0])
+
+  const handleDelete = () => {
+    if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+      onDelete?.(data.id)
+    }
+  }
+
+  const toogleReserve = () => {
+    setIsReserve(!isReserve)
+  }
+
+  return (
+    <div className={`${styles.card} ${isOpen ? styles['popup-open'] : ''}`}>
+      <div className={styles.picture}>
+        {isLoading && (
+          <div className={styles.loadingSpinner} role="status" aria-label="Cargando imagen">
+            <div className={styles.spinner}></div>
+          </div>
+        )}
+        {!data.isActive && <img className={styles.status} src={noStock} />}
+        <img
+          className={styles.product}
+          src={optimizeImage(firstImage, 480)}
+          srcSet={buildSrcSet(firstImage)}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          onClick={() => setIsOpen(true)}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setIsLoading(false)}
+          onError={() => setIsLoading(false)}
+        />
+        {editable && (
+          <div className={styles.editActions}>
+            <button className={styles.iconButton} aria-label={`Editar ${data.productId}`} onClick={() => onEdit?.(data)}>
+              <img src={editIcon} alt="Edit Icon" />
+            </button>
+            <button className={styles.iconButton} aria-label={`Eliminar ${data.productId}`} onClick={handleDelete}>
+              <img src={trashIcon} alt="Trash Icon" />
+            </button>
+            <span className={styles.productId}>{data.productId}</span>
+          </div>
+        )}
+      </div>
+      <div>
+        <p className={styles.name}>{name}</p>
+      </div>
+      <div className={styles.footer}>
+        {data.hasDiscount && data.offerPrice ? (
+          <div className={styles.priceContainer}>
+            <div className={styles.priceRow}>
+              <p className={styles.originalPrice}>${data.price}</p>
+              <p className={styles.discount}>-${(data.price - data.offerPrice).toFixed(2)}</p>
+            </div>
+            <p className={styles.price}>${data.offerPrice}</p>
+          </div>
+        ) : (
+          <p className={styles.price}>${data.price}</p>
+        )}
+        {!editable && (
+          <div className={styles.actions}>
+            <button
+              className={styles.actionButton}
+              onClick={toogleReserve}
+              title="Reservar"
+              aria-label={`Reservar ${data.productId}`}
+            >
+              <img className={styles.shop} src={shop} alt="" />
+            </button>
+            <button
+              className={styles.actionButton}
+              onClick={() => setIsOpen(true)}
+              title="Ver detalles"
+              aria-label={`Ver detalles de ${data.productId}`}
+            >
+              <img className={styles.details} src={info} alt="" />
+            </button>
+          </div>
+        )}
+      </div>
+      {isOpen &&
+        createPortal(
+          <Suspense
+            fallback={
+              <div style="display:flex;align-items:center;justify-content:center;height:100vh;">
+                <div>Cargando...</div>
+              </div>
+            }
+          >
+            <ProductPopup
+              product={currentProduct}
+              onClose={close}
+              allProducts={allProducts}
+              currentIndex={currentProductIndex}
+              onNavigate={handleNavigate}
+            />
+          </Suspense>,
+          document.body
+        )}
+      {isReserve &&
+        createPortal(
+          <Suspense fallback={<div>Cargando...</div>}>
+            <ReservePopup data={data} onClose={toogleReserve} />
+          </Suspense>,
+          document.body
+        )}
+    </div>
+  )
+}

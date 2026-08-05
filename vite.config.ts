@@ -75,12 +75,12 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/.*/i,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
               cacheName: 'supabase-images',
               expiration: {
-                maxEntries: 400,
-                maxAgeSeconds: 30 * 24 * 60 * 60
+                maxEntries: 600,
+                maxAgeSeconds: 365 * 24 * 60 * 60
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -89,11 +89,11 @@ export default defineConfig({
           },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif)$/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
               cacheName: 'local-images',
               expiration: {
-                maxEntries: 200,
+                maxEntries: 100,
                 maxAgeSeconds: 365 * 24 * 60 * 60
               }
             }

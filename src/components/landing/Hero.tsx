@@ -1,4 +1,4 @@
-import { bestSellers, mostRecents } from '@/shared/signals'
+import { mostRecents } from '@/shared/signals'
 import { Link } from 'wouter'
 import { Carousel } from './Carousel'
 import styles from '@/styles/Hero.module.css'
@@ -53,7 +53,6 @@ export function Hero() {
       <section className={styles.carouselsSection}>
         <div className={styles.container}>
           <Carousel title="Últimos Productos" items={mostRecents.value} />
-          <Carousel title="Los Más Comprados" items={bestSellers.value} />
         </div>
       </section>
     </>

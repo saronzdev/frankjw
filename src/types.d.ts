@@ -4,10 +4,12 @@ export type ProductIn = {
   category: string
   price: number
   weight: number
-  karats: string
+  karats: number[]
   isActive: boolean
   pictures?: string[]
   sales: number
+  hasDiscount: boolean
+  offerPrice?: number
 }
 
 type Product = {
@@ -15,7 +17,9 @@ type Product = {
   createdAt: number
 }
 
-export type ProductType = Product & Omit<ProductIn, 'karats'> & { karats: string[] }
+export type ProductOut = Product & Omit<ProductIn, 'karats'> & { karats: string }
+
+export type ProductType = Product & Omit<ProductIn, 'karats'> & { karats: number[] }
 
 type ResultError = {
   error?: number
@@ -30,4 +34,16 @@ export interface LoginResponse {
     code?: number
   }
   status: number
+}
+export interface Seller {
+  name: string
+  number: number
+  location: string
+}
+
+export interface Category {
+  title: string
+  description: string
+  img: string
+  order: number
 }

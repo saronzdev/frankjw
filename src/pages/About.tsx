@@ -38,7 +38,7 @@ export function About() {
             </div>
             <div className={styles.imageContainer}>
               <img
-                src={logo || '/placeholder.svg'}
+                src={logo}
                 alt="Taller de joyería"
                 className={styles.companyImage}
                 width={375}
@@ -66,7 +66,7 @@ export function About() {
 
             <div className={styles.productCard}>
               <div className={styles.productIcon}>
-                <img src={diamond || '/placeholder.svg'} alt="Diamante" className={styles.productIconImage} loading="lazy" />
+                <img src={diamond} alt="Diamante" className={styles.productIconImage} loading="lazy" />
               </div>
               <h3 className={styles.productTitle}>Piezas con Gemas</h3>
               <p className={styles.productDescription}>Diamantes, esmeraldas, rubíes y zafiros</p>
@@ -74,12 +74,7 @@ export function About() {
 
             <div className={styles.productCard}>
               <div className={styles.productIcon}>
-                <img
-                  src={sparkles || '/placeholder.svg'}
-                  alt="Sparkles"
-                  className={styles.productIconImage}
-                  loading="lazy"
-                />
+                <img src={sparkles} alt="Sparkles" className={styles.productIconImage} loading="lazy" />
               </div>
               <h3 className={styles.productTitle}>Colecciones Exclusivas</h3>
               <p className={styles.productDescription}>Diseños para ocasiones especiales</p>
@@ -87,7 +82,7 @@ export function About() {
 
             <div className={styles.productCard}>
               <div className={styles.productIcon}>
-                <img src={palette || '/placeholder.svg'} alt="Palette" className={styles.productIconImage} loading="lazy" />
+                <img src={palette} alt="Palette" className={styles.productIconImage} loading="lazy" />
               </div>
               <h3 className={styles.productTitle}>Personalización</h3>
               <p className={styles.productDescription}>Joyas según tus preferencias únicas</p>

@@ -17,3 +17,11 @@ export async function uploadFile(file: File): Promise<string | { error: string }
   if (!data.publicUrl) return { error: 'Not Url' }
   return data.publicUrl
 }
+
+export async function deleteFile(url: string): Promise<{ ok: boolean; error?: string }> {
+  const bucket = 'pictures'
+  const path = url.split('/storage/v1/object/public/')[1]
+  const { error } = await supabase.storage.from(bucket).remove([path])
+  if (error) return { ok: false, error: error.cause as string }
+  return { ok: true }
+}

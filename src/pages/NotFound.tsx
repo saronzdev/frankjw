@@ -1,8 +1,12 @@
+import { useEffect } from 'preact/hooks'
 import { Link } from 'wouter'
 import styles from '@/styles/NotFound.module.css'
 
 export function NotFound() {
-  window.history.replaceState(null, '', '/404')
+  useEffect(() => {
+    window.history.replaceState(null, '', '/404')
+  }, [])
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
