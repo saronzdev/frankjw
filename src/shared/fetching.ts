@@ -59,6 +59,7 @@ export const createProduct = async (dataProduct: ProductIn) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }
 
@@ -74,6 +75,7 @@ export const updateProduct = async (id: number, productData: ProductIn) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }
 
@@ -89,5 +91,6 @@ export const deleteProduct = async (id: number) => {
       } else if (error.request) return { ok: false, error: 1000 }
       return { ok: false, error: 1 }
     }
+    return { ok: false, error: 1 }
   }
 }

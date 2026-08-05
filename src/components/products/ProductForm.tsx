@@ -125,7 +125,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     const uploadPromises = images.map((file) => uploadFile(file))
     const uploadResults = await Promise.all(uploadPromises ?? [])
     const errors = uploadResults.filter((result) => typeof result !== 'string')
-    if (errors.length > 0) alert('Ha ocurrido un error al subir las imagenes')
+    if (errors.length > 0) toast.error('Ha ocurrido un error al subir las imagenes')
     const newImagesUrls = uploadResults.filter((url): url is string => typeof url === 'string')
 
     const newProduct: ProductIn = {
