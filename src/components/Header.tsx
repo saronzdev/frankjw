@@ -1,27 +1,15 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { MobileSidebar } from './MobileSidebar'
 import { Link, useLocation } from 'wouter'
+import { ProductDropdown, DropdownIcon } from './products/ProductDropdown'
 import Menu from '@/assets/menu.svg'
-import down from '@/assets/down.svg'
-import { menuItems, titles, normalize, slugify } from '@/shared/utils'
-import { isAdmin, cats } from '@/shared/signals'
+import { menuItems, titles } from '@/shared/utils'
+import { isAdmin } from '@/shared/signals'
 import styles from '@/styles/Header.module.css'
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [location] = useLocation()
-  const dropdownRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) {
-        setIsDropdownOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
 
   return (
     <>
@@ -38,39 +26,25 @@ export function Header() {
               {menuItems.map((item) => {
                 if (item.href === '/products') {
                   return (
-                    <div key={item.href} className={styles.productsDropdown} ref={dropdownRef}>
-                      <button
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className={`${styles.navLink} ${styles.productsTrigger} ${isDropdownOpen ? styles.open : ''}`}
-                        aria-expanded={isDropdownOpen}
-                        aria-haspopup="true"
-                      >
-                        {item.label}
-                        <img
-                          src={down}
-                          alt=""
-                          className={`${styles.dropdownIcon} ${isDropdownOpen ? styles.rotated : ''}`}
-                        />
-                      </button>
-
-                      {isDropdownOpen && (
-                        <div className={styles.dropdown}>
-                          <ul className={styles.dropdownList}>
-                            {cats.value.map((category) => (
-                              <li key={category} className={styles.dropdownItem}>
-                                <Link
-                                  to={`/products/${slugify(category)}`}
-                                  className={styles.dropdownLink}
-                                  onClick={() => setIsDropdownOpen(false)}
-                                >
-                                  {normalize(category)}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                    <ProductDropdown
+                      key={item.href}
+                      className={styles.productsDropdown}
+                      trigger={(toggle, isOpen) => (
+                        <button
+                          onClick={toggle}
+                          className={`${styles.navLink} ${styles.productsTrigger} ${isOpen ? styles.open : ''}`}
+                          aria-expanded={isOpen}
+                          aria-haspopup="true"
+                        >
+                          {item.label}
+                          <img
+                            src={DropdownIcon}
+                            alt=""
+                            className={`${styles.dropdownIcon} ${isOpen ? styles.rotated : ''}`}
+                          />
+                        </button>
                       )}
-                    </div>
+                    />
                   )
                 }
 
@@ -79,6 +53,7 @@ export function Header() {
                     key={item.href}
                     to={item.href}
                     aria-label={`Ir a ${item.label}`}
+                    aria-current={location === item.href ? 'page' : undefined}
                     className={
                       item.href === '/dashboard' ? (isAdmin.value ? styles.dashboardLink : styles.hidden) : styles.navLink
                     }

@@ -1,6 +1,6 @@
 import { isAdmin } from '@/shared/signals'
 import { Redirect } from 'wouter'
-import { LoadingCard } from './products/LoadigCard'
+import { LoadingCard } from './products/LoadingCard'
 import type { ComponentType } from 'preact'
 
 export function ProtectedRoute({ component: Component }: { component: ComponentType }) {
