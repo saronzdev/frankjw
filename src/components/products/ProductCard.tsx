@@ -7,7 +7,7 @@ import info from '@/assets/info.svg'
 import editIcon from '@/assets/edit.svg'
 import trashIcon from '@/assets/trash.svg'
 import styles from '@/styles/ProductCard.module.css'
-import { normalize } from '@/shared/utils'
+import { normalize, optimizeImage, buildSrcSet } from '@/shared/utils'
 
 const ProductPopup = lazy(() => import('./ProductPopup').then((m) => ({ default: m.ProductPopup })))
 const ReservePopup = lazy(() => import('../ReservePopup').then((m) => ({ default: m.ReservePopup })))
@@ -59,9 +59,12 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
         {!data.isActive && <img className={styles.status} src={noStock} />}
         <img
           className={styles.product}
-          src={firstImage || noImage}
+          src={optimizeImage(firstImage, 480)}
+          srcSet={buildSrcSet(firstImage)}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           onClick={() => setIsOpen(true)}
           loading="lazy"
+          decoding="async"
           onLoad={() => setIsLoading(false)}
           onError={() => setIsLoading(false)}
         />
