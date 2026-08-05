@@ -51,8 +51,81 @@ export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+const SUPABASE_CDN = '/storage/v1/object/public/'
+
+/** Devuelve la URL de Supabase transformada a un ancho/calidad dados, o la original si no es de Supabase. */
+export function optimizeImage(url: string, width: number, quality = 60): string {
+  if (!url.includes(SUPABASE_CDN)) return url
+  return `${url}?width=${width}&quality=${quality}`
+}
+
+/** Genera un atributo srcSet responsive para imágenes de Supabase (grid/thumbnails). */
+export function buildSrcSet(url: string): string | undefined {
+  if (!url.includes(SUPABASE_CDN)) return undefined
+  return [320, 480, 640, 800].map((w) => `${optimizeImage(url, w)} ${w}w`).join(', ')
+}
+
 export function shouldRetry(errorCode?: number) {
   return errorCode === 1000 || errorCode === 1 || errorCode === 3001 || errorCode === 3002
+}
+
+export interface ProductFilterState {
+  sortBy?: string
+  priceRange?: [number, number]
+  selectedKarats?: number[]
+  onSale?: boolean
+}
+
+/** Filtra y ordena productos aplicando las mismas reglas que la vista de Products. */
+export function filterAndSortProducts(list: ProductType[], filters: ProductFilterState): ProductType[] {
+  const { sortBy = 'default', priceRange, selectedKarats = [], onSale = false } = filters
+
+  let filtered = list
+
+  if (priceRange && (priceRange[0] > 0 || priceRange[1] > 0)) {
+    filtered = filtered.filter((p) => {
+      const price = p.offerPrice || p.price
+      if (priceRange[0] > 0 && price < priceRange[0]) return false
+      if (priceRange[1] > 0 && price > priceRange[1]) return false
+      return true
+    })
+  }
+
+  if (selectedKarats.length > 0) {
+    filtered = filtered.filter((p) => {
+      const productKarats = Array.isArray(p.karats) ? p.karats : []
+      return productKarats.some((k: number) => selectedKarats.includes(k))
+    })
+  }
+
+  if (onSale) {
+    filtered = filtered.filter((p) => p.offerPrice && p.offerPrice < p.price)
+  }
+
+  const sorted = [...filtered]
+
+  if (sortBy === 'name') {
+    sorted.sort((a, b) => a.description.localeCompare(b.description))
+  } else if (sortBy === 'price-asc') {
+    sorted.sort((a, b) => a.price - b.price)
+  } else if (sortBy === 'price-desc') {
+    sorted.sort((a, b) => b.price - a.price)
+  } else if (sortBy === 'weight') {
+    sorted.sort((a, b) => {
+      const weightA = Number(a.weight)
+      const weightB = Number(b.weight)
+
+      if (isNaN(weightA) && isNaN(weightB)) return 0
+      if (isNaN(weightA)) return 1
+      if (isNaN(weightB)) return -1
+
+      return weightB - weightA
+    })
+  } else {
+    sorted.sort((a, b) => b.createdAt - a.createdAt)
+  }
+
+  return sorted
 }
 
 export {

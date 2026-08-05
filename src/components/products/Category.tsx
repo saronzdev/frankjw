@@ -3,7 +3,7 @@ import { ProductCard } from './ProductCard'
 import { CategoryHeader } from './CategoryHeader'
 import { products } from '@/shared/signals'
 import styles from '@/styles/Category.module.css'
-import { CATEGORIES, slugify } from '@/shared/utils'
+import { CATEGORIES, slugify, filterAndSortProducts } from '@/shared/utils'
 
 interface Props {
   category: string
@@ -32,51 +32,10 @@ export function Category({ category, sortBy = 'default', priceRange, selectedKar
   const matchProducts = useMemo(() => {
     if (!categoryData) return []
 
-    let filtered = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
+    const filtered = products.value.filter((p) => p.category.toLowerCase().trim() === category.toLowerCase().trim())
 
-    // Aplicar filtros
-    if (priceRange && (priceRange[0] > 0 || priceRange[1] > 0)) {
-      filtered = filtered.filter((p) => {
-        const price = p.offerPrice || p.price
-        if (priceRange[0] > 0 && price < priceRange[0]) return false
-        if (priceRange[1] > 0 && price > priceRange[1]) return false
-        return true
-      })
-    }
-
-    if (selectedKarats && selectedKarats.length > 0) {
-      filtered = filtered.filter((p) => {
-        const productKarats = Array.isArray(p.karats) ? p.karats : []
-        return productKarats.some((k: number) => selectedKarats.includes(k))
-      })
-    }
-
-    if (onSale) {
-      filtered = filtered.filter((p) => p.offerPrice && p.offerPrice < p.price)
-    }
-
-    // Aplicar ordenamiento
-    if (sortBy === 'name') {
-      return [...filtered].sort((a, b) => a.description.localeCompare(b.description))
-    } else if (sortBy === 'price-asc') {
-      return [...filtered].sort((a, b) => a.price - b.price)
-    } else if (sortBy === 'price-desc') {
-      return [...filtered].sort((a, b) => b.price - a.price)
-    } else if (sortBy === 'weight') {
-      return [...filtered].sort((a, b) => {
-        const weightA = Number(a.weight)
-        const weightB = Number(b.weight)
-
-        if (isNaN(weightA) && isNaN(weightB)) return 0
-        if (isNaN(weightA)) return 1
-        if (isNaN(weightB)) return -1
-
-        return weightB - weightA
-      })
-    } else {
-      return [...filtered].sort((a, b) => b.createdAt - a.createdAt)
-    }
-  }, [category, sortBy, priceRange, selectedKarats, onSale, products.value])
+    return filterAndSortProducts(filtered, { sortBy, priceRange, selectedKarats, onSale })
+  }, [category, categoryData, sortBy, priceRange, selectedKarats, onSale, products.value])
 
   if (!categoryData) return null
 
