@@ -60,9 +60,9 @@ export function optimizeImage(url: string, width: number, quality = 60): string 
 }
 
 /** Genera un atributo srcSet responsive para imágenes de Supabase (grid/thumbnails). */
-export function buildSrcSet(url: string): string | undefined {
+export function buildSrcSet(url: string, widths: number[] = [320, 480, 640, 800]): string | undefined {
   if (!url.includes(SUPABASE_CDN)) return undefined
-  return [320, 480, 640, 800].map((w) => `${optimizeImage(url, w)} ${w}w`).join(', ')
+  return widths.map((w) => `${optimizeImage(url, w)} ${w}w`).join(', ')
 }
 
 export function shouldRetry(errorCode?: number) {

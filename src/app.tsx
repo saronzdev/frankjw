@@ -1,10 +1,8 @@
-import { lazy, Suspense } from 'preact/compat'
+import { lazy, Suspense, useEffect, useState } from 'preact/compat'
 import { Route, Switch } from 'wouter'
 import { Header } from './components/Header'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LoadingCard } from './components/products/LoadingCard'
-import { SpeedInsights } from '@vercel/speed-insights/react'
-import { Analytics } from '@vercel/analytics/react'
 
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })))
 const Products = lazy(() => import('./pages/Products').then((m) => ({ default: m.Products })))
@@ -14,11 +12,32 @@ const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.C
 const Login = lazy(() => import('./pages/Login').then((m) => ({ default: m.Login })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 
+const SpeedInsights = lazy(() => import('@vercel/speed-insights/react').then((m) => ({ default: m.SpeedInsights })))
+const Analytics = lazy(() => import('@vercel/analytics/react').then((m) => ({ default: m.Analytics })))
+
+function ThirdPartyScripts() {
+  const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    if (!import.meta.env.PROD) return
+    const t = window.setTimeout(() => setEnabled(true), 3000)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  if (!enabled) return null
+
+  return (
+    <Suspense fallback={null}>
+      <SpeedInsights />
+      <Analytics />
+    </Suspense>
+  )
+}
+
 export function App() {
   return (
     <>
-      <SpeedInsights />
-      <Analytics />
+      <ThirdPartyScripts />
       <Header />
       <Suspense fallback={<LoadingCard />}>
         <Switch>

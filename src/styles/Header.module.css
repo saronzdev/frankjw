@@ -2,11 +2,10 @@
   position: sticky;
   top: 0;
   z-index: 30;
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-bottom: 1px solid var(--color-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--header-bg);
+  color: var(--header-text);
+  border-bottom: 1px solid var(--header-border);
+  backdrop-filter: blur(4px);
 }
 
 .container {
@@ -19,22 +18,39 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.875rem 0;
-  gap: 1rem;
+  padding: 0.625rem 0;
 }
 
 .menuButton {
   display: block;
-  padding: 0.5rem;
-  border-radius: var(--radius-sm);
-  transition: background 0.2s ease;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.menuButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--header-sheen);
+  transition: left 0.6s ease;
+}
+
+.menuButton:hover::before {
+  left: 100%;
 }
 
 .menuButton:hover {
-  background: var(--color-surface-2);
+  background: linear-gradient(to right, rgba(202, 138, 4, 0.2), rgba(31, 41, 55, 0.2));
+  transform: scale(1.05);
 }
 
 .menuIcon {
@@ -44,69 +60,121 @@
 
 .title {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-size: 1.75rem;
+  margin-left: -0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   flex: 1;
   text-align: center;
-  color: var(--color-text);
-  margin: 0;
+  background: var(--header-title-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  text-shadow: var(--header-shadow);
+  background-size: 200% 200%;
+  animation: goldShimmer 4s ease-in-out infinite;
+  line-height: 1.15;
+  position: relative;
 }
 
-@media (max-width: 640px) {
-  .title {
-    font-size: 1.3rem;
-  }
+.title::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+  opacity: 0.7;
 }
+
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@media (min-width: 768px) { .title { font-size: 2rem; } }
+@media (min-width: 1024px) { .title { font-size: 2.25rem; } }
 
 .nav {
   display: none;
   align-items: center;
-  gap: 0.25rem;
-}
-
-/* Desktop */
-@media (min-width: 1024px) {
-  .container {
-    padding: 0 1.5rem;
-  }
+  gap: 0.5rem;
 }
 
 .navLink {
   font-family: var(--font-sans);
-  color: var(--color-muted);
+  color: var(--header-text);
   padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
+  border-radius: 0.5rem;
   font-weight: 500;
   font-size: 0.95rem;
   text-decoration: none;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  letter-spacing: 0.025em;
   position: relative;
+  overflow: hidden;
 }
+
+.navLink::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--header-sheen-pale);
+  transition: left 0.5s ease;
+}
+
+.navLink:hover::before { left: 100%; }
 
 .navLink:hover {
-  color: var(--color-text);
-  background: var(--color-surface-2);
-}
-
-.navLink[aria-current] {
-  color: var(--color-gold);
+  color: #fef3c7;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05) translateY(-1px);
+  text-shadow: var(--header-shadow);
 }
 
 .dashboardLink {
   font-family: var(--font-sans);
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--header-btn-gradient);
+  color: #000000;
   padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
+  border-radius: 0.5rem;
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  box-shadow: var(--header-btn-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
+.dashboardLink::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--header-sheen-light);
+  transition: left 0.6s ease;
+}
+
+.dashboardLink:hover::before { left: 100%; }
+
 .dashboardLink:hover {
-  opacity: 0.85;
+  background: var(--header-btn-gradient-hover);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: var(--header-btn-shadow-hover);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .hidden { display: none; }
@@ -130,6 +198,7 @@
   width: 0.75rem;
   height: 0.75rem;
   transition: transform 0.2s ease;
+  filter: brightness(0) invert(1);
 }
 
 .dropdownIcon.rotated { transform: rotate(180deg); }
