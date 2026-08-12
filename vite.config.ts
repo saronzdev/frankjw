@@ -13,7 +13,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: false // Desactiva SW en desarrollo para evitar conflictos
+        enabled: false
       },
       includeAssets: ['favicon.ico', 'logo.webp', '*.png', '*.svg', '*.avif'],
       manifest: {
