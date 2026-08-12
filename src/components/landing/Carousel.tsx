@@ -6,6 +6,7 @@ import right from '@/assets/right.svg'
 import left from '@/assets/left.svg'
 import styles from '@/styles/Carousel.module.css'
 import { Link } from 'wouter'
+import { optimizeImage, buildSrcSet } from '@/shared/utils'
 
 interface Props {
   title: string
@@ -47,7 +48,15 @@ export function Carousel({ title, items }: Props) {
           <div className={styles.track} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
             {products.map((p) => (
               <div key={p.id} className={styles.slide}>
-                <img src={p.pictures} alt={p.productId} className={styles.image} loading="lazy" />
+                <img
+                  src={optimizeImage(p.pictures, 1200)}
+                  srcSet={buildSrcSet(p.pictures, [480, 800, 1200, 1600])}
+                  sizes="(min-width: 1024px) 1200px, 90vw"
+                  alt={p.productId}
+                  className={styles.image}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className={styles.overlay} />
                 <div className={styles.content}>
                   <Link to={`/products/${p.category?.toLowerCase().replace(/\s+/g, '-')}`} className={styles.button}>

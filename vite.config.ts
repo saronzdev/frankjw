@@ -71,16 +71,17 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,avif}'],
+        globPatterns: ['**/*.{js,css,html,json,ico,png,svg,webp,avif}'],
+        navigateFallback: '/index.html',
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/.*/i,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'supabase-images',
               expiration: {
                 maxEntries: 600,
-                maxAgeSeconds: 365 * 24 * 60 * 60
+                maxAgeSeconds: 30 * 24 * 60 * 60
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -95,6 +96,17 @@ export default defineConfig({
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 365 * 24 * 60 * 60
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/frankjw-api\.vercel\.app\/api\/v1\/.*/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'api',
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 60 * 60
               }
             }
           }
