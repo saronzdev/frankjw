@@ -75,6 +75,21 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           {
+            urlPattern: /^https:\/\/frankjw-api\.vercel\.app\/api\/v1\/products$/i,
+            handler: 'StaleWhileRevalidate',
+            method: 'GET',
+            options: {
+              cacheName: 'products',
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
             urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/.*/i,
             handler: 'StaleWhileRevalidate',
             options: {
@@ -96,17 +111,6 @@ export default defineConfig({
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 365 * 24 * 60 * 60
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/frankjw-api\.vercel\.app\/api\/v1\/.*/i,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'api',
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60
               }
             }
           }
