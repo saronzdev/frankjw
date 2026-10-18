@@ -40,6 +40,15 @@ export const login = async (email: string, password: string) => {
   }
 }
 
+export const logoutRequest = async () => {
+  try {
+    await api.post('auth/logout')
+    return { ok: true, error: null }
+  } catch (error: unknown) {
+    return { ok: false, error: getErrorCode(error) }
+  }
+}
+
 export const createProduct = async (dataProduct: ProductIn) => {
   try {
     await api.post('products', dataProduct)

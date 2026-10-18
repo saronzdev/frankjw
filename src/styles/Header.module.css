@@ -179,6 +179,27 @@
 
 .hidden { display: none; }
 
+.logoutButton {
+  font-family: var(--font-sans);
+  background: none;
+  border: 1px solid var(--header-border);
+  color: var(--header-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logoutButton:hover {
+  color: #fef3c7;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fbbf24;
+  transform: scale(1.05);
+}
+
 /* Dropdown de productos */
 .productsDropdown {
   position: relative;

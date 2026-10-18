@@ -1,7 +1,8 @@
 import { menuItemsMobile } from '@/shared/utils'
 import { ProductDropdown, DropdownIcon } from './products/ProductDropdown'
 import X from '@/assets/close.svg'
-import { Link } from 'wouter'
+import { Link, useLocation } from 'wouter'
+import { logout } from '@/shared/signals'
 import styles from '@/styles/MobileSidebar.module.css'
 
 interface Props {
@@ -12,6 +13,13 @@ interface Props {
 
 export function MobileSidebar({ isOpen, isAdmin, toggle }: Props) {
   const year = new Date().getFullYear()
+  const [, setLocation] = useLocation()
+
+  const handleLogout = async () => {
+    await logout()
+    setLocation('/')
+    toggle()
+  }
 
   return (
     <>
@@ -78,6 +86,11 @@ export function MobileSidebar({ isOpen, isAdmin, toggle }: Props) {
         </nav>
 
         <div className={styles.footer}>
+          {isAdmin && (
+            <button onClick={handleLogout} className={styles.logoutButton} aria-label="Cerrar sesión">
+              Cerrar sesión
+            </button>
+          )}
           <p className={styles.footerText}>© {year} Frank Joyería</p>
         </div>
       </div>

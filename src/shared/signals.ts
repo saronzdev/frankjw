@@ -1,6 +1,6 @@
 import { signal, computed } from '@preact/signals'
 import type { ProductType } from '../types'
-import { getProductsSignals, isUserAdmin } from './fetching'
+import { getProductsSignals, isUserAdmin, logoutRequest } from './fetching'
 import { MAX_RETRIES, INITIAL_BACKOFF_MS, delay, shouldRetry } from './utils'
 import { CATEGORIES, HIDDEN_CATEGORY } from './constants'
 
@@ -78,3 +78,9 @@ export const mostRecents = computed(() =>
 
 export const refreshProducts = async () => await getProducts()
 export const refreshRole = async () => await checkAdmin()
+
+export const logout = async () => {
+  await logoutRequest()
+  localStorage.removeItem('logged')
+  isAdmin.value = false
+}

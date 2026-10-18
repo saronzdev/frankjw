@@ -4,12 +4,17 @@ import { Link, useLocation } from 'wouter'
 import { ProductDropdown, DropdownIcon } from './products/ProductDropdown'
 import Menu from '@/assets/menu.svg'
 import { menuItems, titles } from '@/shared/utils'
-import { isAdmin } from '@/shared/signals'
+import { isAdmin, logout } from '@/shared/signals'
 import styles from '@/styles/Header.module.css'
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const [location] = useLocation()
+  const [location, setLocation] = useLocation()
+
+  const handleLogout = async () => {
+    await logout()
+    setLocation('/')
+  }
 
   return (
     <>
@@ -62,6 +67,11 @@ export function Header() {
                   </Link>
                 )
               })}
+              {isAdmin.value && (
+                <button onClick={handleLogout} className={styles.logoutButton} aria-label="Cerrar sesión">
+                  Salir
+                </button>
+              )}
             </nav>
           </div>
         </div>
