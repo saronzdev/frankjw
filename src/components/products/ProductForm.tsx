@@ -130,6 +130,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
 
     const newProduct: ProductIn = {
       ...productData,
+      weight: Number(String(productData.weight).replace(',', '.')) || 0,
       karats: karatValues,
       pictures: [...newImagesUrls, ...imagesUrls]
     }
