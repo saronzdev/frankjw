@@ -1,7 +1,23 @@
 {
   "name": "app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Frontend of Frank Jewelry",
+  "keywords": [
+    "preact",
+    "typescript",
+    "vite",
+    "pwa",
+    "ecommerce",
+    "jewelry"
+  ],
+  "author": "saronzdev",
+  "license": "GPL-3.0",
+  "homepage": "https://frankjoyeriacuba.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saronzdev/frankjw.git"
+  },
   "type": "module",
   "packageManager": "pnpm@12.14.0",
   "scripts": {
