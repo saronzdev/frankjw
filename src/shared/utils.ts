@@ -5,7 +5,7 @@ import { CATEGORIES } from './constants'
 export const handleReservation = async (number: number, product: Omit<ProductType, 'pictures'>) => {
   const message = `Hola! Me interesa reservar: ${product.description} - ID: ${product.productId} - Número: ${number}`
   const whatsappUrl = `https://wa.me/${number.toString()}?text=${encodeURIComponent(message)}`
-  window.open(whatsappUrl, '_blank')
+  window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
 }
 
 const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'

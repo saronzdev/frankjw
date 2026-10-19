@@ -26,6 +26,7 @@ export function Carousel({ title, items }: Props) {
   })
 
   useEffect(() => {
+    if (items.length === 0) return
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % items.length)
     }, 4000)

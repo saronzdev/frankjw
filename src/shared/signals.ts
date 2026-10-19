@@ -1,6 +1,6 @@
 import { signal, computed } from '@preact/signals'
-import type { ProductType, Result } from '../types'
-import { getProductsSignals, isUserAdmin } from './fetching'
+import type { ProductType } from '../types'
+import { getProductsSignals, isUserAdmin, logoutRequest } from './fetching'
 import { MAX_RETRIES, INITIAL_BACKOFF_MS, delay, shouldRetry } from './utils'
 import { CATEGORIES, HIDDEN_CATEGORY } from './constants'
 
@@ -14,19 +14,19 @@ async function getProducts() {
   error.value = 0
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const result = (await getProductsSignals()) as Result
+    const result = await getProductsSignals()
 
-    if (!(result as any).error) {
+    if (Array.isArray(result)) {
       products.value = result
       loading.value = false
       return
     }
 
-    const errorCode = (result as any).error as number | undefined
+    const errorCode = result.error
 
     const isLastAttempt = attempt === MAX_RETRIES
     if (!shouldRetry(errorCode) || isLastAttempt) {
-      error.value = errorCode ?? 1
+      error.value = errorCode
       loading.value = false
       return
     }
@@ -78,3 +78,9 @@ export const mostRecents = computed(() =>
 
 export const refreshProducts = async () => await getProducts()
 export const refreshRole = async () => await checkAdmin()
+
+export const logout = async () => {
+  await logoutRequest()
+  localStorage.removeItem('logged')
+  isAdmin.value = false
+}

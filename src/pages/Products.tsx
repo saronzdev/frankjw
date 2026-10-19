@@ -55,10 +55,8 @@ export function Products() {
   const categories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
 
   if (loading.value) return <LoadingCard />
-  if (error.value > 0) {
-    if (error.value === 1101) return <NoProducts hasProducts={false} />
-    return <ErrorCard message={getErrorMessage(error.value)} />
-  }
+  if (error.value > 0) return <ErrorCard message={getErrorMessage(error.value)} />
+  if (categories.length === 0) return <NoProducts hasProducts={false} />
 
   return (
     <div className={styles.container}>

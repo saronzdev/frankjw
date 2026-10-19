@@ -2,64 +2,59 @@ import type { ProductType, ProductIn } from '../types'
 import { AxiosError } from 'axios'
 import { api } from './utils'
 
+const UNKNOWN_ERROR = 1
+const NETWORK_ERROR = 1000
+
+const getErrorCode = (error: unknown): number => {
+  if (error instanceof AxiosError) {
+    if (error.response) return (error.response.data as { code?: number })?.code ?? UNKNOWN_ERROR
+    if (error.request) return NETWORK_ERROR
+  }
+  return UNKNOWN_ERROR
+}
+
 export const isUserAdmin = async () => {
   try {
-    const { data } = await api.get('auth/me')
+    const { data } = await api.get<{ role?: string }>('auth/me')
     return data.role === 'admin'
   } catch {
     return false
   }
 }
 
-export const getProductsSignals = async () => {
+export const getProductsSignals = async (): Promise<ProductType[] | { error: number }> => {
   try {
-    const { data }: { data: ProductType[] } = await api.get('products')
+    const { data } = await api.get<ProductType[]>('products')
     return data.map((p) => ({ ...p, isActive: Boolean(p.isActive) }))
-  } catch (error: any) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        return { error: data.code }
-      } else if (error.request) {
-        return { error: 1000 }
-      } else {
-        return { error: 1 }
-      }
-    }
+  } catch (error: unknown) {
+    return { error: getErrorCode(error) }
   }
 }
 
 export const login = async (email: string, password: string) => {
   try {
-    const auth = { email, password }
-    await api.post('auth/login', auth)
+    await api.post('auth/login', { email, password })
     return { ok: true, error: null }
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        return { ok: false, error: data.code }
-      } else if (error.request) return { ok: false, error: 1000 }
-      return { ok: false, error: 1 }
-    }
-    return { ok: false, error: 1 }
+    return { ok: false, error: getErrorCode(error) }
   }
 }
 
-// Product management functions
+export const logoutRequest = async () => {
+  try {
+    await api.post('auth/logout')
+    return { ok: true, error: null }
+  } catch (error: unknown) {
+    return { ok: false, error: getErrorCode(error) }
+  }
+}
+
 export const createProduct = async (dataProduct: ProductIn) => {
   try {
     await api.post('products', dataProduct)
     return { ok: true, error: null }
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        return { ok: false, error: data.code }
-      } else if (error.request) return { ok: false, error: 1000 }
-      return { ok: false, error: 1 }
-    }
-    return { ok: false, error: 1 }
+    return { ok: false, error: getErrorCode(error) }
   }
 }
 
@@ -68,14 +63,7 @@ export const updateProduct = async (id: number, productData: ProductIn) => {
     await api.put(`products/${id}`, productData)
     return { ok: true, error: null }
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        return { ok: false, error: data.code }
-      } else if (error.request) return { ok: false, error: 1000 }
-      return { ok: false, error: 1 }
-    }
-    return { ok: false, error: 1 }
+    return { ok: false, error: getErrorCode(error) }
   }
 }
 
@@ -84,13 +72,6 @@ export const deleteProduct = async (id: number) => {
     await api.delete(`products/${id}`)
     return { ok: true, error: null }
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        const { data } = error.response
-        return { ok: false, error: data.code }
-      } else if (error.request) return { ok: false, error: 1000 }
-      return { ok: false, error: 1 }
-    }
-    return { ok: false, error: 1 }
+    return { ok: false, error: getErrorCode(error) }
   }
 }

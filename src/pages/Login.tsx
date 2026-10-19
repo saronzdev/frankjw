@@ -30,7 +30,7 @@ export function Login() {
           await refreshRole()
           const redir = isAdmin.value ? '/dashboard' : '/'
           setLocation(redir)
-        } catch (err) {
+        } catch (_err) {
           toast.error('Error verificando permisos. Redirigiendo al inicio...')
           setLocation('/')
         }
