@@ -14,6 +14,7 @@ import {
   findCategory,
   filterAndSortProducts,
   slugify,
+  normalize,
   HIDDEN_CATEGORY
 } from '@/shared/utils'
 
@@ -77,7 +78,7 @@ export function Products() {
               href={`/products/${slugify(cat)}`}
               class="rounded-full border border-line bg-surface px-4 py-1.5 text-sm text-ink-soft transition-colors hover:border-gold hover:bg-gold-soft/60 hover:text-gold-deep"
             >
-              {cat}
+              {normalize(cat)}
             </Link>
           ))}
         </nav>
