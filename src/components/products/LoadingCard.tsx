@@ -1,13 +1,11 @@
-import styles from '@/styles/LoadingCard.module.css'
+import { Spinner } from '@/ui/Spinner'
 
 export function LoadingCard() {
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <div className={styles.innerContent}>
-          <div className={styles.spinner}></div>
-          <p className={styles.text}>Cargando...</p>
-        </div>
+    <div class="flex justify-center px-4 py-24">
+      <div class="flex items-center gap-3 text-ink-muted">
+        <Spinner />
+        <p class="text-sm">Cargando...</p>
       </div>
     </div>
   )

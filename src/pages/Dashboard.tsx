@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'preact/hooks'
 import { ProductForm } from '@/components/products/ProductForm'
-import { ProductCard } from '@/components/products/ProductCard'
+import { ProductGrid } from '@/components/products/ProductGrid'
 import { Search } from '@/components/products/Search'
-import { SortSelect } from '@/components/products/SortSelect'
-import { ProductFilters } from '@/components/products/ProductFilters'
+import { FiltersToolbar } from '@/components/products/FiltersToolbar'
+import { FiltersDrawer } from '@/components/products/FiltersDrawer'
 import type { ProductIn, ProductType } from '@/types'
 import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
 import { getErrorMessage, filterAndSortProducts } from '@/shared/utils'
@@ -12,9 +12,7 @@ import { ErrorCard } from '@/components/products/ErrorCard'
 import { NoProducts } from '@/components/products/NoProducts'
 import { Toaster, toast } from 'sonner'
 import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
-import filterIcon from '@/assets/filter.svg'
 import styles from '@/styles/Dashboard.module.css'
-import productsStyles from '@/styles/Products.module.css'
 
 export function Dashboard() {
   const [showForm, setShowForm] = useState(false)
@@ -104,58 +102,34 @@ export function Dashboard() {
         </div>
 
         {hasProducts && (
-          <div className={productsStyles.sortContainer}>
-            <SortSelect value={sortBy} onChange={setSortBy} />
-            <button className={productsStyles.filterButton} onClick={() => setFiltersOpen(true)}>
-              <img src={filterIcon} alt="Icono de filtros" height={18} width={18} />
-              Filtros
-            </button>
-          </div>
+          <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
         )}
 
         <div className={styles.content}>
           {filteredProducts.length === 0 ? (
             <NoProducts searchTerm={searchTerm} hasProducts={hasProducts} />
           ) : (
-            <div className={styles.grid}>
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  data={product}
-                  onEdit={handleEditProduct}
-                  onDelete={handleDeleteProduct}
-                  editable={true}
-                />
-              ))}
-            </div>
+            <ProductGrid
+              products={filteredProducts}
+              editable={true}
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+            />
           )}
         </div>
 
         {/* Sidebar de filtros */}
-        {filtersOpen && (
-          <>
-            <div className={productsStyles.overlay} onClick={() => setFiltersOpen(false)} />
-            <div className={productsStyles.sidebar}>
-              <div className={productsStyles.sidebarHeader}>
-                <h2 className={productsStyles.sidebarTitle}>Filtros</h2>
-                <button className={productsStyles.closeButton} onClick={() => setFiltersOpen(false)}>
-                  ✕
-                </button>
-              </div>
-              <div className={productsStyles.sidebarContent}>
-                <ProductFilters
-                  priceRange={priceRange}
-                  selectedKarats={selectedKarats}
-                  onSale={onSale}
-                  onPriceChange={setPriceRange}
-                  onKaratsChange={setSelectedKarats}
-                  onSaleChange={setOnSale}
-                  onReset={handleResetFilters}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        <FiltersDrawer
+          open={filtersOpen}
+          onClose={() => setFiltersOpen(false)}
+          priceRange={priceRange}
+          selectedKarats={selectedKarats}
+          onSale={onSale}
+          onPriceChange={setPriceRange}
+          onKaratsChange={setSelectedKarats}
+          onSaleChange={setOnSale}
+          onReset={handleResetFilters}
+        />
 
         {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
       </div>
