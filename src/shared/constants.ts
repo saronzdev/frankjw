@@ -1,4 +1,4 @@
-import type { Seller, Category } from '@/types'
+import type { Seller } from '@/types'
 import sample1 from '@/assets/sample1.webp'
 import sample2 from '@/assets/sample2.webp'
 import sample3 from '@/assets/sample3.webp'
@@ -6,18 +6,6 @@ import fb from '@/assets/fb.svg'
 import ws from '@/assets/ws.svg'
 import ig from '@/assets/ig.svg'
 import mail from '@/assets/mail.svg'
-import dijes from '@/assets/dijes.avif'
-import pulseras from '@/assets/pulseras.avif'
-import cadenas from '@/assets/cadenas.avif'
-import pendientes from '@/assets/pendientes.avif'
-import gargantillas from '@/assets/gargantillas.avif'
-import anillosm from '@/assets/anillosm.avif'
-import anillosh from '@/assets/anillosh.avif'
-import anilloscm from '@/assets/anilloscm.avif'
-import anillosch from '@/assets/anillosch.avif'
-import sets from '@/assets/sets.avif'
-
-export const HIDDEN_CATEGORY = 'Componentes de Conjunto'
 
 export const commonKarats = [8, 10, 14, 18, 22]
 
@@ -76,87 +64,6 @@ export const highlights = [
     text: 'Elegancia en todo momento'
   }
 ]
-
-export const CATEGORIES: Category[] = [
-  {
-    title: 'Anillos de compromiso para hombre',
-    description:
-      'El compromiso también tiene su expresión masculina. Nuestros anillos de compromiso para hombre representan firmeza, lealtad y un estilo que perdura en el tiempo.',
-    img: anillosch,
-    order: 1
-  },
-  {
-    title: 'Anillos de compromiso para mujer',
-    description:
-      'La promesa de un amor eterno merece una joya inolvidable. Cada anillo de compromiso para mujer captura la esencia de la unión, con diseños que simbolizan pureza y elegancia.',
-    img: anilloscm,
-    order: 2
-  },
-  {
-    title: 'Anillos para mujer',
-    description:
-      'Un símbolo de feminidad y sofisticación. Los anillos para mujer destacan por su delicadeza y brillo, creados para resaltar la belleza única de quien los lleva.',
-    img: anillosm,
-    order: 3
-  },
-  {
-    title: 'Anillos para hombre',
-    description:
-      'Diseñados para reflejar fuerza y estilo, nuestros anillos para hombre combinan elegancia contemporánea con detalles atemporales. Piezas que transmiten carácter y distinción en cada ocasión.',
-    img: anillosh,
-    order: 4
-  },
-  {
-    title: 'Pendientes y argollas',
-    description:
-      'Versátiles y atemporales, nuestros pendientes y argollas son el detalle que transforma cualquier estilo. Diseños que van desde la sencillez delicada hasta el brillo deslumbrante.',
-    img: pendientes,
-    order: 5
-  },
-  {
-    title: 'Gargantillas',
-    description:
-      'Piezas que enmarcan el cuello con sutileza y distinción. Las gargantillas realzan la elegancia natural y son el complemento perfecto para cualquier look, desde lo cotidiano hasta lo más especial.',
-    img: gargantillas,
-    order: 6
-  },
-  {
-    title: 'Cadenas',
-    description:
-      'Un clásico imprescindible. Las cadenas son el punto de partida para crear combinaciones únicas o lucir solas con un encanto propio. Elegancia pura en cada eslabón.',
-    img: cadenas,
-    order: 7
-  },
-  {
-    title: 'Dijes',
-    description:
-      'Pequeños símbolos con gran significado. Los dijes permiten personalizar tu estilo y llevar contigo recuerdos, creencias o emociones en una joya única.',
-    img: dijes,
-    order: 8
-  },
-  {
-    title: 'Pulseras y tobilleras',
-    description:
-      'Diseños que rodean la muñeca con estilo y distinción. Nuestras pulseras y tobilleras unen delicadeza, brillo y personalidad, convirtiéndose en el detalle ideal para expresar quién eres.',
-    img: pulseras,
-    order: 9
-  },
-  {
-    title: 'Sets de joyas',
-    description:
-      'Nuestra selección de conjuntos reúne tus piezas favoritas en un solo lugar, cada set está diseñado para ofrecerte un look completo y equilibrado sin esfuerzo. Ya sea un dúo de collar y pendientes o un set completo de anillos, estas combinaciones están pensadas para elevar tu estilo diario con un toque de coherencia y tendencia.',
-    img: sets,
-    order: 10
-  },
-  {
-    title: HIDDEN_CATEGORY,
-    description: 'Productos individuales que forman parte de conjuntos.',
-    img: sets,
-    order: 999
-  }
-]
-
-export const categories = CATEGORIES.map((cat) => cat.title)
 
 export const MAX_RETRIES = 3
 export const INITIAL_BACKOFF_MS = 500
