@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import legacy from '@vitejs/plugin-legacy'
 import preact from '@preact/preset-vite'
+import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
 
 export default defineConfig({
   plugins: [
     preact(),
+    tailwindcss(),
     legacy({
       targets: ['defaults', 'not IE 11']
     }),

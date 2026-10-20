@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 :root {
   /* Palette: neutral + gold accent */
   --color-bg: #ffffff;
