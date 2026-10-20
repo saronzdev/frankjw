@@ -1,23 +1,21 @@
 import { handleReservation } from '@/shared/utils'
 import type { ProductType, Seller } from '@/types'
-import styles from '@/styles/ReserveCard.module.css'
 import wsIcon from '@/assets/ws.svg'
+import { Button } from '@/ui/Button'
 
 type Props = Seller & { data: ProductType }
 
 export function ReserveCard({ name, number, location, data }: Props) {
   return (
-    <div className={styles.card}>
-      <div className={styles.header}>
-        <div className={styles.info}>
-          <h3 className={styles.name}>{name}</h3>
-          <p className={styles.location}>{location}</p>
-        </div>
+    <div class="flex flex-col gap-3 rounded-md border border-line p-3.5">
+      <div class="flex flex-col gap-0.5">
+        <h3 class="font-display text-base font-semibold text-ink">{name}</h3>
+        <p class="text-xs text-ink-muted">{location}</p>
       </div>
-      <button onClick={() => handleReservation(number, data)} className={styles.button}>
-        <img src={wsIcon} alt="" className={styles.buttonIcon} />
+      <Button variant="gold" size="sm" block onClick={() => handleReservation(number, data)}>
+        <img src={wsIcon} alt="" class="h-4 w-4" aria-hidden="true" />
         <span>Reservar por WhatsApp</span>
-      </button>
+      </Button>
     </div>
   )
 }

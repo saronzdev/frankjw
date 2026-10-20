@@ -1,6 +1,6 @@
-import { ReserveCard } from './ReserveCard'
 import { SELLERS } from '@/shared/constants'
-import styles from '@/styles/ReservePopup.module.css'
+import { ReserveCard } from './ReserveCard'
+import { Modal } from '@/ui/Modal'
 import type { ProductType } from '@/types'
 
 interface Props {
@@ -9,31 +9,19 @@ interface Props {
 }
 
 export function ReservePopup({ data, onClose }: Props) {
-  const handleOverlayClick = (e: MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
-
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.modal}>
-        <button onClick={onClose} className={styles.close} aria-label="Cerrar">
-          ✕
-        </button>
-        <h2 className={styles.title}>Contactar para reservar</h2>
-        <div className={styles.sellers}>
-          {SELLERS.map((seller) => (
-            <ReserveCard
-              key={seller.number}
-              name={seller.name}
-              number={seller.number}
-              location={seller.location}
-              data={data}
-            />
-          ))}
-        </div>
+    <Modal open onClose={onClose} title="Contactar para reservar" size="sm">
+      <div class="flex flex-col gap-3">
+        {SELLERS.map((seller) => (
+          <ReserveCard
+            key={seller.number}
+            name={seller.name}
+            number={seller.number}
+            location={seller.location}
+            data={data}
+          />
+        ))}
       </div>
-    </div>
+    </Modal>
   )
 }

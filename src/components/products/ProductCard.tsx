@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, createPortal } from 'preact/compat'
+import { useState, lazy, Suspense } from 'preact/compat'
 import type { ProductType } from '@/types'
 import { ShoppingBag, Info, Pencil, Trash2 } from 'lucide-preact'
 import noImage from '@/assets/no-image.svg'
@@ -134,32 +134,18 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           )}
         </div>
       </div>
-      {isOpen &&
-        createPortal(
-          <Suspense
-            fallback={
-              <div style="display:flex;align-items:center;justify-content:center;height:100vh;">
-                <div>Cargando...</div>
-              </div>
-            }
-          >
-            <ProductPopup
-              product={currentProduct}
-              onClose={close}
-              allProducts={allProducts}
-              currentIndex={currentProductIndex}
-              onNavigate={handleNavigate}
-            />
-          </Suspense>,
-          document.body
-        )}
-      {isReserve &&
-        createPortal(
-          <Suspense fallback={<div>Cargando...</div>}>
-            <ReservePopup data={data} onClose={toggleReserve} />
-          </Suspense>,
-          document.body
-        )}
+      {isOpen && (
+        <Suspense fallback={null}>
+          <ProductPopup
+            product={currentProduct}
+            onClose={close}
+            allProducts={allProducts}
+            currentIndex={currentProductIndex}
+            onNavigate={handleNavigate}
+          />
+        </Suspense>
+      )}
+      {isReserve && <ReservePopup data={data} onClose={toggleReserve} />}
     </div>
   )
 }
