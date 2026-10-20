@@ -1,64 +1,102 @@
 @import 'tailwindcss';
 
-:root {
+@theme {
   /* Palette: neutral + gold accent */
-  --color-bg: #ffffff;
-  --color-surface: #fafaf8;
+  --color-bg: #fafaf8;
+  --color-surface: #ffffff;
   --color-surface-2: #f4f4f0;
-  --color-text: #1c1917;
-  --color-muted: #78716c;
-  --color-border: #e7e5e4;
+  --color-ink: #1c1917;
+  --color-ink-soft: #57534e;
+  --color-ink-muted: #78716c;
+  --color-line: #e7e5e4;
   --color-gold: #c9a24b;
+  --color-gold-deep: #a8842e;
   --color-gold-soft: #f3ead2;
   --color-danger: #b91c1c;
 
+  /* Legacy aliases consumed by css modules under migration */
+  --color-text: var(--color-ink);
+  --color-border: var(--color-line);
+  --color-muted: var(--color-ink-muted);
+
   /* Typography */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-serif: var(--font-display);
 
   /* Radii */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.06), 0 1px 3px rgba(28, 25, 23, 0.08);
-  --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.08);
-  --shadow-lg: 0 12px 32px rgba(28, 25, 23, 0.14);
+  --shadow-sm: 0 1px 2px rgb(28 25 23 / 0.06), 0 1px 3px rgb(28 25 23 / 0.08);
+  --shadow-md: 0 4px 12px rgb(28 25 23 / 0.08);
+  --shadow-lg: 0 12px 32px rgb(28 25 23 / 0.14);
 
-  /* Spacing */
+  /* Motion */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --animate-overlay-in: overlay-in 0.2s ease-out;
+  --animate-panel-in: panel-in 0.25s var(--ease-out-quart);
+
+  /* Layout */
+  --container-wide: 1200px;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Legacy tokens without a modern counterpart: header dark treatment, legacy spacing */
+:root {
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
-
   --container-max: 1200px;
-
-  /* Header / sidebar legacy dark-gold treatment */
   --header-bg: linear-gradient(to right, #000000, #111827, #000000);
   --header-text: #ffffff;
   --header-border: rgba(202, 138, 4, 0.2);
-  --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   --header-title-gradient: linear-gradient(135deg, #ffffff 0%, #fef3c7 30%, #fbbf24 50%, #fef3c7 70%, #ffffff 100%);
   --header-sheen: linear-gradient(90deg, transparent, rgba(202, 138, 4, 0.3), transparent);
   --header-sheen-pale: linear-gradient(90deg, transparent, rgba(254, 243, 199, 0.2), transparent);
   --header-sheen-light: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   --header-btn-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
   --header-btn-gradient-hover: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
-  --header-btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --header-btn-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  --sidebar-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --header-btn-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --header-btn-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+  --sidebar-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  --header-h: 3.5rem;
+}
+
 body {
   font-family: var(--font-sans);
-  font-display: swap;
   font-optical-sizing: auto;
   background: var(--color-bg);
   color: var(--color-text);
@@ -80,4 +118,20 @@ h6 {
 
 img {
   max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
