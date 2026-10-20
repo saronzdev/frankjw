@@ -16,7 +16,7 @@ export function Hero() {
               width={600}
               height={509}
               fetchPriority="high"
-              class="w-full max-w-88 sm:max-w-96 lg:max-w-[34rem]"
+              class="w-full max-w-60 sm:max-w-72 lg:max-w-80"
             />
 
             <div class="mt-8 flex flex-col gap-4 sm:mt-10">
