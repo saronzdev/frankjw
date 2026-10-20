@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'preact/compat'
 import { Route, Switch } from 'wouter'
-import { Header } from './components/Header'
+import { Header } from './layout/Header'
+import { Footer } from './layout/Footer'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LoadingCard } from './components/products/LoadingCard'
 
@@ -50,6 +51,7 @@ export function App() {
           <Route path="*" component={NotFound} />
         </Switch>
       </Suspense>
+      <Footer />
     </>
   )
 }

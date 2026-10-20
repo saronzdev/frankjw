@@ -1,9 +1,4 @@
 import type { Seller, Category } from '@/types'
-import Home from '@/assets/home.svg'
-import Products from '@/assets/products.svg'
-import About from '@/assets/about.svg'
-import Contact from '@/assets/contact.svg'
-import Dashboard from '@/assets/dashboard.svg'
 import sample1 from '@/assets/sample1.webp'
 import sample2 from '@/assets/sample2.webp'
 import sample3 from '@/assets/sample3.webp'
@@ -162,32 +157,6 @@ export const CATEGORIES: Category[] = [
 ]
 
 export const categories = CATEGORIES.map((cat) => cat.title)
-
-export const menuItems = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Productos', href: '/products' },
-  { label: 'Nosotros', href: '/about' },
-  { label: 'Contacto', href: '/contact' },
-  { label: 'Dashboard', href: '/dashboard' }
-]
-
-export const menuItemsMobile = [
-  { label: 'Inicio', href: '/', icon: Home },
-  { label: 'Productos', href: '/products', icon: Products },
-  { label: 'Nosotros', href: '/about', icon: About },
-  { label: 'Contacto', href: '/contact', icon: Contact },
-  { label: 'Dashboard', href: '/dashboard', icon: Dashboard }
-]
-
-export const titles = {
-  '/': 'Frank Joyería',
-  '/products': 'Productos',
-  '/about': 'Nuestra Historia',
-  '/contact': 'Contacto',
-  '/dashboard': 'Dashboard',
-  '/404': 'Página no encontrada',
-  '/login': 'Iniciar sesión'
-}
 
 export const MAX_RETRIES = 3
 export const INITIAL_BACKOFF_MS = 500
