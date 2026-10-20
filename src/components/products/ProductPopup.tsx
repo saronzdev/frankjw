@@ -67,7 +67,7 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
   return (
     <Modal open onClose={onClose} title="Detalles del producto" size="lg" tall padded={false}>
       <div class="flex h-full flex-col">
-        <div class="relative min-h-0 flex-1 bg-surface-2">
+        <div class="relative min-h-0 flex-1 bg-surface">
           <img
             class="absolute inset-0 h-full w-full object-contain"
             src={optimizeImage(images[currentImageIndex] || noImage, 900, 70)}
