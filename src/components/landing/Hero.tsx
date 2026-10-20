@@ -8,22 +8,22 @@ export function Hero() {
   return (
     <>
       <section class="border-b border-line bg-gradient-to-b from-surface-2 to-bg">
-        <div class="mx-auto max-w-7xl px-4 py-14 sm:py-20 lg:py-24">
-          <div class="mx-auto flex min-h-none max-w-3xl flex-col items-center text-center">
+        <div class="mx-auto max-w-7xl px-4 py-10 sm:py-14 lg:py-16">
+          <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
             <img
               src={heroLogo}
               alt="Frank Joyería"
               width={600}
               height={509}
               fetchPriority="high"
-              class="w-full max-w-60 sm:max-w-72 lg:max-w-80"
+              class="w-full max-w-56 sm:max-w-64 lg:max-w-72"
             />
 
-            <div class="mt-8 flex flex-col gap-4 sm:mt-10">
+            <div class="mt-6 flex flex-col gap-4 sm:mt-8">
               <h1 class="font-display text-[2rem] font-semibold uppercase leading-tight tracking-[0.05em] text-ink sm:text-[2.75rem] lg:text-[3.5rem]">
                 Diseño y Excelencia
               </h1>
-            <p class="mx-auto max-w-xl text-lg leading-relaxed text-ink-soft sm:text-xl">
+              <p class="mx-auto max-w-xl text-lg leading-relaxed text-ink-soft sm:text-xl">
                 Joyas cuidadosamente elaboradas para acompañarte en cada capítulo de tu vida
               </p>
             </div>
