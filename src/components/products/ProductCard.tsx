@@ -52,7 +52,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
     <div class="group flex flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg">
       <div class="relative">
         <div
-          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface-2"
+          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface"
           onClick={() => setIsOpen(true)}
         >
           {isLoading && (

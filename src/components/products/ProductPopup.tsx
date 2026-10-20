@@ -101,11 +101,11 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
         <div class="flex flex-col gap-4 overflow-y-auto p-5">
           <p class="text-sm leading-relaxed text-ink-soft">{product.description}</p>
 
-          <div class="flex flex-wrap gap-x-8 gap-y-3">
+          <div class="grid grid-cols-3 gap-3 rounded-md bg-gold-soft/60 p-4 text-center">
             <div class="flex flex-col gap-0.5">
-              <span class="text-xs uppercase tracking-[0.06em] text-ink-muted">Precio</span>
+              <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Precio</span>
               {product.hasDiscount && product.offerPrice ? (
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center justify-center gap-1.5">
                   <span class="text-sm text-ink-muted line-through">${product.price}</span>
                   <span class="text-base font-semibold text-ink">${product.offerPrice}</span>
                 </div>
@@ -115,13 +115,13 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
             </div>
             {product.weight && (
               <div class="flex flex-col gap-0.5">
-                <span class="text-xs uppercase tracking-[0.06em] text-ink-muted">Peso</span>
+                <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Peso</span>
                 <span class="text-base font-semibold text-ink">{product.weight} g</span>
               </div>
             )}
             {product.karats && product.karats.length > 0 && (
               <div class="flex flex-col gap-0.5">
-                <span class="text-xs uppercase tracking-[0.06em] text-ink-muted">Kilates</span>
+                <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Kilates</span>
                 <span class="text-base font-semibold text-ink">{product.karats.join('K / ')}K</span>
               </div>
             )}
