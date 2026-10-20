@@ -42,15 +42,15 @@ export function Header() {
         'transition-[box-shadow] duration-300'
       )}
     >
-      <div class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4">
+      <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
         <div class="flex items-center gap-1">
           <IconButton label="Abrir menú" class="lg:hidden" size="sm" onClick={() => setSidebarOpen(true)}>
             <Menu size={20} />
           </IconButton>
 
           <Link to="/" class="flex items-center gap-2.5" aria-label="Frank Joyería — Inicio">
-            <img src={logoMark} alt="" class="h-8 w-auto" width={30} height={32} />
-            <span class="font-display text-lg font-semibold tracking-[0.06em] text-ink max-[420px]:hidden">
+            <img src={logoMark} alt="" class="h-9 w-auto" width={34} height={36} />
+            <span class="font-display text-xl font-semibold tracking-[0.06em] text-ink max-[420px]:hidden">
               Frank Joyería
             </span>
           </Link>
@@ -66,7 +66,7 @@ export function Header() {
                 to={item.href}
                 aria-current={isActive(location, item.href) ? 'page' : undefined}
                 class={cx(
-                  'relative rounded-md px-3 py-2 text-sm font-medium tracking-wide transition-colors',
+                  'relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide transition-colors',
                   isActive(location, item.href)
                     ? 'text-ink after:absolute after:inset-x-3 after:-bottom-px after:h-[2px] after:rounded-full after:bg-gold'
                     : 'text-ink-soft hover:text-ink'

@@ -9,7 +9,7 @@ export function ProductMenu() {
     <div class="group relative">
       <Link
         to="/products"
-        class="relative rounded-md px-3 py-2 text-sm font-medium tracking-wide text-ink-soft transition-colors hover:text-ink"
+        class="relative rounded-md px-3.5 py-2 text-sm font-medium tracking-wide text-ink-soft transition-colors hover:text-ink"
         aria-haspopup="true"
       >
         Productos
