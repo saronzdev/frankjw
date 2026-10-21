@@ -1,7 +1,7 @@
 import { type JSX } from 'preact'
 import { useRef } from 'preact/hooks'
 import { Link, useLocation } from 'wouter'
-import { House, ShoppingBag, Info, Phone, LayoutDashboard, LogOut, X } from 'lucide-preact'
+import { House, ShoppingBag, Info, Phone, LayoutDashboard, LogOut, ChevronRight, X } from 'lucide-preact'
 import { NAV_ITEMS, DASHBOARD, type NavItem } from '@/data/navigation'
 import { cats, isAdmin, logout } from '@/shared/signals'
 import { normalize, slugify } from '@/shared/utils'
@@ -80,12 +80,15 @@ export function MobileSidebar({ open, onClose }: Props) {
                       to={`/products/${slugify(category)}`}
                       onClick={onClose}
                       class={cx(
-                        'block rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors',
-                        'hover:bg-surface-2 hover:text-ink',
-                        isActive(location, `/products/${slugify(category)}`) && 'bg-surface-2 text-ink'
+                        'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                        'hover:bg-surface-2',
+                        isActive(location, `/products/${slugify(category)}`)
+                          ? 'bg-gold-soft/60 text-ink'
+                          : 'text-ink hover:text-ink'
                       )}
                     >
                       {normalize(category)}
+                      <ChevronRight size={14} class="ml-auto text-ink-muted" aria-hidden="true" />
                     </Link>
                   </li>
                 ))}

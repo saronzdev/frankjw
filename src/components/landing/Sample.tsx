@@ -15,7 +15,7 @@ export function Sample({ text, src, srcSet }: Props) {
           alt={text}
           loading="lazy"
           decoding="async"
-          class="aspect-4/5 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          class="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
       </div>
       <figcaption class="px-5 py-4 text-center">

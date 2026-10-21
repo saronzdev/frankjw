@@ -48,8 +48,8 @@ export function Hero() {
         </div>
       </section>
 
-      <section class="flex flex-col gap-12 bg-surface px-4 py-12 md:gap-16 md:py-16">
-        <div class="mx-auto w-full max-w-7xl">
+      <section class="flex flex-col gap-12 bg-surface px-4 py-16 md:gap-16 md:py-20">
+        <div class="mx-auto w-full max-w-6xl">
           <Carousel title="Últimos Productos" items={mostRecents.value} />
         </div>
       </section>
