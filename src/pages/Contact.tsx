@@ -1,6 +1,5 @@
 import { Phone, Mail, MapPin } from 'lucide-preact'
 import { Social } from '@/components/landing/Social'
-import ws from '@/assets/ws.svg'
 import { Button } from '@/ui/Button'
 
 export function Contact() {
@@ -121,8 +120,7 @@ export function Contact() {
             size="lg"
             aria-label="Chatear por WhatsApp"
           >
-            <span>Chatear por WhatsApp</span>
-            <img src={ws} height={20} width={20} alt="" aria-hidden="true" />
+            Chatear por WhatsApp
           </Button>
         </div>
       </section>

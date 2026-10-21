@@ -1,6 +1,5 @@
 import { Gem, Diamond, Sparkles, Palette, Rocket, Heart, TreePine, Check } from 'lucide-preact'
-
-const logo = '/logo.webp'
+import heroLogo from '@/assets/hero-logo.webp'
 
 const PRODUCTS = [
   { icon: Gem, title: 'Anillos & Pulseras', description: 'En metales preciosos con acabados únicos' },
@@ -68,13 +67,13 @@ export function About() {
               técnicas de producción, creando piezas únicas que reflejan elegancia, sofisticación y estilo.
             </p>
           </div>
-          <div class="overflow-hidden rounded-lg border border-line shadow-sm">
+          <div class="flex justify-center">
             <img
-              src={logo}
+              src={heroLogo}
               alt="Taller de joyería"
-              class="aspect-3/2 w-full object-cover"
-              width={600}
-              height={400}
+              class="h-auto w-64 sm:w-80"
+              width={920}
+              height={784}
               fetchPriority="high"
             />
           </div>
