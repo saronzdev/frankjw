@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks'
+import { Plus } from 'lucide-preact'
 import { ProductForm } from '@/components/products/ProductForm'
 import { ProductGrid } from '@/components/products/ProductGrid'
 import { Search } from '@/components/products/Search'
@@ -12,7 +13,7 @@ import { ErrorCard } from '@/components/products/ErrorCard'
 import { NoProducts } from '@/components/products/NoProducts'
 import { Toaster, toast } from 'sonner'
 import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
-import styles from '@/styles/Dashboard.module.css'
+import { Button } from '@/ui/Button'
 
 export function Dashboard() {
   const [showForm, setShowForm] = useState(false)
@@ -85,53 +86,57 @@ export function Dashboard() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div class="min-h-dvh px-4 py-6 md:px-6 md:py-8">
         <Toaster richColors position="bottom-center" />
-        <div className={styles.header}>
-          <button onClick={handleCreateProduct} className={styles.newProductButton} aria-label="Agregar un producto">
-            + Nuevo Producto
-          </button>
+        <div class="mx-auto flex max-w-7xl flex-col gap-4">
+          <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+            <Button onClick={handleCreateProduct} aria-label="Agregar un producto">
+              <Plus size={16} aria-hidden="true" />
+              Nuevo Producto
+            </Button>
+            {hasProducts && (
+              <div class="w-full sm:w-64">
+                <Search
+                  searchTerm={searchTerm}
+                  handlerSearch={setSearchTerm}
+                  setSearchTerm={setSearchTerm}
+                  placeholder="Buscar por ID"
+                />
+              </div>
+            )}
+          </div>
+
           {hasProducts && (
-            <Search
-              searchTerm={searchTerm}
-              handlerSearch={setSearchTerm}
-              setSearchTerm={setSearchTerm}
-              placeholder="Buscar por ID"
-            />
+            <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
           )}
+
+          <div class="py-4">
+            {filteredProducts.length === 0 ? (
+              <NoProducts searchTerm={searchTerm} hasProducts={hasProducts} />
+            ) : (
+              <ProductGrid
+                products={filteredProducts}
+                editable={true}
+                onEdit={handleEditProduct}
+                onDelete={handleDeleteProduct}
+              />
+            )}
+          </div>
+
+          <FiltersDrawer
+            open={filtersOpen}
+            onClose={() => setFiltersOpen(false)}
+            priceRange={priceRange}
+            selectedKarats={selectedKarats}
+            onSale={onSale}
+            onPriceChange={setPriceRange}
+            onKaratsChange={setSelectedKarats}
+            onSaleChange={setOnSale}
+            onReset={handleResetFilters}
+          />
+
+          {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
         </div>
-
-        {hasProducts && (
-          <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
-        )}
-
-        <div className={styles.content}>
-          {filteredProducts.length === 0 ? (
-            <NoProducts searchTerm={searchTerm} hasProducts={hasProducts} />
-          ) : (
-            <ProductGrid
-              products={filteredProducts}
-              editable={true}
-              onEdit={handleEditProduct}
-              onDelete={handleDeleteProduct}
-            />
-          )}
-        </div>
-
-        {/* Sidebar de filtros */}
-        <FiltersDrawer
-          open={filtersOpen}
-          onClose={() => setFiltersOpen(false)}
-          priceRange={priceRange}
-          selectedKarats={selectedKarats}
-          onSale={onSale}
-          onPriceChange={setPriceRange}
-          onKaratsChange={setSelectedKarats}
-          onSaleChange={setOnSale}
-          onReset={handleResetFilters}
-        />
-
-        {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
       </div>
     </>
   )
