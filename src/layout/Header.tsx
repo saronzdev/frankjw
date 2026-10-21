@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import { Link, useLocation } from 'wouter'
-import { Menu, LogOut, Phone } from 'lucide-preact'
+import { Menu, LogOut } from 'lucide-preact'
 import { NAV_ITEMS, DASHBOARD } from '@/data/navigation'
 import { isAdmin, logout } from '@/shared/signals'
 import { cx } from '@/ui/cx'
@@ -8,8 +8,6 @@ import { IconButton } from '@/ui/IconButton'
 import { ProductMenu } from './ProductMenu'
 import { MobileSidebar } from './MobileSidebar'
 import logoMark from '@/assets/logo-mark.webp'
-
-const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=5353444690'
 
 function isActive(location: string, href: string): boolean {
   if (href === '/') return location === '/'
@@ -42,19 +40,28 @@ export function Header() {
         'transition-[box-shadow] duration-300'
       )}
     >
-      <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
+      <div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
         <div class="flex items-center gap-1">
           <IconButton label="Abrir menú" class="lg:hidden" size="sm" onClick={() => setSidebarOpen(true)}>
             <Menu size={20} />
           </IconButton>
 
-          <Link to="/" class="flex items-center gap-2.5" aria-label="Frank Joyería — Inicio">
-            <img src={logoMark} alt="" class="h-9 w-auto" width={34} height={36} />
-            <span class="font-display text-xl font-semibold tracking-[0.06em] text-ink max-[420px]:hidden">
+          <Link to="/" class="hidden items-center gap-2.5 lg:flex" aria-label="Frank Joyería — Inicio">
+            <img src={logoMark} alt="" class="h-10 w-auto" width={38} height={40} />
+            <span class="font-display text-2xl font-semibold tracking-[0.06em] text-ink">
               Frank Joyería
             </span>
           </Link>
         </div>
+
+        <Link
+          to="/"
+          class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 lg:hidden"
+          aria-label="Frank Joyería — Inicio"
+        >
+          <span class="font-display text-lg font-semibold tracking-[0.06em] text-ink">Frank Joyería</span>
+          <img src={logoMark} alt="" class="h-5 w-auto" width={19} height={20} />
+        </Link>
 
         <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
           {NAV_ITEMS.map((item) =>
@@ -101,16 +108,6 @@ export function Header() {
             </>
           )}
         </nav>
-
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex h-9 w-9 items-center justify-center rounded-md text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink lg:hidden"
-          aria-label="Contáctanos por WhatsApp"
-        >
-          <Phone size={18} />
-        </a>
       </div>
 
       <MobileSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
