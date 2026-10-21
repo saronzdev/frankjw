@@ -10,7 +10,7 @@ export function Highlighted() {
         </h2>
         <div class="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {highlights.map((item) => (
-            <Sample key={item.src} src={item.src} text={item.text} />
+            <Sample key={item.src} src={item.src} srcSet={item.srcSet} text={item.text} />
           ))}
         </div>
       </div>

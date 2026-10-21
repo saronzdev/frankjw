@@ -1,14 +1,17 @@
 interface Props {
   text: string
   src: string
+  srcSet?: string
 }
 
-export function Sample({ text, src }: Props) {
+export function Sample({ text, src, srcSet }: Props) {
   return (
     <figure class="group overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div class="overflow-hidden">
         <img
           src={src}
+          srcSet={srcSet}
+          sizes="(min-width: 1024px) 373px, (min-width: 640px) 50vw, calc(100vw - 2rem)"
           alt={text}
           loading="lazy"
           decoding="async"

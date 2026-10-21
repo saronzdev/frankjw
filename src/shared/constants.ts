@@ -1,7 +1,13 @@
 import type { Seller } from '@/types'
 import sample1 from '@/assets/sample1.webp'
+import sample1_480 from '@/assets/sample1-480.webp'
+import sample1_1200 from '@/assets/sample1-1200.webp'
 import sample2 from '@/assets/sample2.webp'
+import sample2_480 from '@/assets/sample2-480.webp'
+import sample2_1200 from '@/assets/sample2-1200.webp'
 import sample3 from '@/assets/sample3.webp'
+import sample3_480 from '@/assets/sample3-480.webp'
+import sample3_1200 from '@/assets/sample3-1200.webp'
 import fb from '@/assets/fb.svg'
 import ws from '@/assets/ws.svg'
 import ig from '@/assets/ig.svg'
@@ -53,14 +59,17 @@ export const socialLinks = [
 export const highlights = [
   {
     src: sample1,
+    srcSet: `${sample1_480} 480w, ${sample1} 800w, ${sample1_1200} 1200w`,
     text: 'Brilla con luz propia'
   },
   {
     src: sample2,
+    srcSet: `${sample2_480} 480w, ${sample2} 800w, ${sample2_1200} 1200w`,
     text: 'Cada joya cuenta una historia'
   },
   {
     src: sample3,
+    srcSet: `${sample3_480} 480w, ${sample3} 800w, ${sample3_1200} 1200w`,
     text: 'Elegancia en todo momento'
   }
 ]
