@@ -4,12 +4,13 @@ import { cx } from './cx'
 type Variant = 'primary' | 'outline' | 'gold' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
-type ButtonProps = Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size' | 'type'> & {
+type ButtonProps = Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size' | 'type' | 'disabled'> & {
   variant?: Variant
   size?: Size
   block?: boolean
   href?: string
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
 const variants: Record<Variant, string> = {

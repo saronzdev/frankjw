@@ -4,7 +4,12 @@ import { login } from '@/shared/fetching'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
 import { isAdmin, refreshRole } from '@/shared/signals'
-import styles from '@/styles/Login.module.css'
+import { Eye, EyeOff } from 'lucide-preact'
+import { Button } from '@/ui/Button'
+
+const field =
+  'h-11 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted ' +
+  'transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50'
 
 export function Login() {
   const [_, setLocation] = useLocation()
@@ -43,76 +48,56 @@ export function Login() {
   }
 
   return (
-    <div className={styles.container}>
+    <main class="px-4 py-16 md:py-24">
       <Toaster richColors position="bottom-center" />
-      <div className={styles.card}>
-        <h1 className={styles.title}>Iniciar Sesión</h1>
+      <div class="mx-auto w-full max-w-sm rounded-lg border border-line bg-surface p-6 shadow-sm sm:p-8">
+        <h1 class="text-center font-display text-2xl font-semibold tracking-[0.05em] text-ink">Iniciar Sesión</h1>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>Email</label>
+        <form onSubmit={handleSubmit} class="mt-6 flex flex-col gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-ink" for="login-email">Email</label>
             <input
               type="email"
+              id="login-email"
               value={email}
               onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
               required
-              className={styles.input}
+              class={field}
               placeholder="tu@email.com"
               disabled={isLoading}
             />
           </div>
 
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>Contraseña</label>
-            <div className={styles.passwordContainer}>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-ink" for="login-password">Contraseña</label>
+            <div class="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
+                id="login-password"
                 value={password}
                 onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                 required
-                className={styles.input}
+                class={`${field} pr-10`}
                 placeholder="••••••••"
                 disabled={isLoading}
               />
               <button
                 type="button"
-                className={styles.toggleButton}
+                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
                 aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                  </svg>
-                )}
+                {showPassword ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
               </button>
             </div>
           </div>
 
-          <button type="submit" className={styles.button} disabled={isLoading}>
+          <Button type="submit" block disabled={isLoading}>
             {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
-          </button>
+          </Button>
         </form>
       </div>
-    </div>
+    </main>
   )
 }
