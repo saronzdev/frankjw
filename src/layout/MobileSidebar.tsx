@@ -68,27 +68,30 @@ export function MobileSidebar({ open, onClose }: Props) {
             {isAdmin.value && <NavItemLi item={DASHBOARD} location={location} onNavigate={onClose} />}
           </ul>
 
-          {/* Product categories */}
-          <p class="mt-4 px-3 pb-2 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-ink-muted">
-            Categorías
-          </p>
-          <ul class="space-y-0.5">
-            {cats.value.map((category) => (
-              <li key={category}>
-                <Link
-                  to={`/products/${slugify(category)}`}
-                  onClick={onClose}
-                  class={cx(
-                    'block rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors',
-                    'hover:bg-surface-2 hover:text-ink',
-                    isActive(location, `/products/${slugify(category)}`) && 'bg-surface-2 text-ink'
-                  )}
-                >
-                  {normalize(category)}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {cats.value.length > 0 && (
+            <>
+              <p class="mt-4 px-3 pb-2 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-ink-muted">
+                Categorías
+              </p>
+              <ul class="space-y-0.5">
+                {cats.value.map((category) => (
+                  <li key={category}>
+                    <Link
+                      to={`/products/${slugify(category)}`}
+                      onClick={onClose}
+                      class={cx(
+                        'block rounded-md px-3 py-1.5 text-sm text-ink-soft transition-colors',
+                        'hover:bg-surface-2 hover:text-ink',
+                        isActive(location, `/products/${slugify(category)}`) && 'bg-surface-2 text-ink'
+                      )}
+                    >
+                      {normalize(category)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </nav>
 
         <footer class="border-t border-line p-3">

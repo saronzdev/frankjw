@@ -56,11 +56,10 @@ export function Header() {
 
         <Link
           to="/"
-          class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 lg:hidden"
+          class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden"
           aria-label="Frank Joyería — Inicio"
         >
-          <span class="font-display text-lg font-semibold tracking-[0.06em] text-ink">Frank Joyería</span>
-          <img src={logoMark} alt="" class="h-5 w-auto" width={19} height={20} />
+          <span class="font-display text-2xl font-semibold tracking-[0.06em] text-ink">Frank Joyería</span>
         </Link>
 
         <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
