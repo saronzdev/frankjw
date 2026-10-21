@@ -2,7 +2,10 @@ import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn, ProductType } from '@/types'
 import { uploadFile } from '@/shared/supabase'
 import { categories, normalize } from '@/shared/utils'
-import styles from '@/styles/ProductForm.module.css'
+import { Modal } from '@/ui/Modal'
+import { Button } from '@/ui/Button'
+import { IconButton } from '@/ui/IconButton'
+import { X, ImagePlus } from 'lucide-preact'
 import { toast } from 'sonner'
 
 interface Props {
@@ -10,6 +13,13 @@ interface Props {
   onSave: (data: ProductIn) => void
   onCancel: () => void
 }
+
+const field =
+  'h-10 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted ' +
+  'transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold'
+const disabledField = 'disabled:pointer-events-none disabled:opacity-50'
+const labelCls = 'text-sm font-medium text-ink'
+const helpCls = 'text-xs text-ink-muted'
 
 export function ProductForm({ product, onSave, onCancel }: Props) {
   const newProduct = {
@@ -138,236 +148,227 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
   }
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <div className={styles.modalContent}>
-          <div className={styles.header}>
-            <h2 className={styles.title}>{product ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-            <button onClick={onCancel} className={styles.closeButton} aria-label="Cerrar formulario">
-              ×
-            </button>
+    <Modal open onClose={onCancel} title={product ? 'Editar Producto' : 'Nuevo Producto'} size="lg">
+      <form onSubmit={handleSubmit} class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class={labelCls} for="pf-productId">ID del producto *</label>
+          <input
+            type="text"
+            id="pf-productId"
+            name="productId"
+            value={productData.productId}
+            onInput={handleInputChange}
+            required
+            class={field}
+            placeholder="Ej: ABC123"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class={labelCls} for="pf-description">Descripción *</label>
+          <textarea
+            id="pf-description"
+            name="description"
+            value={productData.description}
+            onInput={handleInputChange}
+            required
+            rows={3}
+            class={`${field} min-h-0 py-2.5`}
+            placeholder="Describe las características del producto..."
+          />
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="flex flex-col gap-1.5">
+            <label class={labelCls} for="pf-category">Categoría *</label>
+            <select
+              id="pf-category"
+              name="category"
+              value={productData.category}
+              onChange={handleInputChange}
+              required
+              class={`${field} cursor-pointer appearance-none`}
+            >
+              <option value="">Seleccionar categoría</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>ID del producto *</label>
-              <input
-                type="text"
-                name="productId"
-                value={productData.productId}
-                onInput={handleInputChange}
-                required
-                className={styles.input}
-                placeholder="Ej: ABC123"
-              />
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Descripción *</label>
-              <textarea
-                name="description"
-                value={productData.description}
-                onInput={handleInputChange}
-                required
-                rows={3}
-                className={styles.textarea}
-                placeholder="Describe las características del producto..."
-              />
-            </div>
-
-            <div className={styles.gridTwoColumns}>
-              <div className={styles.fieldGroup}>
-                <label className={styles.label}>Categoría *</label>
-                <select
-                  name="category"
-                  value={productData.category}
-                  onChange={handleInputChange}
-                  required
-                  className={styles.select}
-                >
-                  <option value="">Seleccionar categoría</option>
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.fieldGroup}>
-                <label className={styles.label}>Precio (USD) *</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={productData.price}
-                  onInput={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className={styles.input}
-                  placeholder="0.00"
-                />
-              </div>
-            </div>
-
-            <div className={styles.gridTwoColumns}>
-              <div className={styles.fieldGroup}>
-                <label className={styles.label}>Peso (gramos) *</label>
-                <input
-                  type="text"
-                  pattern="^\d*([,.]\d+)?$"
-                  name="weight"
-                  value={productData.weight}
-                  onInput={handleInputChange}
-                  required
-                  className={styles.input}
-                  placeholder="0.00"
-                />
-              </div>
-
-              <div className={styles.fieldGroup}>
-                <label className={styles.label}>Kilates *</label>
-                <input
-                  name="karats"
-                  type="text"
-                  value={Array.isArray(productData.karats) ? productData.karats.join(' ') : productData.karats}
-                  onChange={handleInputChange}
-                  required
-                  className={styles.input}
-                  placeholder="Ej: 18 o 18 24"
-                />
-                <p className={styles.helpText}>Ingresa 1 o 2 valores enteros separados por espacio o coma</p>
-              </div>
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.checkboxContainer}>
-                <input
-                  type="checkbox"
-                  name="isActive"
-                  checked={productData.isActive}
-                  onChange={handleCheckboxChange}
-                  className={styles.checkbox}
-                />
-                <span className={styles.checkboxLabel}>Disponible</span>
-              </label>
-              <p className={styles.helpText}>¿Está disponible?</p>
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.checkboxContainer}>
-                <input
-                  type="checkbox"
-                  name="hasDiscount"
-                  checked={productData.hasDiscount}
-                  onChange={handleCheckboxChange}
-                  className={styles.checkbox}
-                />
-                <span className={styles.checkboxLabel}>Descuento</span>
-              </label>
-              <p className={styles.helpText}>¿Tiene descuento?</p>
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Precio de oferta (USD) *</label>
-              <input
-                type="number"
-                name="offerPrice"
-                value={productData.offerPrice}
-                onInput={handleInputChange}
-                required
-                min="0"
-                step="0.01"
-                className={styles.input}
-                placeholder="0.00"
-                disabled={!productData.hasDiscount}
-              />
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Imágenes (máximo 2) {images.length + imagesUrls.length}/2</label>
-              {images.length + imagesUrls.length < 2 && (
-                <div>
-                  <input
-                    type="file"
-                    name="pictures"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageChange}
-                    className={styles.fileInput}
-                  />
-                  <p className={styles.helpText}>Formatos: JPG, PNG, GIF. Tamaño máximo: 100KB por imagen</p>
-                </div>
-              )}
-
-              {images.length > 0 && (
-                <div className={styles.imageGrid}>
-                  {images.map((image, index) => (
-                    <div key={`new-${index}`} className={styles.imageContainer}>
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt={`Nueva imagen ${index + 1}`}
-                        className={styles.existingImage}
-                        loading="lazy"
-                      />
-                      <div className={styles.imageOverlay}>
-                        <span className={styles.imageOverlayText}>Nueva imagen</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeNewImage(index)}
-                        className={styles.removeImageButton}
-                        aria-label="Eliminar imagen"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {imagesUrls.length > 0 && (
-                <div className={styles.imageGrid}>
-                  {imagesUrls.map((imageUrl, index) => (
-                    <div key={`existing-${index}`} className={styles.imageContainer}>
-                      <img
-                        src={imageUrl}
-                        alt={`Imagen existente ${index + 1}`}
-                        className={styles.existingImage}
-                        loading="lazy"
-                      />
-                      <div className={styles.imageOverlay}>
-                        <span className={styles.imageOverlayText}>Imagen existente</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeExistingImage(index)}
-                        className={styles.removeImageButton}
-                        aria-label="Eliminar imagen"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className={styles.buttonContainer}>
-              <button
-                type="submit"
-                className={styles.submitButton}
-                aria-label={`${product ? 'Actualizar' : 'Crear'} Producto`}
-              >
-                {product ? 'Actualizar' : 'Crear'}
-              </button>
-              <button type="button" onClick={onCancel} className={styles.cancelButton} aria-label="Cancelar el formulario">
-                Cancelar
-              </button>
-            </div>
-          </form>
+          <div class="flex flex-col gap-1.5">
+            <label class={labelCls} for="pf-price">Precio (USD) *</label>
+            <input
+              type="number"
+              id="pf-price"
+              name="price"
+              value={productData.price}
+              onInput={handleInputChange}
+              required
+              min="0"
+              step="0.01"
+              class={field}
+              placeholder="0.00"
+            />
+          </div>
         </div>
-      </div>
-    </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="flex flex-col gap-1.5">
+            <label class={labelCls} for="pf-weight">Peso (gramos) *</label>
+            <input
+              type="text"
+              pattern="^\d*([,.]\d+)?$"
+              id="pf-weight"
+              name="weight"
+              value={productData.weight}
+              onInput={handleInputChange}
+              required
+              class={field}
+              placeholder="0.00"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label class={labelCls} for="pf-karats">Kilates *</label>
+            <input
+              id="pf-karats"
+              name="karats"
+              type="text"
+              value={Array.isArray(productData.karats) ? productData.karats.join(' ') : productData.karats}
+              onChange={handleInputChange}
+              required
+              class={field}
+              placeholder="Ej: 18 o 18 24"
+            />
+            <p class={helpCls}>Ingresa 1 o 2 valores enteros separados por espacio o coma</p>
+          </div>
+        </div>
+
+        <div class="grid gap-2 sm:grid-cols-2">
+          <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={productData.isActive}
+              onChange={handleCheckboxChange}
+              class="accent-gold"
+            />
+            <span>Disponible</span>
+          </label>
+          <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+            <input
+              type="checkbox"
+              name="hasDiscount"
+              checked={productData.hasDiscount}
+              onChange={handleCheckboxChange}
+              class="accent-gold"
+            />
+            <span>Descuento</span>
+          </label>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class={labelCls} for="pf-offerPrice">Precio de oferta (USD) *</label>
+          <input
+            type="number"
+            id="pf-offerPrice"
+            name="offerPrice"
+            value={productData.offerPrice}
+            onInput={handleInputChange}
+            required
+            min="0"
+            step="0.01"
+            class={`${field} ${disabledField}`}
+            placeholder="0.00"
+            disabled={!productData.hasDiscount}
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <span class={labelCls}>
+            Imágenes (máximo 2) {images.length + imagesUrls.length}/2
+          </span>
+          {images.length + imagesUrls.length < 2 && (
+            <div class="flex flex-col gap-1">
+              <input
+                type="file"
+                name="pictures"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                class="text-sm text-ink-muted file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-surface-2 file:px-3 file:py-2 file:text-sm file:font-medium file:text-ink hover:file:bg-gold-soft"
+              />
+              <p class={helpCls}>Formatos: JPG, PNG, GIF. Tamaño máximo: 100KB por imagen</p>
+            </div>
+          )}
+
+          {(images.length > 0 || imagesUrls.length > 0) && (
+            <div class="grid grid-cols-2 gap-3">
+              {images.map((image, index) => (
+                <figure key={`new-${index}`} class="relative overflow-hidden rounded-md border border-line">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`Nueva imagen ${index + 1}`}
+                    class="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                  <figcaption class="absolute bottom-1.5 left-1.5 rounded-full bg-black/55 px-2 py-0.5 text-[0.7rem] text-white">
+                    Nueva imagen
+                  </figcaption>
+                  <IconButton
+                    size="sm"
+                    label="Eliminar imagen"
+                    onClick={() => removeNewImage(index)}
+                    class="absolute right-1.5 top-1.5 border border-line bg-white/90 shadow-sm"
+                  >
+                    <X size={13} aria-hidden="true" />
+                  </IconButton>
+                </figure>
+              ))}
+              {imagesUrls.map((imageUrl, index) => (
+                <figure key={`existing-${index}`} class="relative overflow-hidden rounded-md border border-line">
+                  <img
+                    src={imageUrl}
+                    alt={`Imagen existente ${index + 1}`}
+                    class="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                  <figcaption class="absolute bottom-1.5 left-1.5 rounded-full bg-black/55 px-2 py-0.5 text-[0.7rem] text-white">
+                    Imagen existente
+                  </figcaption>
+                  <IconButton
+                    size="sm"
+                    label="Eliminar imagen"
+                    onClick={() => removeExistingImage(index)}
+                    class="absolute right-1.5 top-1.5 border border-line bg-white/90 shadow-sm"
+                  >
+                    <X size={13} aria-hidden="true" />
+                  </IconButton>
+                </figure>
+              ))}
+            </div>
+          )}
+
+          {images.length + imagesUrls.length === 0 && (
+            <p class="flex items-center gap-1.5 text-xs text-ink-muted">
+              <ImagePlus size={14} aria-hidden="true" />
+              Aún no hay imágenes seleccionadas
+            </p>
+          )}
+        </div>
+
+        <div class="flex justify-end gap-3 border-t border-line pt-4">
+          <Button variant="outline" onClick={onCancel} aria-label="Cancelar el formulario">
+            Cancelar
+          </Button>
+          <Button type="submit" aria-label={`${product ? 'Actualizar' : 'Crear'} Producto`}>
+            {product ? 'Actualizar' : 'Crear'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   )
 }
