@@ -13,10 +13,10 @@ export function Hero() {
             <img
               src={heroLogo}
               alt="Frank Joyería"
-              width={600}
-              height={509}
+              width={920}
+              height={784}
               fetchPriority="high"
-              class="w-full max-w-56 sm:max-w-64 lg:max-w-72"
+              class="h-auto w-[14rem] sm:w-[16rem] lg:w-[18rem]"
             />
 
             <div class="mt-6 flex flex-col gap-4 sm:mt-8">
