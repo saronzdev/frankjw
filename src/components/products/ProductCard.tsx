@@ -60,7 +60,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
               <Spinner />
             </div>
           )}
-          {!data.isActive && <Badge tone="dark" class="absolute right-2 top-2 z-20">Agotado</Badge>}
+          {!data.isActive && <Badge tone="danger" class="absolute right-2 top-2 z-20">Agotado</Badge>}
 
           <img
             class={cx(
