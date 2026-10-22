@@ -14,7 +14,7 @@ export function SortSelect({ value, onChange }: Props) {
         class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-muted"
       />
       <select
-        class="h-9 cursor-pointer appearance-none rounded-md border border-line bg-surface pl-8 pr-8 text-sm text-ink transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        class="h-9 cursor-pointer appearance-none rounded-md border border-line bg-surface pl-8 pr-8 text-sm text-ink transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
         value={value}
         onChange={(e) => onChange((e.target as HTMLSelectElement).value)}
         aria-label="Ordenar productos"

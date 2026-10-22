@@ -9,7 +9,7 @@ import { Button } from '@/ui/Button'
 
 const field =
   'h-11 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted ' +
-  'transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50'
+  'transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35 disabled:opacity-50'
 
 export function Login() {
   const [_, setLocation] = useLocation()

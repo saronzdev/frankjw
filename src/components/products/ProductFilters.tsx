@@ -46,7 +46,7 @@ export function ProductFilters({
         <div class="flex gap-2">
           <input
             type="number"
-            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
             placeholder="Mín"
             value={priceRange[0] || ''}
             onChange={(e) => onPriceChange([Number((e.target as HTMLInputElement).value) || 0, priceRange[1]])}
@@ -54,7 +54,7 @@ export function ProductFilters({
           />
           <input
             type="number"
-            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
             placeholder="Máx"
             value={priceRange[1] || ''}
             onChange={(e) => onPriceChange([priceRange[0], Number((e.target as HTMLInputElement).value) || 0])}

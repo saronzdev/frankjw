@@ -16,7 +16,7 @@ interface Props {
 
 const field =
   'h-10 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted ' +
-  'transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold'
+  'transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35'
 const disabledField = 'disabled:pointer-events-none disabled:opacity-50'
 const labelCls = 'text-sm font-medium text-ink'
 const helpCls = 'text-xs text-ink-muted'

@@ -21,7 +21,7 @@ export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }
   return (
     <div class="relative">
       <input
-        class="h-9 w-full min-w-0 rounded-md border border-line bg-surface pl-3 pr-8 text-sm text-ink placeholder:text-ink-muted transition-colors hover:border-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        class="h-9 w-full min-w-0 rounded-md border border-line bg-surface pl-3 pr-8 text-sm text-ink placeholder:text-ink-muted transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
         type="text"
         placeholder={placeholder}
         onChange={handleInputChange}
