@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'preact/compat'
 import { Route, Switch } from 'wouter'
 import { Header } from './layout/Header'
 import { Footer } from './layout/Footer'
+import { UpdateBanner } from './layout/UpdateBanner'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { LoadingCard } from './components/products/LoadingCard'
 
@@ -40,6 +41,7 @@ export function App() {
     <>
       <ThirdPartyScripts />
       <Header />
+      <UpdateBanner />
       <Suspense fallback={<LoadingCard />}>
         <Switch>
           <Route path="/" component={HomePage} />
