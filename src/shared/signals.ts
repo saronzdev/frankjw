@@ -51,7 +51,7 @@ checkAdmin()
 
 export const cats = computed(() => {
   const uniqueCategories = [...new Set(products.value.map((p) => p.category))]
-    .filter((cat) => cat !== HIDDEN_CATEGORY)
+    .filter((cat) => cat !== HIDDEN_CATEGORY && findCategory(cat))
 
   return uniqueCategories
     .map((cat) => ({
