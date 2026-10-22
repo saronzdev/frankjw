@@ -27,9 +27,9 @@
 
 - CI plan: `.github/workflows/ci.yml` — installs with pnpm (Node 22), then runs `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` on every PR.
 - From `app/`, one-liner: `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
-- The vitest suite under `tests/` is not populated yet in this repo — `pnpm test` is currently a smoke pass. The business-logic test suite (products API, auth) lives in the sibling `api/` repo (`pnpm test` there, 28 cases, runs against `:memory:`).
+- The vitest suite lives in `tests/` (currently `utils.test.ts`, covering the `src/shared/` helpers). Run it with `pnpm test`, or focus one case with `pnpm vitest run -t "<test name>"`. The business-logic suite (products API, auth) lives in the sibling `api/` repo (`pnpm test` there, 28 cases, runs against `:memory:`).
 - After moving files or changing imports, re-run `pnpm lint && pnpm typecheck`; both must be green before commit.
-- Add tests when you change fetch/transform logic in `src/shared/` (filtering, sorting, src-set building) even if nobody asked; keep helpers pure so they remain easy to test.
+- Add tests for fetch/transform logic you change in `tests/` (the existing suite covers exactly those pure helpers) even if nobody asked; keep helpers pure so they remain easy to test.
 
 ## PR instructions
 
