@@ -20,6 +20,7 @@
   - Prefer deterministic arbitrary values over composited width ramps when sizing must be exact (hero logo uses `w-[14rem] sm:w-[16rem] lg:w-[18rem]` + real `width`/`height` attributes).
   - Sticky-under-header elements need `top-16` (header is 4rem).
 - Overlays: reuse `Modal`/`Drawer` + `useOverlayBehavior` instead of drafting new overlays; it handles Escape (topmost-safe), scroll-lock counting and focus.
+- When changing the favicon/site icons: regenerate the PNG/ICO files in `public/` AND bump the `?v=N` query on every icon `<link>` in `index.html`. Browsers keep a favicon cache keyed by URL that ignores HTTP headers, so an unversioned URL can stay stale for visitors; the query param is the only reliable cache-buster. Manifest icons in `vite.config.ts` stay unversioned (they are precache-managed).
 - When touching image flows, keep the contract of `src/shared/storage.ts` (`uploadImage(file) → {url} | {error}`) and let the API own the storage details; the `api/` repo decides providers (currently Supabase behind `utils/storage.ts`).
 - Visual QA checklist after layout changes: home hero, category chips/drawer, product gallery modal, dashboard CRUD, login, 404 page.
 - Cross-device check via the LAN URL printed at dev start (that's the point of `devx`).
