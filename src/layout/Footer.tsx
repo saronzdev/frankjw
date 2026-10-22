@@ -53,7 +53,7 @@ export function Footer() {
           <ul class="mt-4 space-y-2.5 text-sm text-ink-soft">
             <li>
               <a href="tel:+5353444690" class="transition-colors hover:text-ink">
-                +53 534 4469 0
+                +5353444690
               </a>
             </li>
             <li>
