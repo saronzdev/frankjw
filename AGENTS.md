@@ -5,7 +5,7 @@
 - **Stack**: Preact 10 + TypeScript on Vite 7, Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `src/global.css` via `@theme`), `@preact/signals` for shared state, `wouter` routing, `sonner` toasts, `lucide-preact` icons, PWA via `vite-plugin-pwa`. Package manager: **pnpm**.
 - **Architecture**: `src/ui/` holds reusable primitives (Button, IconButton, Badge, Spinner, Modal, Drawer, `useOverlayBehavior`); `src/layout/` holds chrome (Header, Footer, MobileSidebar, UpdateBanner); `src/components/` feature components; `src/pages/` routed screens; `src/data/` static catalog metadata; `src/shared/` signals, API fetching, helpers.
 - **Backend** lives in the sibling repo `api/` (Express + libsql). In development the UI talks to `http://localhost:3000` (`VITE_BACKEND_URL` defaults to it when unset). The dev API writes to a **local sqlite file** — a remote Turso database in dev is deliberately ignored (see api config). Never "fix" that behavior.
-- **Remote env** (Supabase storage, production DB) is still the real one even in local QA — test image uploads only with disposable files.
+- **Image storage is server-side**: `src/shared/storage.ts` calls `POST/DELETE /api/v1/uploads` under the admin cookie. The frontend ships **no storage credentials** (`@supabase/supabase-js` was removed); in dev without `SUPABASE_URL` the api returns `503` and the UI surfaces the notice — local QA never touches the production bucket.
 
 ## Dev environment tips
 
@@ -20,6 +20,7 @@
   - Prefer deterministic arbitrary values over composited width ramps when sizing must be exact (hero logo uses `w-[14rem] sm:w-[16rem] lg:w-[18rem]` + real `width`/`height` attributes).
   - Sticky-under-header elements need `top-16` (header is 4rem).
 - Overlays: reuse `Modal`/`Drawer` + `useOverlayBehavior` instead of drafting new overlays; it handles Escape (topmost-safe), scroll-lock counting and focus.
+- When touching image flows, keep the contract of `src/shared/storage.ts` (`uploadImage(file) → {url} | {error}`) and let the API own the storage details; the `api/` repo decides providers (currently Supabase behind `utils/storage.ts`).
 - Visual QA checklist after layout changes: home hero, category chips/drawer, product gallery modal, dashboard CRUD, login, 404 page.
 - Cross-device check via the LAN URL printed at dev start (that's the point of `devx`).
 

@@ -52,6 +52,7 @@ Usage guidance
 - **Tooltip-less meta chips** — small reference chips like product ID use `Badge neutral` with a 1px border on top.
 - **Modal** (`Modal`) — scrim `bg-black/55 backdrop-blur-[2px]`; panel `bg-surface rounded-lg shadow-2xl animate-panel-in`, sizes `sm 24rem / md 32rem / lg 40rem`, `max-h-[calc(100dvh-4rem)]`, header with `font-display text-lg` title + icon close; body scrollable; Escape/backdrop close.
 - **Drawer** (`Drawer`) — same scrim; left panel slides in (`animate-drawer-left`), full-height for mobile menus and filters.
+- **Update banner** (`layout/UpdateBanner.tsx`) — one-line strip under the header: `bg-gold-soft/40` + `border-b border-line/70`, `Sparkles` 14px in gold, short sentence, underlined "Ver cambios" link (`text-gold-deep`, decoration gold) and an `X` dismiss (persisted in localStorage). Opens a `Modal md` with the changelog: gold check-circles (12px path in `bg-gold-soft/70` circle), heading `font-semibold text-ink` + detail `text-sm text-ink-muted`.
 - **Empty/error/loading states** — centered `max-w-md` stacks: error = `CircleX` 26px in a `red-100` circle + retry CTA; loading = `animate-pulse` skeletons on `surface-2`; empty = short sober copy + CTA, no illustration spam.
 
 ## Elevation
