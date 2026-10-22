@@ -29,12 +29,6 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/favicon-96x96.png',
-            sizes: '96x96',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
             src: '/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
