@@ -5,7 +5,7 @@ import { api } from './utils'
 const UNKNOWN_ERROR = 1
 const NETWORK_ERROR = 1000
 
-const getErrorCode = (error: unknown): number => {
+export const getErrorCode = (error: unknown): number => {
   if (error instanceof AxiosError) {
     if (error.response) return (error.response.data as { code?: number })?.code ?? UNKNOWN_ERROR
     if (error.request) return NETWORK_ERROR

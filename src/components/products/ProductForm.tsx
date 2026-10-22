@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ProductIn, ProductType } from '@/types'
-import { uploadFile } from '@/shared/supabase'
+import { uploadImage } from '@/shared/storage'
 import { categories, normalize } from '@/shared/utils'
 import { Modal } from '@/ui/Modal'
 import { Button } from '@/ui/Button'
@@ -132,7 +132,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
       }
     }
 
-    const uploadPromises = images.map((file) => uploadFile(file))
+    const uploadPromises = images.map((file) => uploadImage(file))
     const uploadResults = await Promise.all(uploadPromises ?? [])
     const errors = uploadResults.filter((result) => typeof result !== 'string')
     if (errors.length > 0) toast.error('Ha ocurrido un error al subir las imagenes')

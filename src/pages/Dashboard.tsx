@@ -7,6 +7,7 @@ import { FiltersToolbar } from '@/components/products/FiltersToolbar'
 import { FiltersDrawer } from '@/components/products/FiltersDrawer'
 import type { ProductIn, ProductType } from '@/types'
 import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
+import { deleteImage, isStorageUrl } from '@/shared/storage'
 import { getErrorMessage, filterAndSortProducts } from '@/shared/utils'
 import { LoadingCard } from '@/components/products/LoadingCard'
 import { ErrorCard } from '@/components/products/ErrorCard'
@@ -49,10 +50,13 @@ export function Dashboard() {
 
   const handleSaveProduct = async (data: ProductIn) => {
     if (editingProduct) {
+      const previousPictures = editingProduct.pictures ?? []
       const { ok, error: err } = await updateProduct(editingProduct.id, data)
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(err ?? 1))
       await refreshProducts()
+      const removed = previousPictures.filter((url) => isStorageUrl(url) && !(data.pictures ?? []).includes(url))
+      await Promise.allSettled(removed.map((url) => deleteImage(url)))
       setEditingProduct(undefined)
       toast.success('Se ha actualizado el producto correctamente')
     } else {
