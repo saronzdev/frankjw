@@ -1,13 +1,12 @@
-import { useState, lazy, Suspense, createPortal } from 'preact/compat'
+import { useState, lazy, Suspense } from 'preact/compat'
 import type { ProductType } from '@/types'
+import { ShoppingBag, Info, Pencil, Trash2 } from 'lucide-preact'
 import noImage from '@/assets/no-image.svg'
-import noStock from '@/assets/nostock.svg'
-import shop from '@/assets/shop.svg'
-import info from '@/assets/info.svg'
-import editIcon from '@/assets/edit.svg'
-import trashIcon from '@/assets/trash.svg'
-import styles from '@/styles/ProductCard.module.css'
 import { normalize, optimizeImage, buildSrcSet } from '@/shared/utils'
+import { Badge } from '@/ui/Badge'
+import { IconButton } from '@/ui/IconButton'
+import { Spinner } from '@/ui/Spinner'
+import { cx } from '@/ui/cx'
 
 const ProductPopup = lazy(() => import('./ProductPopup').then((m) => ({ default: m.ProductPopup })))
 const ReservePopup = lazy(() => import('../ReservePopup').then((m) => ({ default: m.ReservePopup })))
@@ -37,6 +36,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
 
   const firstImage = data.pictures && data.pictures.length > 0 ? data.pictures[0] : noImage
   const name = normalize(data.description.split(',')[0])
+  const hasOffer = data.hasDiscount && !!data.offerPrice
 
   const handleDelete = () => {
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
@@ -44,104 +44,108 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
     }
   }
 
-  const toogleReserve = () => {
+  const toggleReserve = () => {
     setIsReserve(!isReserve)
   }
 
   return (
-    <div className={`${styles.card} ${isOpen ? styles['popup-open'] : ''}`}>
-      <div className={styles.picture}>
-        {isLoading && (
-          <div className={styles.loadingSpinner} role="status" aria-label="Cargando imagen">
-            <div className={styles.spinner}></div>
-          </div>
-        )}
-        {!data.isActive && <img className={styles.status} src={noStock} />}
-        <img
-          className={styles.product}
-          src={optimizeImage(firstImage, 480)}
-          srcSet={buildSrcSet(firstImage)}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+    <div class="group flex flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg">
+      <div class="relative">
+        <div
+          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface"
           onClick={() => setIsOpen(true)}
-          loading="lazy"
-          decoding="async"
-          onLoad={() => setIsLoading(false)}
-          onError={() => setIsLoading(false)}
-        />
-        {editable && (
-          <div className={styles.editActions}>
-            <button className={styles.iconButton} aria-label={`Editar ${data.productId}`} onClick={() => onEdit?.(data)}>
-              <img src={editIcon} alt="Edit Icon" />
-            </button>
-            <button className={styles.iconButton} aria-label={`Eliminar ${data.productId}`} onClick={handleDelete}>
-              <img src={trashIcon} alt="Trash Icon" />
-            </button>
-            <span className={styles.productId}>{data.productId}</span>
-          </div>
-        )}
-      </div>
-      <div>
-        <p className={styles.name}>{name}</p>
-      </div>
-      <div className={styles.footer}>
-        {data.hasDiscount && data.offerPrice ? (
-          <div className={styles.priceContainer}>
-            <div className={styles.priceRow}>
-              <p className={styles.originalPrice}>${data.price}</p>
-              <p className={styles.discount}>-${(data.price - data.offerPrice).toFixed(2)}</p>
+        >
+          {isLoading && (
+            <div class="absolute inset-0 z-10 grid place-items-center">
+              <Spinner />
             </div>
-            <p className={styles.price}>${data.offerPrice}</p>
-          </div>
-        ) : (
-          <p className={styles.price}>${data.price}</p>
-        )}
-        {!editable && (
-          <div className={styles.actions}>
-            <button
-              className={styles.actionButton}
-              onClick={toogleReserve}
-              title="Reservar"
-              aria-label={`Reservar ${data.productId}`}
+          )}
+          {!data.isActive && <Badge tone="danger" class="absolute right-2 top-2 z-20">Agotado</Badge>}
+
+          <img
+            class={cx(
+              'h-full w-full object-cover object-center transition-opacity duration-300',
+              isLoading && 'opacity-0'
+            )}
+            src={optimizeImage(firstImage, 480)}
+            srcSet={buildSrcSet(firstImage)}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setIsLoading(false)}
+            onError={() => setIsLoading(false)}
+          />
+        </div>
+        {editable && (
+          <div class="absolute left-2 top-2 z-20 flex items-center gap-1.5">
+            <IconButton
+              size="sm"
+              label={`Editar ${data.productId}`}
+              onClick={() => onEdit?.(data)}
+              class="border border-line bg-white/90 shadow-sm"
             >
-              <img className={styles.shop} src={shop} alt="" />
-            </button>
-            <button
-              className={styles.actionButton}
-              onClick={() => setIsOpen(true)}
-              title="Ver detalles"
-              aria-label={`Ver detalles de ${data.productId}`}
+              <Pencil size={14} aria-hidden="true" />
+            </IconButton>
+            <IconButton
+              size="sm"
+              label={`Eliminar ${data.productId}`}
+              onClick={handleDelete}
+              class="border border-line bg-white/90 shadow-sm"
             >
-              <img className={styles.details} src={info} alt="" />
-            </button>
+              <Trash2 size={14} aria-hidden="true" />
+            </IconButton>
+            <Badge class="border border-line bg-white/90">{data.productId}</Badge>
           </div>
         )}
       </div>
-      {isOpen &&
-        createPortal(
-          <Suspense
-            fallback={
-              <div style="display:flex;align-items:center;justify-content:center;height:100vh;">
-                <div>Cargando...</div>
+      <div class="flex flex-1 flex-col gap-1.5 p-3">
+        <p class="line-clamp-2 text-sm leading-snug text-ink-soft">{name}</p>
+        <div class="mt-auto flex items-end justify-between gap-2 pt-1">
+          {hasOffer ? (
+            <div class="flex flex-col gap-0.5">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs text-ink-muted line-through">${data.price}</span>
+                <Badge tone="danger">-${(data.price - (data.offerPrice as number)).toFixed(2)}</Badge>
               </div>
-            }
-          >
-            <ProductPopup
-              product={currentProduct}
-              onClose={close}
-              allProducts={allProducts}
-              currentIndex={currentProductIndex}
-              onNavigate={handleNavigate}
-            />
-          </Suspense>,
-          document.body
-        )}
-      {isReserve &&
-        createPortal(
-          <Suspense fallback={<div>Cargando...</div>}>
-            <ReservePopup data={data} onClose={toogleReserve} />
-          </Suspense>,
-          document.body
-        )}
+              <span class="text-base font-semibold text-ink">${data.offerPrice}</span>
+            </div>
+          ) : (
+            <span class="text-base font-semibold text-ink">${data.price}</span>
+          )}
+          {!editable && (
+            <div class="flex gap-1">
+              <IconButton
+                size="sm"
+                label={`Reservar ${data.productId}`}
+                title="Reservar"
+                onClick={toggleReserve}
+              >
+                <ShoppingBag size={16} aria-hidden="true" />
+              </IconButton>
+              <IconButton
+                size="sm"
+                label={`Ver detalles de ${data.productId}`}
+                title="Ver detalles"
+                onClick={() => setIsOpen(true)}
+              >
+                <Info size={16} aria-hidden="true" />
+              </IconButton>
+            </div>
+          )}
+        </div>
+      </div>
+      {isOpen && (
+        <Suspense fallback={null}>
+          <ProductPopup
+            product={currentProduct}
+            onClose={close}
+            allProducts={allProducts}
+            currentIndex={currentProductIndex}
+            onNavigate={handleNavigate}
+          />
+        </Suspense>
+      )}
+      {isReserve && <ReservePopup data={data} onClose={toggleReserve} />}
     </div>
   )
 }

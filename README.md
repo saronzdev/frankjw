@@ -5,16 +5,16 @@ Web storefront for [frankjoyeriacuba.com](https://frankjoyeriacuba.com), an e-co
 ![ci](https://github.com/saronzdev/frankjw/actions/workflows/ci.yml/badge.svg?branch=main)
 ![license](https://img.shields.io/badge/license-GPL--3.0-blue)
 ![typescript](https://img.shields.io/badge/TypeScript-strict-blue)
-![node](https://img.shields.io/badge/Node.js-20%2B-blue)
+![node](https://img.shields.io/badge/Node.js-22%2B-blue)
 
 ## Security
 
 Everything in the client is public, so the design assumes the bundle can be read and tampered with:
 
-- **No secrets in the bundle** — only public `VITE_*` values ship (Supabase URL + anon key, API base URL). `.env` is never committed; `.env.example` carries placeholders. Nothing meaningful can be extracted from the source.
+- **No secrets in the bundle** — the only environment value shipped is the API base URL (`VITE_BACKEND_URL`). Storage credentials never reach the client: image upload/delete is executed server-side by the API with its `service_role` key. `.env` is never committed; `.env.example` carries placeholders. Nothing meaningful can be extracted from the source.
 - **Cookie-based admin auth** — login exchanges credentials for an `httpOnly` cookie issued by the API; no token is stored in JS. The dashboard route guard (`isAdmin`) is UX only — every admin request is authorized and validated server-side.
 - **Real logout** — `POST /auth/logout` expires the session cookie in the API; the client additionally clears its local flag and resets the role signal.
-- **Hardened uploads** — the client accepts an image MIME allowlist, generates UUID file names and enforces 2 images / 100 KB per product; the API re-validates everything.
+- **Hardened uploads** — the client accepts an image MIME allowlist and enforces 2 images / 100 KB per product; the upload itself goes through the API (`POST /api/v1/uploads`), which re-validates MIME and size, gates the request behind the admin cookie and keeps the storage key server-side. Images removed while editing are deleted server-side on save.
 - **Scoped PWA caching** — the service worker runtime cache only touches the **public** `GET /api/v1/products` endpoint (`StaleWhileRevalidate`, GET-only, 1 entry, 1 h). Auth and admin responses are never cached.
 - **Safe output and links** — Preact escapes rendered content by default; WhatsApp reservation links open with `noopener,noreferrer` (anti-tabnabbing).
 - **CI as a quality gate** — lint, typecheck, unit tests and a production build run on every pull request and every push to `main`.
@@ -28,7 +28,7 @@ Everything in the client is public, so the design assumes the bundle can be read
 | Build | [Vite](https://vitejs.dev/) 7 + `@vitejs/plugin-legacy` |
 | Routing | [wouter](https://github.com/molefrog/wouter) |
 | Data | [axios](https://axios-http.com/) against the REST API |
-| Storage | [Supabase Storage](https://supabase.com/docs/guides/storage) (product images) |
+| Images | Upload/delete via the REST API (admin-gated); Supabase Storage lives server-side |
 | Toasts | [sonner](https://sonner.emilkowal.ski/) |
 | PWA | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) |
 | Testing | [Vitest](https://vitest.dev) |
@@ -40,27 +40,31 @@ Everything in the client is public, so the design assumes the bundle can be read
 
 ```
 ├── index.html                      # Entry HTML (SEO, Open Graph, fonts, preconnects)
-├── public/                         # PWA icons, logo, robots.txt, sitemap
+├── public/                         # PWA icons, og image, favicon set, robots.txt, sitemap
 ├── src/
-│   ├── assets/                     # Bundled images (categories, UI icons, samples)
+│   ├── assets/                     # Bundled images (cat-*.avif banners, hero/logo webp, samples, social SVGs)
+│   ├── ui/                         # Design-system primitives: Button, IconButton, Badge, Spinner, Modal, Drawer
+│   ├── layout/                     # Header, Footer, MobileSidebar, UpdateBanner
 │   ├── components/
 │   │   ├── landing/                # Hero, Carousel, Highlighted, Sample, Social
 │   │   └── products/               # ProductCard, ProductForm, ProductPopup, filters, search, sort
 │   ├── pages/                      # HomePage, Products, Dashboard, About, Contact, Login, NotFound
+│   ├── data/                       # Static catalog metadata: categories.ts, navigation.ts
 │   ├── shared/
 │   │   ├── fetching.ts             # API client requests + centralized error codes
 │   │   ├── signals.ts              # Preact signals (catalog, admin role) + retry/backoff actions
-│   │   ├── supabase.ts             # Hardened image upload/delete (MIME allowlist, UUID names)
+│   │   ├── storage.ts              # Image upload/delete via the API (admin cookie)
 │   │   ├── utils.ts                # Pure helpers (filters, sorting, slugs, image URLs)
-│   │   └── constants.ts            # Categories, menu, error-code → message map
-│   ├── styles/                     # CSS Modules (one per component)
+│   │   └── constants.ts            # Sellers, menu, highlights, error-code → message map
 │   ├── app.tsx                     # Routes (code-split) and layout
-│   ├── global.css                  # Design tokens (colors, spacing, radii) and base styles
+│   ├── global.css                  # Tailwind v4 @theme design tokens (colors, type, motion) + base styles
 │   └── main.tsx                    # Entry point
 ├── tests/                          # Unit tests (pure helper logic)
 ├── .github/workflows/ci.yml        # CI: lint + typecheck + test + build
 ├── eslint.config.mjs
 ├── vitest.config.ts
+├── DESIGN.md                       # Design system tokens and guidelines
+├── AGENTS.md                       # Contributor/agent guide
 ├── vercel.json                     # SPA rewrites + cache headers
 ├── .env.example
 └── vite.config.ts                  # PWA manifest + workbox runtime caching
@@ -74,7 +78,7 @@ cp .env.example .env   # fill in the values
 pnpm dev               # http://localhost:5173
 ```
 
-Requires Node.js 20.19+ (or 22.12+) and [pnpm](https://pnpm.io/) 12.
+Requires Node.js 22+ and [pnpm](https://pnpm.io/) 12.
 
 ## Testing
 
@@ -85,7 +89,7 @@ pnpm test           # run once
 pnpm test:watch     # watch mode
 ```
 
-The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/utils.ts`: product filtering by price/karats/on-sale, every sort mode, slugify/unslugify round-trips, image URL transforms (Supabase vs. external), email validation, the retry policy for transient API codes and the error-code → message map.
+The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/utils.ts`: product filtering by price/karats/on-sale, every sort mode, slugify/unslugify round-trips, image src-set building, email validation, the retry policy for transient API codes and the error-code → message map.
 
 ## Routes
 
@@ -102,7 +106,7 @@ The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/ut
 
 - **Product catalog** — browse by category with sorting and filters; prices support offers (`offerPrice`).
 - **Product details popup** — multi-image viewer with prev/next navigation, price/weight/karat info and WhatsApp reservation.
-- **Admin dashboard** — full product CRUD, image upload to Supabase Storage, search by product ID, same sort/filter controls as the public catalog.
+- **Admin dashboard** — full product CRUD, image upload through the API (dev environments without storage config surface a clean notice instead of failing), search by product ID, same sort/filter controls as the public catalog.
 - **WhatsApp reservation** — one tap opens a `wa.me` chat pre-filled with product details for the store sellers.
 - **PWA** — installable, offline-ready: precached app shell + locally stored images, and a scoped runtime cache for the public catalog endpoint.
 - **Responsive & accessible** — mobile-first CSS Modules, keyboard-reachable controls, semantic buttons.
@@ -112,11 +116,9 @@ The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/ut
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_SUPABASE_URL` | Yes | Supabase project URL (public value). |
-| `VITE_SUPABASE_TOKEN` | Yes | Supabase anon/public key (public value; access is governed by the bucket policies). |
-| `VITE_BACKEND_URL` | Yes | Backend API base URL (e.g. `https://frankjw-api.vercel.app`). |
+| `VITE_BACKEND_URL` | No | Backend API base URL (e.g. `https://frankjw-api.vercel.app`). Defaults to `http://localhost:3000` for local development. |
 
-The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. If `VITE_BACKEND_URL` is unset it falls back to `http://localhost:3000` for local development.
+The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. Image uploads and deletions are performed server-side by the API (see the [API README](https://github.com/saronzdev/frankjw-api#environment-variables) for its `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` setup).
 
 ## Deployment
 

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import type { ProductType } from '../types'
-import { CATEGORIES } from './constants'
 
 export const handleReservation = async (number: number, product: Omit<ProductType, 'pictures'>) => {
   const message = `Hola! Me interesa reservar: ${product.description} - ID: ${product.productId} - Número: ${number}`
@@ -22,25 +21,6 @@ export const api = axios.create({
 })
 
 export const normalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
-
-export const slugify = (string: string): string => {
-  return string
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]/g, '')
-}
-
-export const unslugify = (slug: string): string => {
-  const normalizedSlug = slug.toLowerCase().trim()
-
-  const category = CATEGORIES.find((cat) => {
-    const catSlug = slugify(cat.title)
-    return catSlug === normalizedSlug
-  })
-
-  return category?.title || ''
-}
 
 export const isValidEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -131,13 +111,10 @@ export function filterAndSortProducts(list: ProductType[], filters: ProductFilte
 export {
   socialLinks,
   highlights,
-  CATEGORIES,
-  categories,
-  menuItems,
-  menuItemsMobile,
-  titles,
+  commonKarats,
   MAX_RETRIES,
   INITIAL_BACKOFF_MS,
-  getErrorMessage,
-  commonKarats
+  getErrorMessage
 } from './constants'
+
+export { CATEGORIES, HIDDEN_CATEGORY, categories, slugify, unslugify, findCategory } from '../data/categories'

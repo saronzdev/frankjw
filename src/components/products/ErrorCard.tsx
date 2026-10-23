@@ -1,4 +1,5 @@
-import styles from '@/styles/ErrorCard.module.css'
+import { CircleX } from 'lucide-preact'
+import { Button } from '@/ui/Button'
 
 interface Props {
   message: string
@@ -6,26 +7,18 @@ interface Props {
 
 export function ErrorCard({ message }: Props) {
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.content}>
-          <div className={styles.iconContainer}>
-            <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="15" y1="9" x2="9" y2="15"></line>
-              <line x1="9" y1="9" x2="15" y2="15"></line>
-            </svg>
-          </div>
-
-          <div className={styles.textContent}>
-            <h3 className={styles.title}>Error</h3>
-            <p className={styles.message}>{message}</p>
-          </div>
-
-          <button onClick={() => window.location.reload()} className={styles.button} aria-label="Reintentar">
-            Intentar de nuevo
-          </button>
+    <div class="grid place-items-center px-4 py-24">
+      <div class="flex max-w-md flex-col items-center gap-4 text-center">
+        <div class="grid h-14 w-14 place-items-center rounded-full bg-red-100 text-danger">
+          <CircleX size={26} aria-hidden="true" />
         </div>
+        <div class="flex flex-col gap-1">
+          <h3 class="font-display text-xl font-semibold text-ink">¡Ups!</h3>
+          <p class="text-sm text-ink-muted">{message}</p>
+        </div>
+        <Button variant="outline" onClick={() => window.location.reload()}>
+          Intentar de nuevo
+        </Button>
       </div>
     </div>
   )

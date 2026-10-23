@@ -1,15 +1,24 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
-import { useRoute } from 'wouter'
-import { cats, error, loading } from '@/shared/signals'
-import { Category } from '@/components/products/Category'
-import { SortSelect } from '@/components/products/SortSelect'
-import { ProductFilters } from '@/components/products/ProductFilters'
+import { useState } from 'preact/hooks'
+import { lazy, Suspense } from 'preact/compat'
+import { useRoute, Link } from 'wouter'
+import { cats, products, error, loading } from '@/shared/signals'
+import { CategoryHeader } from '@/components/products/CategoryHeader'
+import { ProductGrid } from '@/components/products/ProductGrid'
+import { FiltersToolbar } from '@/components/products/FiltersToolbar'
+import { FiltersDrawer } from '@/components/products/FiltersDrawer'
+import { NoProducts } from '@/components/products/NoProducts'
 import { ErrorCard } from '@/components/products/ErrorCard'
 import { LoadingCard } from '@/components/products/LoadingCard'
-import { getErrorMessage, unslugify } from '@/shared/utils'
-import { NoProducts } from '@/components/products/NoProducts'
-import filterIcon from '@/assets/filter.svg'
-import styles from '@/styles/Products.module.css'
+import {
+  getErrorMessage,
+  findCategory,
+  filterAndSortProducts,
+  slugify,
+  normalize,
+  HIDDEN_CATEGORY
+} from '@/shared/utils'
+
+const NotFound = lazy(() => import('./NotFound').then((m) => ({ default: m.NotFound })))
 
 export function Products() {
   const [_, params] = useRoute('/products/:category?')
@@ -19,7 +28,6 @@ export function Products() {
   const [selectedKarats, setSelectedKarats] = useState<number[]>([])
   const [onSale, setOnSale] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const sortContainerRef = useRef<HTMLDivElement>(null)
 
   const handleResetFilters = () => {
     setPriceRange([0, 0])
@@ -27,89 +35,77 @@ export function Products() {
     setOnSale(false)
   }
 
-  useEffect(() => {
-    const updateStickyTop = () => {
-      const header = document.querySelector('header')
-      if (header && sortContainerRef.current) {
-        const headerHeight = header.offsetHeight
-        sortContainerRef.current.style.top = `${headerHeight}px`
-      }
-    }
-
-    const timer = setTimeout(updateStickyTop, 100)
-
-    let resizeTimer: number
-    const debouncedResize = () => {
-      clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(updateStickyTop, 150) as unknown as number
-    }
-
-    window.addEventListener('resize', debouncedResize)
-    return () => {
-      clearTimeout(timer)
-      clearTimeout(resizeTimer)
-      window.removeEventListener('resize', debouncedResize)
-    }
-  }, [])
-
-  const categories = categoryParam ? [unslugify(categoryParam) || categoryParam].filter(Boolean) : cats.value
+  const closeFilters = () => setFiltersOpen(false)
 
   if (loading.value) return <LoadingCard />
   if (error.value > 0) return <ErrorCard message={getErrorMessage(error.value)} />
-  if (categories.length === 0) return <NoProducts hasProducts={false} />
+
+  const category = categoryParam ? findCategory(categoryParam) : undefined
+  if (categoryParam && !category) {
+    return (
+      <Suspense fallback={<LoadingCard />}>
+        <NotFound />
+      </Suspense>
+    )
+  }
+
+  const baseList = category
+    ? products.value.filter((p) => p.category.toLowerCase().trim() === category.title.toLowerCase().trim())
+    : products.value.filter((p) => p.category !== HIDDEN_CATEGORY)
+
+  const filtered = filterAndSortProducts(baseList, { sortBy, priceRange, selectedKarats, onSale })
 
   return (
-    <div className={styles.container}>
-      {categories.length > 0 && (
-        <div ref={sortContainerRef} className={styles.sortContainer}>
-          <SortSelect value={sortBy} onChange={setSortBy} />
-          <button className={styles.filterButton} onClick={() => setFiltersOpen(true)}>
-            <img src={filterIcon} alt="Filter icon" height={18} width={18} />
-            Filtros
-          </button>
-        </div>
+    <div class="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 md:py-10">
+      {category ? (
+        <CategoryHeader title={category.title} description={category.description} image={category.img} />
+      ) : (
+        <header class="mx-auto flex max-w-2xl flex-col items-center gap-2 text-center">
+          <h1 class="font-display text-3xl font-semibold uppercase tracking-[0.05em] text-ink md:text-4xl">
+            Nuestra Colección
+          </h1>
+          <p class="text-sm text-ink-muted md:text-[0.95rem]">
+            Piezas de oro y plata elaboradas a mano, listas para acompañar cada momento.
+          </p>
+        </header>
       )}
 
-      <section className={styles.section}>
-        <div className={styles.categoriesContainer}>
-          {categories.map((category) => (
-            <Category
-              key={category}
-              category={category}
-              sortBy={sortBy}
-              priceRange={priceRange}
-              selectedKarats={selectedKarats}
-              onSale={onSale}
-            />
+      {!category && (
+        <nav aria-label="Categorías" class="flex flex-wrap justify-center gap-2">
+          {cats.value.map((cat) => (
+            <Link
+              key={cat}
+              href={`/products/${slugify(cat)}`}
+              class="rounded-full border border-line bg-surface px-4 py-1.5 text-sm text-ink-soft transition-colors hover:border-gold hover:bg-gold-soft/60 hover:text-gold-deep"
+            >
+              {normalize(cat)}
+            </Link>
           ))}
-        </div>
-      </section>
-
-      {/* Sidebar overlay */}
-      {filtersOpen && (
-        <>
-          <div className={styles.overlay} onClick={() => setFiltersOpen(false)} />
-          <div className={styles.sidebar}>
-            <div className={styles.sidebarHeader}>
-              <h2 className={styles.sidebarTitle}>Filtros</h2>
-              <button className={styles.closeButton} onClick={() => setFiltersOpen(false)}>
-                ✕
-              </button>
-            </div>
-            <div className={styles.sidebarContent}>
-              <ProductFilters
-                priceRange={priceRange}
-                selectedKarats={selectedKarats}
-                onSale={onSale}
-                onPriceChange={setPriceRange}
-                onKaratsChange={setSelectedKarats}
-                onSaleChange={setOnSale}
-                onReset={handleResetFilters}
-              />
-            </div>
-          </div>
-        </>
+        </nav>
       )}
+
+      {filtered.length > 0 ? (
+        <>
+          <div class="sticky top-16 z-30 bg-bg/95 backdrop-blur-sm">
+            <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
+          </div>
+          <ProductGrid products={filtered} />
+        </>
+      ) : (
+        <NoProducts hasProducts={baseList.length > 0} />
+      )}
+
+      <FiltersDrawer
+        open={filtersOpen}
+        onClose={closeFilters}
+        priceRange={priceRange}
+        selectedKarats={selectedKarats}
+        onSale={onSale}
+        onPriceChange={setPriceRange}
+        onKaratsChange={setSelectedKarats}
+        onSaleChange={setOnSale}
+        onReset={handleResetFilters}
+      />
     </div>
   )
 }

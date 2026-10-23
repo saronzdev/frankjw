@@ -1,5 +1,5 @@
-import styles from '@/styles/ProductFilters.module.css'
 import { commonKarats } from '@/shared/constants'
+import { cx } from '@/ui/cx'
 
 interface Props {
   priceRange: [number, number]
@@ -29,20 +29,24 @@ export function ProductFilters({
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Filtros</h3>
-        <button className={styles.reset} onClick={onReset}>
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-base font-semibold text-ink">Filtros</h3>
+        <button
+          type="button"
+          onClick={onReset}
+          class="text-sm text-gold-deep underline-offset-4 transition-colors hover:text-gold hover:underline"
+        >
           Limpiar
         </button>
       </div>
 
-      <div className={styles.section}>
-        <label className={styles.label}>Precio (USD)</label>
-        <div className={styles.priceInputs}>
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Precio (USD)</label>
+        <div class="flex gap-2">
           <input
             type="number"
-            className={styles.input}
+            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
             placeholder="Mín"
             value={priceRange[0] || ''}
             onChange={(e) => onPriceChange([Number((e.target as HTMLInputElement).value) || 0, priceRange[1]])}
@@ -50,7 +54,7 @@ export function ProductFilters({
           />
           <input
             type="number"
-            className={styles.input}
+            class="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-muted focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
             placeholder="Máx"
             value={priceRange[1] || ''}
             onChange={(e) => onPriceChange([priceRange[0], Number((e.target as HTMLInputElement).value) || 0])}
@@ -59,23 +63,37 @@ export function ProductFilters({
         </div>
       </div>
 
-      {/* Kilates */}
-      <div className={styles.section}>
-        <label className={styles.label}>Kilates</label>
-        <div className={styles.checkboxGroup}>
-          {commonKarats.map((karat) => (
-            <label key={karat} className={styles.checkbox}>
-              <input type="checkbox" checked={selectedKarats.includes(karat)} onChange={() => handleKaratToggle(karat)} />
-              <span>{karat}K</span>
-            </label>
-          ))}
+      <div class="flex flex-col gap-2">
+        <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Kilates</span>
+        <div class="flex flex-wrap gap-1.5">
+          {commonKarats.map((karat) => {
+            const checked = selectedKarats.includes(karat)
+            return (
+              <label
+                key={karat}
+                class={cx(
+                  'inline-flex cursor-pointer items-center rounded-full border px-3 py-1 text-sm transition-colors',
+                  checked
+                    ? 'border-ink bg-ink text-white'
+                    : 'border-line bg-surface text-ink-soft hover:border-ink/30'
+                )}
+              >
+                <input type="checkbox" class="sr-only" checked={checked} onChange={() => handleKaratToggle(karat)} />
+                {karat}K
+              </label>
+            )
+          })}
         </div>
       </div>
 
-      {/* En oferta */}
-      <div className={styles.section}>
-        <label className={styles.checkbox}>
-          <input type="checkbox" checked={onSale} onChange={(e) => onSaleChange((e.target as HTMLInputElement).checked)} />
+      <div>
+        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+          <input
+            type="checkbox"
+            class="accent-gold"
+            checked={onSale}
+            onChange={(e) => onSaleChange((e.target as HTMLInputElement).checked)}
+          />
           <span>Solo productos en oferta</span>
         </label>
       </div>

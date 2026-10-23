@@ -1,7 +1,5 @@
 import type { JSX } from 'preact'
-import close from '@/assets/close.svg'
-import search from '@/assets/search.svg'
-import styles from '@/styles/Search.module.css'
+import { Search as SearchIcon, X } from 'lucide-preact'
 
 interface Props {
   searchTerm: string
@@ -21,30 +19,29 @@ export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.inputContainer}>
-          <input
-            className={styles.input}
-            type="text"
-            placeholder={placeholder}
-            onChange={handleInputChange}
-            value={searchTerm}
-          />
-
-          <div className={styles.searchIconContainer}>
-            <img className={styles.searchIcon} src={search} alt="Icono de Buscar" />
-          </div>
-
-          {searchTerm && (
-            <button className={styles.clearButton} onClick={clearSearch} type="button" aria-label="Limpiar búsqueda">
-              <img className={styles.clearIcon} src={close} alt="Icono de Limpiar Búsqueda" />
-            </button>
-          )}
-        </div>
-
-        <div className={styles.hoverEffect}></div>
-      </div>
+    <div class="relative">
+      <input
+        class="h-9 w-full min-w-0 rounded-md border border-line bg-surface pl-3 pr-8 text-sm text-ink placeholder:text-ink-muted transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35"
+        type="text"
+        placeholder={placeholder}
+        onChange={handleInputChange}
+        value={searchTerm}
+      />
+      <SearchIcon
+        size={16}
+        aria-hidden="true"
+        class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-muted"
+      />
+      {searchTerm && (
+        <button
+          type="button"
+          onClick={clearSearch}
+          aria-label="Limpiar búsqueda"
+          class="absolute right-8 top-1/2 -translate-y-1/2 rounded-md p-1 text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        >
+          <X size={14} aria-hidden="true" />
+        </button>
+      )}
     </div>
   )
 }

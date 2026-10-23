@@ -1,128 +1,129 @@
+import { Phone, Mail, MapPin } from 'lucide-preact'
 import { Social } from '@/components/landing/Social'
-import ws from '@/assets/ws.svg'
-import styles from '@/styles/Contact.module.css'
+import { Button } from '@/ui/Button'
 
 export function Contact() {
   return (
-    <>
-      <div className={styles.container}>
-        <section className={styles.hero}>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Contáctanos</h1>
-            <p className={styles.heroDescription}>
-              Estamos aquí para ayudarte a encontrar la joya perfecta o responder cualquier consulta que tengas.
-            </p>
+    <main class="min-h-dvh bg-surface">
+      <section class="border-b border-line bg-gradient-to-b from-surface-2 to-bg px-4 py-14 md:py-18">
+        <div class="mx-auto max-w-2xl text-center">
+          <h1 class="font-display text-[2rem] font-semibold uppercase tracking-[0.05em] text-ink sm:text-[2.5rem]">
+            Contáctanos
+          </h1>
+          <p class="mt-4 text-lg leading-relaxed text-ink-soft">
+            Estamos aquí para ayudarte a encontrar la joya perfecta o responder cualquier consulta que tengas.
+          </p>
+        </div>
+      </section>
+
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:py-20">
+        <section class="flex flex-col gap-6">
+          <h2 class="font-display text-2xl font-semibold tracking-[0.05em] text-ink">Información de contacto</h2>
+
+          <div class="flex items-start gap-4 border-b border-line pb-6">
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold-soft text-gold-deep">
+              <Phone size={18} aria-hidden="true" />
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <h3 class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Teléfono</h3>
+              <a
+                href="tel:+5353444690"
+                class="text-[0.95rem] font-medium text-ink underline-offset-4 hover:text-gold-deep hover:underline"
+                aria-label="Llamar al teléfono +5353444690"
+              >
+                +5353444690
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 border-b border-line pb-6">
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold-soft text-gold-deep">
+              <Mail size={18} aria-hidden="true" />
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <h3 class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Email</h3>
+              <a
+                href="mailto:frankjoyeriacuba@gmail.com"
+                class="break-all text-[0.95rem] font-medium text-ink underline-offset-4 hover:text-gold-deep hover:underline"
+                aria-label="Enviar correo a frankjoyeriacuba@gmail.com"
+              >
+                frankjoyeriacuba@gmail.com
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold-soft text-gold-deep">
+              <MapPin size={18} aria-hidden="true" />
+            </div>
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-0.5">
+                <h3 class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Ubicación</h3>
+                <address class="text-[0.95rem] not-italic leading-relaxed text-ink-soft">
+                  <strong class="font-semibold text-ink">Calle Medio</strong> entre <strong class="font-semibold text-ink">2 de Mayo</strong> y <strong class="font-semibold text-ink">América</strong>
+                  <br />
+                  Matanzas, Cuba
+                </address>
+              </div>
+              <address class="text-[0.95rem] not-italic leading-relaxed text-ink-soft">
+                <strong class="font-semibold text-ink">Calle San Benigno #169</strong> entre <strong class="font-semibold text-ink">Vía Blanca</strong> y <strong class="font-semibold text-ink">Serafines</strong>
+                <br />
+                Cerro, Habana, Cuba
+              </address>
+            </div>
           </div>
         </section>
 
-        <div className={styles.contactSection}>
-          <div className={styles.contactInfo}>
-            <h2 className={styles.contactTitle}>Información de contacto</h2>
-            <div className={styles.contactList}>
-              <div className={styles.contactItem}>
-                <div className={styles.contactIcon}>
-                  <span>📞</span>
-                </div>
-                <div className={styles.contactDetails}>
-                  <h3>Teléfono</h3>
-                  <a
-                    href="tel:+5353444690"
-                    className={styles.contactLink}
-                    aria-label="Llamar al teléfono +5353444690"
-                    title="Llamar al teléfono"
-                  >
-                    +5353444690
-                  </a>
-                </div>
-              </div>
-
-              <div className={styles.contactItem}>
-                <div className={styles.contactIcon}>
-                  <span>✉️</span>
-                </div>
-                <div className={styles.contactDetails}>
-                  <h3>Email</h3>
-                  <a
-                    href="mailto:frankjoyeriacuba@gmail.com"
-                    className={styles.contactLink}
-                    aria-label="Enviar correo a frankjoyeriacuba@gmail.com"
-                    title="Enviar correo"
-                  >
-                    frankjoyeriacuba@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              <div className={styles.contactItem}>
-                <div className={styles.contactIcon}>
-                  <span>📍</span>
-                </div>
-                <div className={styles.contactDetails}>
-                  <h3>Ubicación</h3>
-                  <div className={styles.contactAddress}>
-                    <p>
-                      <strong>Calle Medio</strong> entre <strong>2 de Mayo</strong> y <strong>América</strong>
-                    </p>
-                    <p>Matanzas, Cuba</p>
-                  </div>
-                  <div className={styles.contactAddress} style={{ marginTop: '1rem' }}>
-                    <p>
-                      <strong>Calle San Benigno #169</strong> entre <strong>Vía Blanca</strong> y <strong>Serafines</strong>
-                    </p>
-                    <p>Cerro, Habana, Cuba</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.socialColumn}>
-            <h3 className={styles.socialTitle}>Síguenos en redes sociales</h3>
-            <Social />
-          </div>
-        </div>
+        <section class="flex flex-col gap-4">
+          <h3 class="font-display text-lg text-ink">Síguenos en redes sociales</h3>
+          <Social />
+        </section>
       </div>
 
-      <section className={styles.scheduleSection}>
-        <div className={styles.scheduleHeader}>
-          <h2 className={styles.scheduleTitle}>Horarios de atención</h2>
-          <p className={styles.scheduleDescription}>Estamos disponibles para atenderte en los siguientes horarios</p>
-        </div>
-
-        <div className={styles.scheduleGrid}>
-          <div className={styles.scheduleItem}>
-            <h3>Lunes - Sábado</h3>
-            <p>9:00 AM - 4:00 PM</p>
+      <section class="border-y border-line bg-gradient-to-b from-surface-2 to-bg px-4 py-14">
+        <div class="mx-auto max-w-6xl">
+          <div class="mb-8 text-center">
+            <h2 class="font-display text-2xl font-semibold tracking-[0.05em] text-ink sm:text-3xl">
+              Horarios de atención
+            </h2>
+            <p class="mt-2 text-ink-muted">Estamos disponibles para atenderte en los siguientes horarios</p>
           </div>
-          <div className={styles.scheduleItem}>
-            <h3>Domingos</h3>
-            <p>Cerrado</p>
-          </div>
-          <div className={styles.scheduleItem}>
-            <h3>WhatsApp</h3>
-            <p>24/7 Disponible</p>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="flex flex-col gap-1 rounded-lg border border-line p-5 text-center">
+              <h3 class="font-display text-lg text-ink">Lunes - Sábado</h3>
+              <p class="text-sm text-ink-soft">9:00 AM - 4:00 PM</p>
+            </div>
+            <div class="flex flex-col gap-1 rounded-lg border border-line p-5 text-center">
+              <h3 class="font-display text-lg text-ink">Domingos</h3>
+              <p class="text-sm text-ink-soft">Cerrado</p>
+            </div>
+            <div class="flex flex-col gap-1 rounded-lg border border-line p-5 text-center">
+              <h3 class="font-display text-lg text-ink">WhatsApp</h3>
+              <p class="text-sm text-ink-soft">24/7 Disponible</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>¿Listo para crear algo especial?</h2>
-        <p className={styles.ctaDescription}>
-          Contáctanos hoy mismo y descubre cómo podemos ayudarte a crear la joya perfecta para ti o tus seres queridos.
-        </p>
-        <div>
-          <a
+      <section class="px-4 py-16 md:py-20">
+        <div class="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
+          <h2 class="font-display text-2xl font-semibold tracking-[0.05em] text-ink sm:text-3xl">
+            ¿Listo para crear algo especial?
+          </h2>
+          <p class="leading-relaxed text-ink-soft">
+            Contáctanos hoy mismo y descubre cómo podemos ayudarte a crear la joya perfecta para ti o tus seres
+            queridos.
+          </p>
+          <Button
+            variant="gold"
             href="https://api.whatsapp.com/send?phone=5353444690"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.ctaButton}
+            size="lg"
             aria-label="Chatear por WhatsApp"
-            title="Chatear por WhatsApp"
           >
-            <span>Chatear por WhatsApp</span>
-            <img src={ws} height={20} width={20} />
-          </a>
+            Chatear por WhatsApp
+          </Button>
         </div>
       </section>
-    </>
+    </main>
   )
 }

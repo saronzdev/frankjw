@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import legacy from '@vitejs/plugin-legacy'
 import preact from '@preact/preset-vite'
+import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
 
 export default defineConfig({
   plugins: [
     preact(),
+    tailwindcss(),
     legacy({
       targets: ['defaults', 'not IE 11']
     }),
@@ -27,45 +29,33 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/favicon-96x96.png?v=2',
-            sizes: '96x96',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: '/android-chrome-192x192.png?v=2',
+            src: '/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: '/android-chrome-512x512.png?v=2',
+            src: '/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: '/android-chrome-192x192.png?v=2',
+            src: '/android-chrome-192x192-maskable.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable'
           },
           {
-            src: '/android-chrome-512x512.png?v=2',
+            src: '/android-chrome-512x512-maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
           },
           {
-            src: '/apple-touch-icon.png?v=2',
+            src: '/apple-touch-icon.png',
             sizes: '180x180',
             type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: '/favicon.svg?v=2',
-            sizes: 'any',
-            type: 'image/svg+xml',
             purpose: 'any'
           }
         ]

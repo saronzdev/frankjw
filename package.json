@@ -33,14 +33,16 @@
   },
   "dependencies": {
     "@preact/signals": "^2.2.1",
-    "@supabase/supabase-js": "^2.50.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "@vitejs/plugin-legacy": "^7.0.1",
     "axios": "^1.10.0",
     "dotenv": "^17.0.0",
+    "lucide-preact": "^1.59.0",
     "preact": "^10.26.9",
     "sonner": "^2.0.5",
+    "tailwindcss": "^4.3.3",
     "wouter": "^3.7.1"
   },
   "devDependencies": {

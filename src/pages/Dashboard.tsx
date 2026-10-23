@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'preact/hooks'
+import { Plus } from 'lucide-preact'
 import { ProductForm } from '@/components/products/ProductForm'
-import { ProductCard } from '@/components/products/ProductCard'
+import { ProductGrid } from '@/components/products/ProductGrid'
 import { Search } from '@/components/products/Search'
-import { SortSelect } from '@/components/products/SortSelect'
-import { ProductFilters } from '@/components/products/ProductFilters'
+import { FiltersToolbar } from '@/components/products/FiltersToolbar'
+import { FiltersDrawer } from '@/components/products/FiltersDrawer'
 import type { ProductIn, ProductType } from '@/types'
 import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
+import { deleteImage, isStorageUrl } from '@/shared/storage'
 import { getErrorMessage, filterAndSortProducts } from '@/shared/utils'
 import { LoadingCard } from '@/components/products/LoadingCard'
 import { ErrorCard } from '@/components/products/ErrorCard'
 import { NoProducts } from '@/components/products/NoProducts'
 import { Toaster, toast } from 'sonner'
 import { products, isAdmin, refreshProducts, error, loading } from '@/shared/signals'
-import filterIcon from '@/assets/filter.svg'
-import styles from '@/styles/Dashboard.module.css'
-import productsStyles from '@/styles/Products.module.css'
+import { Button } from '@/ui/Button'
 
 export function Dashboard() {
   const [showForm, setShowForm] = useState(false)
@@ -50,10 +50,13 @@ export function Dashboard() {
 
   const handleSaveProduct = async (data: ProductIn) => {
     if (editingProduct) {
+      const previousPictures = editingProduct.pictures ?? []
       const { ok, error: err } = await updateProduct(editingProduct.id, data)
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(err ?? 1))
       await refreshProducts()
+      const removed = previousPictures.filter((url) => isStorageUrl(url) && !(data.pictures ?? []).includes(url))
+      await Promise.allSettled(removed.map((url) => deleteImage(url)))
       setEditingProduct(undefined)
       toast.success('Se ha actualizado el producto correctamente')
     } else {
@@ -87,77 +90,57 @@ export function Dashboard() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div class="min-h-dvh px-4 py-6 md:px-6 md:py-8">
         <Toaster richColors position="bottom-center" />
-        <div className={styles.header}>
-          <button onClick={handleCreateProduct} className={styles.newProductButton} aria-label="Agregar un producto">
-            + Nuevo Producto
-          </button>
-          {hasProducts && (
-            <Search
-              searchTerm={searchTerm}
-              handlerSearch={setSearchTerm}
-              setSearchTerm={setSearchTerm}
-              placeholder="Buscar por ID"
-            />
-          )}
-        </div>
-
-        {hasProducts && (
-          <div className={productsStyles.sortContainer}>
-            <SortSelect value={sortBy} onChange={setSortBy} />
-            <button className={productsStyles.filterButton} onClick={() => setFiltersOpen(true)}>
-              <img src={filterIcon} alt="Icono de filtros" height={18} width={18} />
-              Filtros
-            </button>
+        <div class="mx-auto flex max-w-7xl flex-col gap-4">
+          <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+            <Button onClick={handleCreateProduct} aria-label="Agregar un producto">
+              <Plus size={16} aria-hidden="true" />
+              Nuevo Producto
+            </Button>
+            {hasProducts && (
+              <div class="w-full sm:w-64">
+                <Search
+                  searchTerm={searchTerm}
+                  handlerSearch={setSearchTerm}
+                  setSearchTerm={setSearchTerm}
+                  placeholder="Buscar por ID"
+                />
+              </div>
+            )}
           </div>
-        )}
 
-        <div className={styles.content}>
-          {filteredProducts.length === 0 ? (
-            <NoProducts searchTerm={searchTerm} hasProducts={hasProducts} />
-          ) : (
-            <div className={styles.grid}>
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  data={product}
-                  onEdit={handleEditProduct}
-                  onDelete={handleDeleteProduct}
-                  editable={true}
-                />
-              ))}
-            </div>
+          {hasProducts && (
+            <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
           )}
+
+          <div class="py-4">
+            {filteredProducts.length === 0 ? (
+              <NoProducts searchTerm={searchTerm} hasProducts={hasProducts} />
+            ) : (
+              <ProductGrid
+                products={filteredProducts}
+                editable={true}
+                onEdit={handleEditProduct}
+                onDelete={handleDeleteProduct}
+              />
+            )}
+          </div>
+
+          <FiltersDrawer
+            open={filtersOpen}
+            onClose={() => setFiltersOpen(false)}
+            priceRange={priceRange}
+            selectedKarats={selectedKarats}
+            onSale={onSale}
+            onPriceChange={setPriceRange}
+            onKaratsChange={setSelectedKarats}
+            onSaleChange={setOnSale}
+            onReset={handleResetFilters}
+          />
+
+          {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
         </div>
-
-        {/* Sidebar de filtros */}
-        {filtersOpen && (
-          <>
-            <div className={productsStyles.overlay} onClick={() => setFiltersOpen(false)} />
-            <div className={productsStyles.sidebar}>
-              <div className={productsStyles.sidebarHeader}>
-                <h2 className={productsStyles.sidebarTitle}>Filtros</h2>
-                <button className={productsStyles.closeButton} onClick={() => setFiltersOpen(false)}>
-                  ✕
-                </button>
-              </div>
-              <div className={productsStyles.sidebarContent}>
-                <ProductFilters
-                  priceRange={priceRange}
-                  selectedKarats={selectedKarats}
-                  onSale={onSale}
-                  onPriceChange={setPriceRange}
-                  onKaratsChange={setSelectedKarats}
-                  onSaleChange={setOnSale}
-                  onReset={handleResetFilters}
-                />
-              </div>
-            </div>
-          </>
-        )}
-
-        {showForm && <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCancelForm} />}
       </div>
     </>
   )

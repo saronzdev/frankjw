@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'preact/hooks'
-import { createPortal } from 'preact/compat'
 import type { ProductType } from '@/types'
-import styles from '@/styles/ProductPopup.module.css'
 import noImage from '@/assets/no-image.svg'
-import leftArrow from '@/assets/left.svg'
-import rightArrow from '@/assets/right.svg'
+import { ChevronLeft, ChevronRight } from 'lucide-preact'
+import { Modal } from '@/ui/Modal'
+import { IconButton } from '@/ui/IconButton'
+import { Button } from '@/ui/Button'
+import { optimizeImage } from '@/shared/utils'
 import { ReservePopup } from '../ReservePopup'
 
 type Props = {
@@ -19,12 +20,6 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
   const images = product.pictures && product.pictures.length > 0 ? product.pictures : [noImage]
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isReserve, setIsReserve] = useState(false)
-
-  const handleOverlayClick = (e: MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
@@ -56,9 +51,7 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      } else if (e.key === 'ArrowLeft') {
+      if (e.key === 'ArrowLeft') {
         prevImage()
       } else if (e.key === 'ArrowRight') {
         nextImage()
@@ -69,94 +62,104 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [currentImageIndex, onClose])
+  }, [currentImageIndex])
 
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.modal}>
-        <button onClick={onClose} className={styles.close}>
-          ✕
-        </button>
-        <h2 className={styles.title}>Detalles del producto</h2>
-
-        <div className={styles.imageContainer}>
-          {images.length > 1 && (
-            <button onClick={prevImage} className={styles.imageNavLeft} aria-label="Imagen anterior">
-              <img src={leftArrow} alt="Anterior" />
-            </button>
-          )}
+    <Modal open onClose={onClose} title="Detalles del producto" size="lg" tall padded={false}>
+      <div class="flex h-full flex-col">
+        <div class="relative min-h-0 flex-1 bg-surface">
           <img
-            className={styles.image}
-            src={images[currentImageIndex] || noImage}
+            class="absolute inset-0 h-full w-full object-contain"
+            src={optimizeImage(images[currentImageIndex] || noImage, 900, 70)}
             alt={`${product.description} - imagen ${currentImageIndex + 1}`}
             loading="eager"
             decoding="async"
           />
           {images.length > 1 && (
-            <button onClick={nextImage} className={styles.imageNavRight} aria-label="Siguiente imagen">
-              <img src={rightArrow} alt="Siguiente" />
-            </button>
+            <>
+              <IconButton
+                label="Imagen anterior"
+                onClick={prevImage}
+                class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/85 shadow-sm"
+              >
+                <ChevronLeft size={18} aria-hidden="true" />
+              </IconButton>
+              <IconButton
+                label="Siguiente imagen"
+                onClick={nextImage}
+                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/85 shadow-sm"
+              >
+                <ChevronRight size={18} aria-hidden="true" />
+              </IconButton>
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-2.5 py-0.5 text-xs text-white">
+                {currentImageIndex + 1} / {images.length}
+              </div>
+            </>
           )}
         </div>
 
-        {images.length > 1 && (
-          <div className={styles.imageIndicator}>
-            {currentImageIndex + 1} / {images.length}
-          </div>
-        )}
+        <div class="flex flex-col gap-4 overflow-y-auto p-5">
+          <p class="text-sm leading-relaxed text-ink-soft">{product.description}</p>
 
-        <p className={styles.description}>{product.description}</p>
-
-        <div className={styles.info}>
-          <div>
-            <span>Precio</span>
-            {product.hasDiscount && product.offerPrice ? (
-              <>
-                <div className={styles.priceOldRow}>
-                  <strong className={styles.oldPrice}>${product.price}</strong>
-                  <span className={styles.save}>-${(product.price - product.offerPrice).toFixed(2)}</span>
+          <div class="grid grid-cols-3 gap-3 rounded-md bg-gold-soft/60 p-4 text-center">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Precio</span>
+              {product.hasDiscount && product.offerPrice ? (
+                <div class="flex items-center justify-center gap-1.5">
+                  <span class="text-sm text-ink-muted line-through">${product.price}</span>
+                  <span class="text-base font-semibold text-ink">${product.offerPrice}</span>
                 </div>
-                <strong>${product.offerPrice}</strong>
-              </>
-            ) : (
-              <strong>${product.price}</strong>
+              ) : (
+                <span class="text-base font-semibold text-ink">${product.price}</span>
+              )}
+            </div>
+            {product.weight && (
+              <div class="flex flex-col gap-0.5">
+                <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Peso</span>
+                <span class="text-base font-semibold text-ink">{product.weight} g</span>
+              </div>
+            )}
+            {product.karats && product.karats.length > 0 && (
+              <div class="flex flex-col gap-0.5">
+                <span class="text-xs font-medium uppercase tracking-[0.06em] text-ink-muted">Kilates</span>
+                <span class="text-base font-semibold text-ink">{product.karats.join('K / ')}K</span>
+              </div>
             )}
           </div>
-          {product.weight && (
-            <div>
-              <span>Peso</span>
-              <strong>{product.weight} g</strong>
-            </div>
-          )}
-          {product.karats && product.karats.length > 0 && (
-            <div>
-              <span>Kilates</span>
-              <strong>{product.karats.join('K / ')}K</strong>
+
+          <Button block onClick={toggleReserve}>
+            Reservar
+          </Button>
+
+          {allProducts.length > 1 && onNavigate && (
+            <div class="flex items-center justify-between border-t border-line pt-3">
+              <button
+                type="button"
+                onClick={prevProduct}
+                aria-label="Producto anterior"
+                class="inline-flex items-center gap-1 text-sm text-ink-soft underline-offset-4 transition-colors hover:text-ink hover:underline"
+              >
+                <ChevronLeft size={16} aria-hidden="true" />
+                Anterior
+              </button>
+              <span class="text-xs text-ink-muted">
+                {currentIndex + 1} / {allProducts.length}
+              </span>
+              <button
+                type="button"
+                onClick={nextProduct}
+                aria-label="Siguiente producto"
+                class="inline-flex items-center gap-1 text-sm text-ink-soft underline-offset-4 transition-colors hover:text-ink hover:underline"
+              >
+                Siguiente
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
             </div>
           )}
         </div>
-
-        <button className={styles.reserve} onClick={toggleReserve}>
-          Reservar
-        </button>
-
-        {allProducts.length > 1 && onNavigate && (
-          <div className={styles.productNav}>
-            <button onClick={prevProduct} className={styles.productNavButton} aria-label="Producto anterior">
-              <img src={leftArrow} alt="Anterior" />
-              <span>Anterior</span>
-            </button>
-            <span className={styles.productCounter}>
-              {currentIndex + 1} / {allProducts.length}
-            </span>
-            <button onClick={nextProduct} className={styles.productNavButton} aria-label="Siguiente producto">
-              <span>Siguiente</span>
-              <img src={rightArrow} alt="Siguiente" />
-            </button>
-          </div>
-        )}
       </div>
-      {isReserve && createPortal(<ReservePopup onClose={toggleReserve} data={product} />, document.body)}
-    </div>
+
+      {isReserve && <ReservePopup onClose={toggleReserve} data={product} />}
+    </Modal>
   )
 }
