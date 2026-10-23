@@ -4,23 +4,23 @@ interface Props {
   description: string
 }
 
-/** Banner compacto para la vista de una categoría específica. */
+/** Tarjeta de encabezado compacta para la vista de una categoría: texto a la izquierda, foto a la derecha (sin cortes en desktop). */
 export function CategoryHeader({ title, image, description }: Props) {
   return (
-    <section class="relative flex min-h-44 items-end overflow-hidden rounded-lg md:min-h-56">
-      <img
-        src={image}
-        alt=""
-        aria-hidden="true"
-        class="absolute inset-0 h-full w-full scale-110 object-cover brightness-[0.45] blur-xl"
-      />
-      <img src={image} alt={title} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-contain" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
-      <div class="relative z-10 flex flex-col gap-1.5 p-5 md:p-7">
-        <h1 class="font-display text-[1.65rem] font-semibold uppercase tracking-[0.05em] text-white md:text-3xl">
+    <section class="overflow-hidden rounded-lg border border-line bg-surface md:flex md:h-56 md:items-stretch">
+      <div class="shrink-0 md:order-2 md:w-[33%]">
+        <img
+          src={image}
+          alt=""
+          fetchPriority="high"
+          class="h-32 w-full object-cover sm:h-40 md:h-full"
+        />
+      </div>
+      <div class="flex flex-col justify-center gap-1.5 p-4 md:order-1 md:w-[67%] md:px-7">
+        <h1 class="font-display text-lg font-semibold uppercase tracking-[0.05em] text-ink md:text-2xl">
           {title}
         </h1>
-        <p class="max-w-xl text-sm leading-relaxed text-white/85 md:text-[0.95rem]">{description}</p>
+        <p class="max-w-xl text-sm leading-relaxed text-ink-soft line-clamp-2 md:text-[0.95rem]">{description}</p>
       </div>
     </section>
   )
