@@ -7,8 +7,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'preact'
+  },
   test: {
-    include: ['tests/**/*.test.ts'],
-    environment: 'node'
+    include: ['tests/**/*.test.{ts,tsx}'],
+    environment: 'node',
+    setupFiles: ['tests/setup.ts'],
+    env: {
+      VITE_SUPABASE_TRANSFORMS: 'false'
+    }
   }
 })
