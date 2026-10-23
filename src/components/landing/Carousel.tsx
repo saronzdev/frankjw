@@ -88,7 +88,8 @@ export function Carousel({ title, items }: Props) {
                   sizes="(min-width: 1024px) 1200px, 90vw"
                   alt={p.description}
                   class="absolute inset-0 h-full w-full object-contain object-center"
-                  loading="lazy"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : undefined}
                   decoding="async"
                 />
                 <div class="absolute bottom-3 right-3 sm:bottom-5 sm:right-5">

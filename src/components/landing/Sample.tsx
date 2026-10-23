@@ -12,7 +12,7 @@ export function Sample({ text, src, srcSet }: Props) {
           src={src}
           srcSet={srcSet}
           sizes="(min-width: 1024px) 373px, (min-width: 640px) 50vw, calc(100vw - 2rem)"
-          alt={text}
+          alt=""
           loading="lazy"
           decoding="async"
           class="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
