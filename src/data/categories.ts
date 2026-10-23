@@ -79,7 +79,7 @@ export const CATEGORIES: Category[] = [
   {
     title: 'Sets de joyas',
     description:
-      'Nuestra selección de conjuntos reúne tus piezas favoritas en un solo lugar, cada set está diseñado para ofrecerte un look completo y equilibrado sin esfuerzo. Ya sea un dúo de collar y pendientes o un set completo de anillos, estas combinaciones están pensadas para elevar tu estilo diario con un toque de coherencia y tendencia.',
+      'Conjuntos que reúnen tus piezas favoritas: desde un dúo de collar y pendientes hasta un set completo de anillos. Un look equilibrado y completo sin esfuerzo, pensado para elevar tu estilo diario.',
     img: catSets,
     order: 10
   },

@@ -65,7 +65,7 @@ export function Products() {
             Nuestra Colección
           </h1>
           <p class="text-sm text-ink-muted md:text-[0.95rem]">
-            Piezas de oro y plata elaboradas a mano, listas para acompañar cada momento.
+            Piezas de oro elaboradas a mano, listas para acompañar cada momento.
           </p>
         </header>
       )}
