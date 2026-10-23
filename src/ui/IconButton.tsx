@@ -1,9 +1,9 @@
-import { type JSX } from 'preact'
+import type { ButtonHTMLAttributes } from 'preact'
 import { cx } from './cx'
 
 type Size = 'sm' | 'md'
 
-type IconButtonProps = Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size'> & {
+type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
   size?: Size
   label: string
 }

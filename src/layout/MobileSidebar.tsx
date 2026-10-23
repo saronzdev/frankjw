@@ -29,7 +29,7 @@ function isActive(location: string, href: string): boolean {
 }
 
 export function MobileSidebar({ open, onClose }: Props) {
-  const panelRef = useRef<HTMLElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const [location] = useLocation()
 
   useOverlayBehavior({ open, onClose, panelRef })
@@ -45,7 +45,7 @@ export function MobileSidebar({ open, onClose }: Props) {
   return (
     <>
       <div class="fixed inset-0 z-50 bg-black/50 animate-overlay-in" onClick={onClose} />
-      <aside
+      <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
@@ -113,7 +113,7 @@ export function MobileSidebar({ open, onClose }: Props) {
             © {new Date().getFullYear()} Frank Joyería
           </p>
         </footer>
-      </aside>
+      </div>
     </>
   )
 }

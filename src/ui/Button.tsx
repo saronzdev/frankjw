@@ -1,10 +1,10 @@
-import { type JSX } from 'preact'
+import type { AccessibleAnchorHTMLAttributes, ButtonHTMLAttributes } from 'preact'
 import { cx } from './cx'
 
 type Variant = 'primary' | 'outline' | 'gold' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
-type ButtonProps = Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size' | 'type' | 'disabled'> & {
+type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size' | 'type' | 'disabled'> & {
   variant?: Variant
   size?: Size
   block?: boolean
@@ -36,7 +36,7 @@ export function Button({ variant = 'primary', size = 'md', block, class: cls, ..
   const classes = cx(base, variants[variant], sizes[size], block && 'w-full', cls)
 
   if (rest.href !== undefined) {
-    return <a class={classes} {...(rest as JSX.HTMLAttributes<HTMLAnchorElement>)} />
+    return <a class={classes} {...(rest as AccessibleAnchorHTMLAttributes<HTMLAnchorElement>)} />
   }
 
   return <button type="button" class={classes} {...rest} />

@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks'
+import type { InputHTMLAttributes } from 'preact'
 import { getErrorMessage, isValidEmail } from '@/shared/utils'
 import { usePageMeta } from '@/shared/meta'
 import { login } from '@/shared/fetching'
@@ -19,6 +20,16 @@ export function Login() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+
+  const passwordInputProps: Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'role'> = {
+    id: 'login-password',
+    value: password,
+    onInput: (e) => setPassword(e.currentTarget.value),
+    required: true,
+    class: `${field} pr-10`,
+    placeholder: '••••••••',
+    disabled: isLoading
+  }
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
@@ -73,16 +84,11 @@ export function Login() {
           <div class="flex flex-col gap-1.5">
             <label class="text-sm font-medium text-ink" for="login-password">Contraseña</label>
             <div class="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="login-password"
-                value={password}
-                onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
-                required
-                class={`${field} pr-10`}
-                placeholder="••••••••"
-                disabled={isLoading}
-              />
+              {showPassword ? (
+                <input type="text" {...passwordInputProps} />
+              ) : (
+                <input type="password" {...passwordInputProps} />
+              )}
               <button
                 type="button"
                 class="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"

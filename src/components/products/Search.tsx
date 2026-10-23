@@ -1,4 +1,4 @@
-import type { JSX } from 'preact'
+import type { TargetedEvent } from 'preact'
 import { Search as SearchIcon, X } from 'lucide-preact'
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function Search({ searchTerm, setSearchTerm, handlerSearch, placeholder }: Props) {
-  const handleInputChange = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
+  const handleInputChange = (e: TargetedEvent<HTMLInputElement, Event>) => {
     handlerSearch(e.currentTarget.value)
   }
 

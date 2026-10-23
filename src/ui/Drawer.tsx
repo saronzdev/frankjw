@@ -13,7 +13,7 @@ type DrawerProps = {
 }
 
 export function Drawer({ open, onClose, title, children }: DrawerProps) {
-  const panelRef = useRef<HTMLElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   useOverlayBehavior({ open, onClose, panelRef })
 
@@ -22,7 +22,7 @@ export function Drawer({ open, onClose, title, children }: DrawerProps) {
   return createPortal(
     <>
       <div class="fixed inset-0 z-50 bg-black/50 animate-overlay-in" onClick={onClose} />
-      <aside
+      <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
@@ -39,7 +39,7 @@ export function Drawer({ open, onClose, title, children }: DrawerProps) {
           </header>
         )}
         <div class="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
-      </aside>
+      </div>
     </>,
     document.body
   )
