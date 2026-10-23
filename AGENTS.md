@@ -2,7 +2,7 @@
 
 ## Project overview
 
-- **Stack**: Preact 10 + TypeScript on Vite 7, Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `src/global.css` via `@theme`), `@preact/signals` for shared state, `wouter` routing, `sonner` toasts, `lucide-preact` icons, PWA via `vite-plugin-pwa`. Package manager: **pnpm**.
+- **Stack**: Preact 11 + TypeScript on Vite 7, Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `src/global.css` via `@theme`), `@preact/signals` for shared state, `wouter` routing, `sonner` toasts, `lucide-preact` icons, PWA via `vite-plugin-pwa`. Package manager: **pnpm**.
 - **Architecture**: `src/ui/` holds reusable primitives (Button, IconButton, Badge, Spinner, Modal, Drawer, `useOverlayBehavior`); `src/layout/` holds chrome (Header, Footer, MobileSidebar, UpdateBanner); `src/components/` feature components; `src/pages/` routed screens; `src/data/` static catalog metadata; `src/shared/` signals, API fetching, helpers.
 - **Backend** lives in the sibling repo `api/` (Express + libsql). In development the UI talks to `http://localhost:3000` (`VITE_BACKEND_URL` defaults to it when unset). The dev API writes to a **local sqlite file** — a remote Turso database in dev is deliberately ignored (see api config). Never "fix" that behavior.
 - **Image storage is server-side**: `src/shared/storage.ts` calls `POST/DELETE /api/v1/uploads` under the admin cookie. The frontend ships **no storage credentials** (`@supabase/supabase-js` was removed); in dev without `SUPABASE_URL` the api returns `503` and the UI surfaces the notice — local QA never touches the production bucket.

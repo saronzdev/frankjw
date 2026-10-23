@@ -1,9 +1,9 @@
-import { type JSX } from 'preact'
+import type { HTMLAttributes } from 'preact'
 import { cx } from './cx'
 
 type Tone = 'neutral' | 'gold' | 'danger' | 'dark'
 
-type BadgeProps = Omit<JSX.HTMLAttributes<HTMLSpanElement>, 'tone'> & {
+type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, 'tone'> & {
   tone?: Tone
 }
 

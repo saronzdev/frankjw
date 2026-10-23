@@ -23,7 +23,7 @@ Everything in the client is public, so the design assumes the bundle can be read
 
 | Layer | Tool |
 |---|---|
-| UI | [Preact](https://preactjs.com/) 10 + [@preact/signals](https://preactjs.com/guide/v10/signals/) |
+| UI | [Preact](https://preactjs.com/) 11 + [@preact/signals](https://preactjs.com/guide/v11/signals/) |
 | Language | [TypeScript](https://www.typescriptlang.org/) 6 (strict) |
 | Build | [Vite](https://vitejs.dev/) 7 + `@vitejs/plugin-legacy` |
 | Routing | [wouter](https://github.com/molefrog/wouter) |
