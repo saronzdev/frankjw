@@ -1,4 +1,5 @@
 import { Link } from 'wouter'
+import { ArrowRight, ArrowUpRight } from 'lucide-preact'
 import { NAV_ITEMS } from '@/data/navigation'
 import { socialLinks } from '@/shared/constants'
 import logoMark from '@/assets/logo-mark.webp'
@@ -40,8 +41,17 @@ export function Footer() {
           <ul class="mt-4 space-y-2.5">
             {NAV_ITEMS.map(({ label, href }) => (
               <li key={href}>
-                <Link to={href} class="text-sm text-ink-soft transition-colors hover:text-ink hover:underline hover:underline-offset-4">
+                <Link
+                  to={href}
+                  class="group inline-flex items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink hover:underline hover:underline-offset-4"
+                >
                   {label}
+                  <ArrowRight
+                    size={13}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                    class="text-ink-muted transition-[transform,color] duration-200 group-hover:translate-x-0.5 group-hover:text-gold-deep"
+                  />
                 </Link>
               </li>
             ))}
@@ -52,13 +62,31 @@ export function Footer() {
           <h3 class="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">Contacto</h3>
           <ul class="mt-4 space-y-2.5 text-sm text-ink-soft">
             <li>
-              <a href="tel:+5353444690" class="transition-colors hover:text-ink">
+              <a
+                href="tel:+5353444690"
+                class="group inline-flex items-center gap-1.5 transition-colors hover:text-ink"
+              >
                 +5353444690
+                <ArrowUpRight
+                  size={13}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  class="text-ink-muted transition-[transform,color] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-deep"
+                />
               </a>
             </li>
             <li>
-              <a href="mailto:frankjoyeriacuba@gmail.com" class="break-all transition-colors hover:text-ink">
+              <a
+                href="mailto:frankjoyeriacuba@gmail.com"
+                class="group inline-flex items-center gap-1.5 break-all transition-colors hover:text-ink"
+              >
                 frankjoyeriacuba@gmail.com
+                <ArrowUpRight
+                  size={13}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  class="shrink-0 text-ink-muted transition-[transform,color] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-deep"
+                />
               </a>
             </li>
             <li class="text-ink-muted">
@@ -97,9 +125,15 @@ export function Footer() {
               href="https://saronzdev.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              class="transition-colors hover:text-ink hover:underline underline-offset-4"
+              class="group inline-flex items-center gap-1 underline-offset-4 transition-colors hover:text-ink hover:underline"
             >
               saronzdev
+              <ArrowUpRight
+                size={11}
+                strokeWidth={2}
+                aria-hidden="true"
+                class="text-ink-muted transition-[transform,color] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-deep"
+              />
             </a>
           </p>
         </div>
