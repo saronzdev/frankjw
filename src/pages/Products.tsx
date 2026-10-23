@@ -56,7 +56,7 @@ export function Products() {
   const filtered = filterAndSortProducts(baseList, { sortBy, priceRange, selectedKarats, onSale })
 
   return (
-    <div class="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:py-10">
+    <div class="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 md:py-10">
       {category ? (
         <CategoryHeader title={category.title} description={category.description} image={category.img} />
       ) : (
@@ -86,7 +86,7 @@ export function Products() {
 
       {filtered.length > 0 ? (
         <>
-          <div class="sticky top-16 z-30 bg-bg/95 py-2 backdrop-blur-sm">
+          <div class="sticky top-16 z-30 bg-bg/95 backdrop-blur-sm">
             <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
           </div>
           <ProductGrid products={filtered} />
