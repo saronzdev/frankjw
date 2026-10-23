@@ -6,6 +6,8 @@
 - **Architecture**: `src/ui/` holds reusable primitives (Button, IconButton, Badge, Spinner, Modal, Drawer, `useOverlayBehavior`); `src/layout/` holds chrome (Header, Footer, MobileSidebar, UpdateBanner); `src/components/` feature components; `src/pages/` routed screens; `src/data/` static catalog metadata; `src/shared/` signals, API fetching, helpers.
 - **Backend** lives in the sibling repo `api/` (Express + libsql). In development the UI talks to `http://localhost:3000` (`VITE_BACKEND_URL` defaults to it when unset). The dev API writes to a **local sqlite file** — a remote Turso database in dev is deliberately ignored (see api config). Never "fix" that behavior.
 - **Image storage is server-side**: `src/shared/storage.ts` calls `POST/DELETE /api/v1/uploads` under the admin cookie. The frontend ships **no storage credentials** (`@supabase/supabase-js` was removed); in dev without `SUPABASE_URL` the api returns `503` and the UI surfaces the notice — local QA never touches the production bucket.
+- **Supabase image transformations are off**: `optimizeImage`/`buildSrcSet` (`src/shared/utils.ts`) return the original URL unless `VITE_SUPABASE_TRANSFORMS=true` (transformations are a Supabase Pro add-on; verified ignored on the current plan). Don't add `?width=` URLs by hand.
+- **Image caching**: the PWA service worker serves Supabase images `CacheFirst` (cache `supabase-images-v2`, 500 entries / 60 days) — URLs are immutable per upload. New uploads get a 1-year `Cache-Control` via the api (`cacheControl: '31536000'`); objects uploaded before that change stay at 1 h.
 
 ## Dev environment tips
 
@@ -29,7 +31,7 @@
 
 - CI plan: `.github/workflows/ci.yml` — installs with pnpm (Node 22), then runs `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` on every PR.
 - From `app/`, one-liner: `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
-- The vitest suite lives in `tests/` (currently `utils.test.ts`, covering the `src/shared/` helpers). Run it with `pnpm test`, or focus one case with `pnpm vitest run -t "<test name>"`. The business-logic suite (products API, auth) lives in the sibling `api/` repo (`pnpm test` there, 28 cases, runs against `:memory:`).
+- The vitest suite lives in `tests/`: `utils.test.ts` + `meta.test.ts` (pure helpers, node env) and `overlay.test.tsx` + `product-card.test.tsx` (component tests with `happy-dom` + `@testing-library/preact`; `tests/setup.ts` is only needed to shim `requestAnimationFrame` in that environment). Run it with `pnpm test`, or focus one case with `pnpm vitest run -t "<test name>"`. The business-logic suite (products API, auth) lives in the sibling `api/` repo.
 - After moving files or changing imports, re-run `pnpm lint && pnpm typecheck`; both must be green before commit.
 - Add tests for fetch/transform logic you change in `tests/` (the existing suite covers exactly those pure helpers) even if nobody asked; keep helpers pure so they remain easy to test.
 

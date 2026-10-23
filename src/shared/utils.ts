@@ -32,16 +32,17 @@ export function delay(ms: number) {
 }
 
 const SUPABASE_CDN = '/storage/v1/object/public/'
+const SUPABASE_TRANSFORMS = import.meta.env.VITE_SUPABASE_TRANSFORMS === 'true'
 
-/** Devuelve la URL de Supabase transformada a un ancho/calidad dados, o la original si no es de Supabase. */
+/** Devuelve la URL de Supabase transformada a un ancho/calidad dados, o la original si las transformaciones están desactivadas (requieren Supabase Pro) o no es de Supabase. */
 export function optimizeImage(url: string, width: number, quality = 60): string {
-  if (!url.includes(SUPABASE_CDN)) return url
+  if (!url.includes(SUPABASE_CDN) || !SUPABASE_TRANSFORMS) return url
   return `${url}?width=${width}&quality=${quality}`
 }
 
-/** Genera un atributo srcSet responsive para imágenes de Supabase (grid/thumbnails). */
+/** Genera un atributo srcSet responsive para imágenes de Supabase (grid/thumbnails); undefined si las transformaciones están desactivadas. */
 export function buildSrcSet(url: string, widths: number[] = [320, 480, 640, 800]): string | undefined {
-  if (!url.includes(SUPABASE_CDN)) return undefined
+  if (!url.includes(SUPABASE_CDN) || !SUPABASE_TRANSFORMS) return undefined
   return widths.map((w) => `${optimizeImage(url, w)} ${w}w`).join(', ')
 }
 
