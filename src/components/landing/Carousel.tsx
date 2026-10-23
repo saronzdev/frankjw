@@ -13,10 +13,11 @@ interface Props {
 }
 
 const AUTOPLAY_MS = 4000
+const REDUCED_MOTION = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export function Carousel({ title, items }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [paused, setPaused] = useState(false)
+  const [paused, setPaused] = useState(REDUCED_MOTION)
 
   const slides = items.map((i) => {
     let pictures = noImage

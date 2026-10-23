@@ -2,11 +2,14 @@ import { useEffect } from 'preact/hooks'
 import { Link } from 'wouter'
 import { Button } from '@/ui/Button'
 import { cx } from '@/ui/cx'
+import { usePageMeta } from '@/shared/meta'
 
 export function NotFound() {
   useEffect(() => {
     window.history.replaceState(null, '', '/404')
   }, [])
+
+  usePageMeta({ title: 'Página no encontrada | Frank Joyería', path: '/404', noIndex: true })
 
   const links = [
     { href: '/about', label: 'Nosotros' },

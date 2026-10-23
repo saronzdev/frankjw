@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks'
 import { getErrorMessage, isValidEmail } from '@/shared/utils'
+import { usePageMeta } from '@/shared/meta'
 import { login } from '@/shared/fetching'
 import { Toaster, toast } from 'sonner'
 import { useLocation } from 'wouter'
@@ -13,6 +14,7 @@ const field =
 
 export function Login() {
   const [_, setLocation] = useLocation()
+  usePageMeta({ title: 'Iniciar sesión | Frank Joyería', path: '/login', noIndex: true })
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)

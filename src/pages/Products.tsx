@@ -17,17 +17,35 @@ import {
   normalize,
   HIDDEN_CATEGORY
 } from '@/shared/utils'
+import { usePageMeta, PRODUCTS_TITLE, PRODUCTS_DESCRIPTION } from '@/shared/meta'
 
 const NotFound = lazy(() => import('./NotFound').then((m) => ({ default: m.NotFound })))
 
 export function Products() {
   const [_, params] = useRoute('/products/:category?')
   const categoryParam = params?.category || ''
+  const category = categoryParam ? findCategory(categoryParam) : undefined
   const [sortBy, setSortBy] = useState('default')
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0])
   const [selectedKarats, setSelectedKarats] = useState<number[]>([])
   const [onSale, setOnSale] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  usePageMeta(
+    category
+      ? {
+          title: `${category.title} | Frank Joyería`,
+          description: category.description,
+          path: `/products/${categoryParam}`
+        }
+      : categoryParam
+        ? {
+            title: PRODUCTS_TITLE,
+            description: PRODUCTS_DESCRIPTION,
+            path: `/products/${categoryParam}`,
+            noIndex: true
+          }
+        : { title: PRODUCTS_TITLE, description: PRODUCTS_DESCRIPTION, path: '/products' }
+  )
 
   const handleResetFilters = () => {
     setPriceRange([0, 0])
@@ -40,7 +58,6 @@ export function Products() {
   if (loading.value) return <LoadingCard />
   if (error.value > 0) return <ErrorCard message={getErrorMessage(error.value)} />
 
-  const category = categoryParam ? findCategory(categoryParam) : undefined
   if (categoryParam && !category) {
     return (
       <Suspense fallback={<LoadingCard />}>

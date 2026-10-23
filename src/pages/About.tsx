@@ -1,5 +1,6 @@
 import { Gem, Diamond, Sparkles, Palette, Rocket, Heart, TreePine, Check } from 'lucide-preact'
 import heroLogo from '@/assets/hero-logo.webp'
+import { usePageMeta } from '@/shared/meta'
 
 const PRODUCTS = [
   { icon: Gem, title: 'Anillos & Pulseras', description: 'En metales preciosos con acabados únicos' },
@@ -40,6 +41,12 @@ const VALUES = [
 ]
 
 export function About() {
+  usePageMeta({
+    title: 'Nuestra Historia | Frank Joyería',
+    description:
+      'Frank Joyería: mediana empresa manufacturera especializada en el diseño, elaboración y comercialización de joyas de alta calidad en Cuba.',
+    path: '/about'
+  })
   return (
     <main class="min-h-dvh bg-surface">
       <section class="border-b border-line bg-gradient-to-b from-surface-2 to-bg px-4 py-14 md:py-18">

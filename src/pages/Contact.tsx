@@ -1,8 +1,15 @@
 import { Phone, Mail, MapPin } from 'lucide-preact'
 import { Social } from '@/components/landing/Social'
 import { Button } from '@/ui/Button'
+import { usePageMeta } from '@/shared/meta'
 
 export function Contact() {
+  usePageMeta({
+    title: 'Contacto | Frank Joyería',
+    description:
+      'Visítanos en Matanzas o Habana, llámanos al +5353444690, escríbenos por WhatsApp o email. Conoce nuestros horarios de atención.',
+    path: '/contact'
+  })
   return (
     <main class="min-h-dvh bg-surface">
       <section class="border-b border-line bg-gradient-to-b from-surface-2 to-bg px-4 py-14 md:py-18">

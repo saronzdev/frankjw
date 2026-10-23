@@ -84,20 +84,15 @@ describe('optimizeImage / buildSrcSet', () => {
     'https://supabase.co/storage/v1/object/public/images/anillo.avif'
   const externa = 'https://cdn.example.com/anillo.avif'
 
-  it('transforma imágenes de Supabase', () => {
-    expect(optimizeImage(supabase, 320)).toBe(`${supabase}?width=320&quality=60`)
-    expect(optimizeImage(supabase, 480, 80)).toBe(`${supabase}?width=480&quality=80`)
+  it('devuelve la URL original con las transformaciones desactivadas (por defecto, requieren Pro)', () => {
+    expect(optimizeImage(supabase, 320)).toBe(supabase)
+    expect(optimizeImage(supabase, 480, 80)).toBe(supabase)
+    expect(buildSrcSet(supabase, [320, 640])).toBeUndefined()
   })
 
   it('deja intactas las imágenes externas', () => {
     expect(optimizeImage(externa, 320)).toBe(externa)
     expect(buildSrcSet(externa)).toBeUndefined()
-  })
-
-  it('genera un srcSet para Supabase', () => {
-    expect(buildSrcSet(supabase, [320, 640])).toBe(
-      [`${supabase}?width=320&quality=60 320w`, `${supabase}?width=640&quality=60 640w`].join(', ')
-    )
   })
 })
 

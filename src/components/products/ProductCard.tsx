@@ -51,8 +51,11 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
   return (
     <div class="group flex flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg">
       <div class="relative">
-        <div
-          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface"
+        <button
+          type="button"
+          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface text-left"
+          aria-label={`Ver ${name}`}
+          aria-haspopup="dialog"
           onClick={() => setIsOpen(true)}
         >
           {isLoading && (
@@ -70,12 +73,13 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
             src={optimizeImage(firstImage, 480)}
             srcSet={buildSrcSet(firstImage)}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            alt={name}
             loading="lazy"
             decoding="async"
             onLoad={() => setIsLoading(false)}
             onError={() => setIsLoading(false)}
           />
-        </div>
+        </button>
         {editable && (
           <div class="absolute left-2 top-2 z-20 flex items-center gap-1.5">
             <IconButton

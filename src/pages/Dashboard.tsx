@@ -9,6 +9,7 @@ import type { ProductIn, ProductType } from '@/types'
 import { createProduct, deleteProduct, updateProduct } from '@/shared/fetching'
 import { deleteImage, isStorageUrl } from '@/shared/storage'
 import { getErrorMessage, filterAndSortProducts } from '@/shared/utils'
+import { usePageMeta } from '@/shared/meta'
 import { LoadingCard } from '@/components/products/LoadingCard'
 import { ErrorCard } from '@/components/products/ErrorCard'
 import { NoProducts } from '@/components/products/NoProducts'
@@ -17,6 +18,7 @@ import { products, isAdmin, refreshProducts, error, loading } from '@/shared/sig
 import { Button } from '@/ui/Button'
 
 export function Dashboard() {
+  usePageMeta({ title: 'Panel de administración | Frank Joyería', path: '/dashboard', noIndex: true })
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<ProductType>()
   const [searchTerm, setSearchTerm] = useState('')

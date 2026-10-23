@@ -81,12 +81,12 @@ export default defineConfig({
           },
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/.*/i,
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'supabase-images',
+              cacheName: 'supabase-images-v2',
               expiration: {
-                maxEntries: 600,
-                maxAgeSeconds: 30 * 24 * 60 * 60
+                maxEntries: 500,
+                maxAgeSeconds: 60 * 24 * 60 * 60
               },
               cacheableResponse: {
                 statuses: [0, 200]

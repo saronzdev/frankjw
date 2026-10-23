@@ -71,7 +71,8 @@ Usage guidance
 - `animate-panel-in` — modal rise: fade + translateY(16px) scale(0.97), 0.25s `--ease-out-quart`.
 - `animate-drawer-left` — drawer slide-in 0.3s (explosive-free: 1 step, no bounce).
 - Hover transitions: `transition-colors` 150–200ms on borders/text only. No decorative transforms.
-- `prefers-reduced-motion` disables all animation globally (already implemented).
+- `prefers-reduced-motion` disables all animation globally (already implemented). The carousel also skips autoplay entirely for those users.
+- Image preloading: `VITE_SUPABASE_TRANSFORMS` gates Supabase transformations (`?width=`/`?quality=`); disabled by default because they require Supabase Pro.
 
 ## Guidelines
 
