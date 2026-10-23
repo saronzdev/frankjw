@@ -116,7 +116,7 @@ The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/ut
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_BACKEND_URL` | No | Backend API base URL (e.g. `https://frankjw-api.vercel.app`). Defaults to `http://localhost:3000` for local development. |
+| `VITE_BACKEND_URL` | No | Backend API base URL (e.g. `https://api.frankjoyeriacuba.com`). Defaults to `http://localhost:3000` for local development. |
 
 The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. Image uploads and deletions are performed server-side by the API (see the [API README](https://github.com/saronzdev/frankjw-api#environment-variables) for its `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` setup).
 
