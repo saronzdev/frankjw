@@ -42,9 +42,9 @@ export const CATEGORIES: Category[] = [
     order: 4
   },
   {
-    title: 'Pendientes y argollas',
+    title: 'Argollas y aretes',
     description:
-      'Versátiles y atemporales, nuestros pendientes y argollas son el detalle que transforma cualquier estilo. Diseños que van desde la sencillez delicada hasta el brillo deslumbrante.',
+      'Versátiles y atemporales, nuestras argollas y aretes son el detalle que transforma cualquier estilo. Diseños que van desde la sencillez delicada hasta el brillo deslumbrante.',
     img: catPendientes,
     order: 5
   },
@@ -77,7 +77,7 @@ export const CATEGORIES: Category[] = [
     order: 9
   },
   {
-    title: 'Sets de joyas',
+    title: 'Conjuntos de joyas',
     description:
       'Conjuntos que reúnen tus piezas favoritas: desde un dúo de collar y pendientes hasta un set completo de anillos. Un look equilibrado y completo sin esfuerzo, pensado para elevar tu estilo diario.',
     img: catSets,

@@ -31,7 +31,7 @@ const makeProduct = (overrides: Partial<ProductType>): ProductType => ({
 describe('slugify / unslugify', () => {
   it('convierte títulos a slugs', () => {
     expect(slugify('Anillos para mujer')).toBe('anillos-para-mujer')
-    expect(slugify('  Pendientes y argollas! ')).toBe('pendientes-y-argollas')
+    expect(slugify('  Argollas y aretes! ')).toBe('argollas-y-aretes')
   })
 
   it('hace round-trip con los títulos de CATEGORIES', () => {
