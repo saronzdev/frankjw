@@ -90,9 +90,14 @@ export function Footer() {
               </a>
             </li>
             <li class="text-ink-muted">
-              Calle Medio, Matanzas
+              Calle Medio entre 2 de Mayo y América
               <br />
-              Calle San Benigno #169, La Habana
+              Matanzas, Cuba
+            </li>
+            <li class="text-ink-muted">
+              Calle San Benigno #169 entre Vía Blanca y Serafines
+              <br />
+              Cerro, Habana, Cuba
             </li>
           </ul>
         </div>
