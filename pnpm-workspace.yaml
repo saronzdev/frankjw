@@ -12,3 +12,6 @@ overrides:
 permissions:
   dotenv:
     skills: true
+skills:
+  dirs:
+    - .agents/skills
