@@ -66,13 +66,14 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/frankjw-api\.vercel\.app\/api\/v1\/products$/i,
-            handler: 'StaleWhileRevalidate',
+            handler: 'NetworkFirst',
             method: 'GET',
             options: {
               cacheName: 'products',
+              networkTimeoutSeconds: 3,
               expiration: {
                 maxEntries: 1,
-                maxAgeSeconds: 60 * 60
+                maxAgeSeconds: 5 * 60
               },
               cacheableResponse: {
                 statuses: [0, 200]

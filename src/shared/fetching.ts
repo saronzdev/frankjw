@@ -22,9 +22,9 @@ export const isUserAdmin = async () => {
   }
 }
 
-export const getProductsSignals = async (): Promise<ProductType[] | { error: number }> => {
+export const getProductsSignals = async ({ fresh = false }: { fresh?: boolean } = {}): Promise<ProductType[] | { error: number }> => {
   try {
-    const { data } = await api.get<ProductType[]>('products')
+    const { data } = await api.get<ProductType[]>('products', fresh ? { params: { _: Date.now() } } : undefined)
     return data.map((p) => ({ ...p, isActive: Boolean(p.isActive), hasPreciousStones: Boolean(p.hasPreciousStones) }))
   } catch (error: unknown) {
     return { error: getErrorCode(error) }
