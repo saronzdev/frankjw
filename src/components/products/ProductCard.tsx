@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'preact/compat'
 import type { ProductType } from '@/types'
-import { ShoppingBag, Info, Pencil, Trash2 } from 'lucide-preact'
+import { ShoppingBag, Info, Pencil, Trash2, Diamond } from 'lucide-preact'
 import noImage from '@/assets/no-image.svg'
 import { normalize, optimizeImage, buildSrcSet } from '@/shared/utils'
 import { Badge } from '@/ui/Badge'
@@ -80,6 +80,17 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
             onError={() => setIsLoading(false)}
           />
         </button>
+        {data.hasPreciousStones && (
+          <Badge
+            tone="diamond"
+            class="pointer-events-none absolute bottom-2 left-2 z-20"
+            aria-label="Contiene piedras preciosas"
+            title="Contiene piedras preciosas"
+          >
+            <Diamond size={12} aria-hidden="true" />
+            Piedras
+          </Badge>
+        )}
         {editable && (
           <div class="absolute left-2 top-2 z-20 flex items-center gap-1.5">
             <IconButton

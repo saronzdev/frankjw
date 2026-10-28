@@ -15,6 +15,7 @@ const product: ProductType = {
   isActive: true,
   sales: 0,
   hasDiscount: false,
+  hasPreciousStones: false,
   createdAt: 1,
   pictures: ['https://yfayxxxtvbxdfhtidhcs.supabase.co/storage/v1/object/public/pictures/a.jpg']
 }
@@ -27,6 +28,14 @@ describe('ProductCard accesibilidad', () => {
     expect(trigger?.getAttribute('aria-haspopup')).toBe('dialog')
     expect(trigger?.getAttribute('type')).toBe('button')
     expect(baseElement.querySelector('img[alt="Anillo de oro 14k"]')).toBeTruthy()
+    expect(baseElement.querySelector('[aria-label="Contiene piedras preciosas"]')).toBeNull()
+  })
+
+  it('muestra el badge compacto cuando la prenda contiene piedras preciosas', () => {
+    const { baseElement } = render(<ProductCard data={{ ...product, hasPreciousStones: true }} />)
+    const badge = baseElement.querySelector('[aria-label="Contiene piedras preciosas"]')
+    expect(badge).toBeTruthy()
+    expect(badge?.textContent).toContain('Piedras')
   })
 
   it('abre el ProductPopup (role=dialog) al pulsar el activador', async () => {

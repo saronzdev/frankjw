@@ -5,9 +5,11 @@ interface Props {
   priceRange: [number, number]
   selectedKarats: number[]
   onSale: boolean
+  preciousStones: boolean
   onPriceChange: (range: [number, number]) => void
   onKaratsChange: (karats: number[]) => void
   onSaleChange: (onSale: boolean) => void
+  onPreciousStonesChange: (preciousStones: boolean) => void
   onReset: () => void
 }
 
@@ -15,9 +17,11 @@ export function ProductFilters({
   priceRange,
   selectedKarats,
   onSale,
+  preciousStones,
   onPriceChange,
   onKaratsChange,
   onSaleChange,
+  onPreciousStonesChange,
   onReset
 }: Props) {
   const handleKaratToggle = (karat: number) => {
@@ -86,7 +90,16 @@ export function ProductFilters({
         </div>
       </div>
 
-      <div>
+      <div class="flex flex-col gap-2">
+        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+          <input
+            type="checkbox"
+            class="accent-gold"
+            checked={preciousStones}
+            onChange={(e) => onPreciousStonesChange((e.target as HTMLInputElement).checked)}
+          />
+          <span>Solo con piedras preciosas</span>
+        </label>
         <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
           <input
             type="checkbox"

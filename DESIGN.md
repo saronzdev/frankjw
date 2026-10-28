@@ -16,12 +16,16 @@ A warm, editorial design system for a handcrafted jewelry store. One accent colo
 | **Accent** (`gold`) | `#c9a24b` | Focus rings, small decorative accents, active states |
 | **Accent strong** (`gold-deep`) | `#a8842e` | Links/CTAs that text-carry the accent, hover text |
 | **Accent tint** (`gold-soft`) | `#f3ead2` | Accent backgrounds at low opacity (`bg-gold-soft/40`) |
+| **Diamond tint** (`diamond-soft`) | `#e7f3fb` | Fondo del badge "Piedras preciosas" |
+| **Diamond edge** (`diamond`) | `#a8d4ee` | Anillo de 1px del badge de piedras preciosas |
+| **Diamond strong** (`diamond-deep`) | `#14678f` | Texto e icono del badge sobre `diamond-soft` (contraste AA) |
 | **Danger** (`danger`) | `#b91c1c` | Semantic red only: sold-out, savings, destructive, errors |
 
 Usage guidance
 
 - Gold is an **accent, never a surface**: use at reduced opacities or on small elements. No large solid gold fills, no gold gradients, no gold body text.
 - Red is **semantic only** (sold-out badge, discount savings, logout, error card). Never decorative.
+- Diamond blue is **exclusive to precious stones** (card pill and detail badge). Never on CTAs, links, surfaces or large fills.
 - Over photos, guarantee text contrast with `bg-gradient-to-t from-black/70 via-black/25 to-transparent`.
 - Header/overlays use translucent surfaces: `bg-bg/90 backdrop-blur-md` (header), `bg-black/50` (overlay scrim).
 - Do not introduce colors outside this table. Tailwind's `red-100` is allowed only inside the `danger` tone and error icon fills.
@@ -46,9 +50,9 @@ Usage guidance
 
 - **Buttons** (`src/ui/Button.tsx`) — variants: `primary` (solid ink bg `#1c1917`, white text), `gold` (solid gold, conversion CTAs like Reserve), `outline` (1px `line`, hover border gold), `ghost`. Sizes sm/md/lg (~36/40/44px height), `rounded-md`, `font-medium`, prop `block` for full-width. Renders an `<a>` when `href` is set. A `type="submit"` prop must override the internal `type="button"`; `disabled` dims to 50%.
 - **Icon buttons** (`IconButton`) — square, icon-only, `label` prop mandatory (aria-label). Sizes xs/sm/md.
-- **Product cards** — white surface on `bg`, 0 border default, `rounded-lg`, image `aspect-4/5 object-cover`; badges anchored absolute `top-2 right-2`; name/title `text-ink`, meta `text-ink-muted`; price in `font-display`. Hover: subtle lift/shadow, image scale kept minimal.
+- **Product cards** — white surface on `bg`, 0 border default, `rounded-lg`, image `aspect-4/5 object-cover`; status/admin badges anchored absolute `top-2 right-2` (sold out) and `top-2 left-2` (admin actions); the compact "Piedras" pill (`Badge diamond`: `Diamond` 12px + short label, full text in `aria-label`/`title`) sits `bottom-2 left-2` and is `pointer-events-none` so it never blocks the image trigger; name/title `text-ink`, meta `text-ink-muted`; price in `font-display`. Hover: subtle lift/shadow, image scale kept minimal.
 - **Category header** (`components/products/CategoryHeader.tsx`) — split card (`rounded-lg border border-line bg-surface`): title/description column on `surface` (67%, `justify-center`, title `md:text-2xl`, description full-text `max-w-2xl`, no clamping) and the photo complete in a 33% column flush to the right edge (photo renders at native 16:9, no crop); `md:min-h-56` — the card grows if the copy needs more lines (`md:py-6`). Mobile stacks: photo band on top (`h-32 sm:h-40` `object-cover`), text below.
-- **Badges** (`Badge`) — pill `rounded-full px-2.5 py-0.5 text-xs font-semibold`: `neutral` (`bg-surface-2 text-ink-soft`), `gold` (`bg-gold-soft text-gold-deep`), `danger` (`bg-red-100 text-danger` — sold out, savings), `dark` (`bg-ink text-white`).
+- **Badges** (`Badge`) — pill `rounded-full px-2.5 py-0.5 text-xs font-semibold`: `neutral` (`bg-surface-2 text-ink-soft`), `gold` (`bg-gold-soft text-gold-deep`), `diamond` (`bg-diamond-soft text-diamond-deep ring-1 ring-diamond/70` — piedras preciosas), `danger` (`bg-red-100 text-danger` — sold out, savings), `dark` (`bg-ink text-white`).
 - **Inputs** — `h-11 rounded-md border border-line bg-surface px-3 text-sm`, placeholder `text-ink-muted`; select/radio stacks gap-1.5 with labels `text-sm font-medium text-ink`. Focus state on field inputs is a seamless flip: outline suppressed (`outline-none`), border turns gold and a flush 2px gold/35 ring hugs the border (no offset gap). The global 2px offset gold outline keeps applying to buttons, links and other focusables.
 - **Tooltip-less meta chips** — small reference chips like product ID use `Badge neutral` with a 1px border on top.
 - **Modal** (`Modal`) — scrim `bg-black/55 backdrop-blur-[2px]`; panel `bg-surface rounded-lg shadow-2xl animate-panel-in`, sizes `sm 24rem / md 32rem / lg 40rem`, `max-h-[calc(100dvh-4rem)]`, header with `font-display text-lg` title + icon close; body scrollable; Escape/backdrop close.

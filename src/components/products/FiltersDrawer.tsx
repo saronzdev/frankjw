@@ -7,9 +7,11 @@ interface Props {
   priceRange: [number, number]
   selectedKarats: number[]
   onSale: boolean
+  preciousStones: boolean
   onPriceChange: (range: [number, number]) => void
   onKaratsChange: (karats: number[]) => void
   onSaleChange: (onSale: boolean) => void
+  onPreciousStonesChange: (preciousStones: boolean) => void
   onReset: () => void
 }
 
@@ -19,9 +21,11 @@ export function FiltersDrawer({
   priceRange,
   selectedKarats,
   onSale,
+  preciousStones,
   onPriceChange,
   onKaratsChange,
   onSaleChange,
+  onPreciousStonesChange,
   onReset
 }: Props) {
   return (
@@ -30,9 +34,11 @@ export function FiltersDrawer({
         priceRange={priceRange}
         selectedKarats={selectedKarats}
         onSale={onSale}
+        preciousStones={preciousStones}
         onPriceChange={onPriceChange}
         onKaratsChange={onKaratsChange}
         onSaleChange={onSaleChange}
+        onPreciousStonesChange={onPreciousStonesChange}
         onReset={onReset}
       />
     </Drawer>

@@ -9,6 +9,7 @@ export type ProductIn = {
   pictures?: string[]
   sales: number
   hasDiscount: boolean
+  hasPreciousStones: boolean
   offerPrice?: number
 }
 

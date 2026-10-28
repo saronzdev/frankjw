@@ -32,6 +32,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
     pictures: product?.pictures ?? ([] as string[]),
     isActive: product?.isActive ?? true,
     hasDiscount: product?.hasDiscount ?? false,
+    hasPreciousStones: product?.hasPreciousStones ?? false,
     offerPrice: product?.offerPrice ?? undefined
   }
   const [productData, setProductData] = useState<ProductIn>(newProduct as ProductIn)
@@ -269,6 +270,17 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
             <span>Descuento</span>
           </label>
         </div>
+
+        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+          <input
+            type="checkbox"
+            name="hasPreciousStones"
+            checked={productData.hasPreciousStones}
+            onChange={handleCheckboxChange}
+            class="accent-gold"
+          />
+          <span>Contiene piedras preciosas</span>
+        </label>
 
         <div class="flex flex-col gap-1.5">
           <label class={labelCls} for="pf-offerPrice">Precio de oferta (USD) *</label>

@@ -29,6 +29,7 @@ export function Products() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0])
   const [selectedKarats, setSelectedKarats] = useState<number[]>([])
   const [onSale, setOnSale] = useState(false)
+  const [preciousStones, setPreciousStones] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
   usePageMeta(
     category
@@ -51,6 +52,7 @@ export function Products() {
     setPriceRange([0, 0])
     setSelectedKarats([])
     setOnSale(false)
+    setPreciousStones(false)
   }
 
   const closeFilters = () => setFiltersOpen(false)
@@ -70,7 +72,7 @@ export function Products() {
     ? products.value.filter((p) => p.category.toLowerCase().trim() === category.title.toLowerCase().trim())
     : products.value.filter((p) => p.category !== HIDDEN_CATEGORY)
 
-  const filtered = filterAndSortProducts(baseList, { sortBy, priceRange, selectedKarats, onSale })
+  const filtered = filterAndSortProducts(baseList, { sortBy, priceRange, selectedKarats, onSale, preciousStones })
 
   return (
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 md:py-10">
@@ -118,9 +120,11 @@ export function Products() {
         priceRange={priceRange}
         selectedKarats={selectedKarats}
         onSale={onSale}
+        preciousStones={preciousStones}
         onPriceChange={setPriceRange}
         onKaratsChange={setSelectedKarats}
         onSaleChange={setOnSale}
+        onPreciousStonesChange={setPreciousStones}
         onReset={handleResetFilters}
       />
     </div>
