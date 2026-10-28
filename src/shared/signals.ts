@@ -9,12 +9,12 @@ export const loading = signal(true)
 export const error = signal(0)
 export const isAdmin = signal<boolean | null>(null)
 
-async function getProducts() {
+async function getProducts(options?: { fresh?: boolean }) {
   loading.value = true
   error.value = 0
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const result = await getProductsSignals()
+    const result = await getProductsSignals(options)
 
     if (Array.isArray(result)) {
       products.value = result
@@ -73,7 +73,7 @@ export const mostRecents = computed(() =>
     .slice(0, 4)
 )
 
-export const refreshProducts = async () => await getProducts()
+export const refreshProducts = async (options?: { fresh?: boolean }) => await getProducts(options)
 export const refreshRole = async () => await checkAdmin()
 
 export const logout = async () => {

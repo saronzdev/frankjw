@@ -58,7 +58,7 @@ export function Dashboard() {
       const { ok, error: err } = await updateProduct(editingProduct.id, data)
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(err ?? 1))
-      await refreshProducts()
+      await refreshProducts({ fresh: true })
       const removed = previousPictures.filter((url) => isStorageUrl(url) && !(data.pictures ?? []).includes(url))
       await Promise.allSettled(removed.map((url) => deleteImage(url)))
       setEditingProduct(undefined)
@@ -67,7 +67,7 @@ export function Dashboard() {
       const { ok, error: err } = await createProduct(data)
       setShowForm(!ok)
       if (!ok) return toast.error(getErrorMessage(err ?? 1))
-      await refreshProducts()
+      await refreshProducts({ fresh: true })
       toast.success('Se ha añadido el producto correctamente')
     }
   }
@@ -75,8 +75,9 @@ export function Dashboard() {
   const handleDeleteProduct = async (id: number) => {
     const { ok, error: err } = await deleteProduct(id)
     if (!ok) return toast.error(getErrorMessage(err ?? 1))
-    await refreshProducts()
+    products.value = products.value.filter((product) => product.id !== id)
     toast.success('Se ha eliminado el producto correctamente')
+    await refreshProducts({ fresh: true })
   }
 
   const handleCancelForm = () => {
