@@ -55,11 +55,12 @@ export interface ProductFilterState {
   priceRange?: [number, number]
   selectedKarats?: number[]
   onSale?: boolean
+  preciousStones?: boolean
 }
 
 /** Filtra y ordena productos aplicando las mismas reglas que la vista de Products. */
 export function filterAndSortProducts(list: ProductType[], filters: ProductFilterState): ProductType[] {
-  const { sortBy = 'default', priceRange, selectedKarats = [], onSale = false } = filters
+  const { sortBy = 'default', priceRange, selectedKarats = [], onSale = false, preciousStones = false } = filters
 
   let filtered = list
 
@@ -81,6 +82,10 @@ export function filterAndSortProducts(list: ProductType[], filters: ProductFilte
 
   if (onSale) {
     filtered = filtered.filter((p) => p.offerPrice && p.offerPrice < p.price)
+  }
+
+  if (preciousStones) {
+    filtered = filtered.filter((p) => Boolean(p.hasPreciousStones))
   }
 
   const sorted = [...filtered]

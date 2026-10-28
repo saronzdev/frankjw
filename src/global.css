@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Palette: neutral + gold accent */
+  /* Palette: neutral + gold accent + diamond blue (piedras preciosas) */
   --color-bg: #fafaf8;
   --color-surface: #ffffff;
   --color-surface-2: #f4f4f0;
@@ -12,6 +12,9 @@
   --color-gold: #c9a24b;
   --color-gold-deep: #a8842e;
   --color-gold-soft: #f3ead2;
+  --color-diamond-soft: #e7f3fb;
+  --color-diamond: #a8d4ee;
+  --color-diamond-deep: #14678f;
   --color-danger: #b91c1c;
 
   /* Legacy aliases consumed by css modules under migration */

@@ -26,19 +26,21 @@ export function Dashboard() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0])
   const [selectedKarats, setSelectedKarats] = useState<number[]>([])
   const [onSale, setOnSale] = useState(false)
+  const [preciousStones, setPreciousStones] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const handleResetFilters = () => {
     setPriceRange([0, 0])
     setSelectedKarats([])
     setOnSale(false)
+    setPreciousStones(false)
   }
 
   const filteredProducts = useMemo(() => {
     const trimmed = searchTerm.trim().toLowerCase()
     const bySearch = trimmed ? products.value.filter((p) => p.productId.toLowerCase().includes(trimmed)) : products.value
-    return filterAndSortProducts(bySearch, { sortBy, priceRange, selectedKarats, onSale })
-  }, [products.value, searchTerm, sortBy, priceRange, selectedKarats, onSale])
+    return filterAndSortProducts(bySearch, { sortBy, priceRange, selectedKarats, onSale, preciousStones })
+  }, [products.value, searchTerm, sortBy, priceRange, selectedKarats, onSale, preciousStones])
 
   const handleCreateProduct = () => {
     setEditingProduct(undefined)
@@ -135,9 +137,11 @@ export function Dashboard() {
             priceRange={priceRange}
             selectedKarats={selectedKarats}
             onSale={onSale}
+            preciousStones={preciousStones}
             onPriceChange={setPriceRange}
             onKaratsChange={setSelectedKarats}
             onSaleChange={setOnSale}
+            onPreciousStonesChange={setPreciousStones}
             onReset={handleResetFilters}
           />
 

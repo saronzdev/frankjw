@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'preact'
 import { cx } from './cx'
 
-type Tone = 'neutral' | 'gold' | 'danger' | 'dark'
+type Tone = 'neutral' | 'gold' | 'diamond' | 'danger' | 'dark'
 
 type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, 'tone'> & {
   tone?: Tone
@@ -10,6 +10,7 @@ type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, 'tone'> & {
 const tones: Record<Tone, string> = {
   neutral: 'bg-surface-2 text-ink-soft',
   gold: 'bg-gold-soft text-gold-deep',
+  diamond: 'bg-diamond-soft text-diamond-deep ring-1 ring-diamond/70',
   danger: 'bg-red-100 text-danger',
   dark: 'bg-ink text-white'
 }

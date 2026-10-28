@@ -24,6 +24,7 @@ const makeProduct = (overrides: Partial<ProductType>): ProductType => ({
   isActive: true,
   sales: 0,
   hasDiscount: false,
+  hasPreciousStones: false,
   createdAt: 0,
   ...overrides
 })
@@ -128,6 +129,16 @@ describe('filterAndSortProducts', () => {
   it('filtra ofertas reales', () => {
     const ids = filterAndSortProducts(products, { onSale: true }).map((p) => p.id)
     expect(ids.sort()).toEqual([1, 4])
+  })
+
+  it('filtra solo productos con piedras preciosas', () => {
+    const list = [
+      ...products,
+      makeProduct({ id: 5, hasPreciousStones: true }),
+      makeProduct({ id: 6, hasPreciousStones: true })
+    ]
+    const ids = filterAndSortProducts(list, { preciousStones: true }).map((p) => p.id)
+    expect(ids.sort()).toEqual([5, 6])
   })
 
   it('ordena por precio ascendente y descendente', () => {

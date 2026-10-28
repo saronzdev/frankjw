@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'preact/hooks'
 import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
-import { ChevronLeft, ChevronRight } from 'lucide-preact'
+import { ChevronLeft, ChevronRight, Diamond } from 'lucide-preact'
 import { Modal } from '@/ui/Modal'
 import { IconButton } from '@/ui/IconButton'
 import { Button } from '@/ui/Button'
+import { Badge } from '@/ui/Badge'
 import { optimizeImage } from '@/shared/utils'
 import { ReservePopup } from '../ReservePopup'
 
@@ -100,6 +101,13 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
 
         <div class="flex flex-col gap-4 overflow-y-auto p-5">
           <p class="text-sm leading-relaxed text-ink-soft">{product.description}</p>
+
+          {product.hasPreciousStones && (
+            <Badge tone="diamond" class="self-start">
+              <Diamond size={13} aria-hidden="true" />
+              Contiene piedras preciosas
+            </Badge>
+          )}
 
           <div class="grid grid-cols-3 gap-3 rounded-md bg-gold-soft/60 p-4 text-center">
             <div class="flex flex-col gap-0.5">
