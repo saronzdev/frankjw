@@ -4,6 +4,7 @@ import { Header } from './layout/Header'
 import { Footer } from './layout/Footer'
 import { UpdateBanner } from './layout/UpdateBanner'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { initSignals } from './shared/signals'
 import { LoadingCard } from './components/products/LoadingCard'
 import { HomePage } from './pages/HomePage'
 import { About } from './pages/About'
@@ -37,6 +38,10 @@ function ThirdPartyScripts() {
 }
 
 export function App() {
+  useEffect(() => {
+    initSignals()
+  }, [])
+
   return (
     <>
       <ThirdPartyScripts />

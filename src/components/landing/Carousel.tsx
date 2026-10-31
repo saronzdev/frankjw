@@ -56,6 +56,22 @@ export function Carousel({ title, items }: Props) {
 
   const current = slides[currentIndex]
 
+  if (items.length === 0) {
+    return (
+      <section aria-busy="true" aria-label={title} class="flex flex-col gap-12">
+        <h2 class="mb-8 text-center font-display text-2xl font-medium tracking-wide text-ink sm:mb-10 sm:text-3xl">
+          {title}
+        </h2>
+        <div class="relative">
+          <div class="overflow-hidden rounded-lg shadow-lg md:rounded-xl">
+            <div class="min-w-full aspect-4/3 bg-surface-2 animate-pulse motion-reduce:animate-none sm:aspect-3/2 md:aspect-16/9 lg:aspect-2/1" />
+          </div>
+        </div>
+        <span class="sr-only">Cargando últimos productos</span>
+      </section>
+    )
+  }
+
   return (
     <section
       role="region"

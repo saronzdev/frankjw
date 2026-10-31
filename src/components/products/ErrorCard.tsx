@@ -1,25 +1,24 @@
-import { CircleX } from 'lucide-preact'
-import { Button } from '@/ui/Button'
+import { TriangleAlert } from 'lucide-preact'
 
 interface Props {
   message: string
+  onRetry?: () => void
 }
 
-export function ErrorCard({ message }: Props) {
+export function ErrorCard({ message, onRetry }: Props) {
+  const retry = onRetry ?? (() => window.location.reload())
+
   return (
-    <div class="grid place-items-center px-4 py-24">
-      <div class="flex max-w-md flex-col items-center gap-4 text-center">
-        <div class="grid h-14 w-14 place-items-center rounded-full bg-red-100 text-danger">
-          <CircleX size={26} aria-hidden="true" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <h3 class="font-display text-xl font-semibold text-ink">¡Ups!</h3>
-          <p class="text-sm text-ink-muted">{message}</p>
-        </div>
-        <Button variant="outline" onClick={() => window.location.reload()}>
-          Intentar de nuevo
-        </Button>
-      </div>
+    <div role="alert" class="mx-auto flex max-w-md flex-col items-center gap-3 px-4 py-12 text-center">
+      <TriangleAlert size={18} aria-hidden="true" class="text-danger" />
+      <p class="text-sm text-ink-soft">{message}</p>
+      <button
+        type="button"
+        onClick={retry}
+        class="text-sm font-medium text-gold-deep underline underline-offset-4 transition-colors hover:text-ink"
+      >
+        Intentar de nuevo
+      </button>
     </div>
   )
 }

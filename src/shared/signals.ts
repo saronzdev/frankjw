@@ -46,8 +46,10 @@ async function checkAdmin() {
   isAdmin.value = await isUserAdmin()
 }
 
-getProducts()
-checkAdmin()
+export function initSignals() {
+  void getProducts()
+  void checkAdmin()
+}
 
 export const cats = computed(() => {
   const uniqueCategories = [...new Set(products.value.map((p) => p.category))]
