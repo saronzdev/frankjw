@@ -88,7 +88,7 @@ export function Dashboard() {
   if (isAdmin.value === null) return <LoadingCard />
   if (loading.value && products.value.length === 0) return <LoadingCard />
   if (error.value > 0) {
-    return <ErrorCard message={getErrorMessage(error.value)} />
+    return <ErrorCard message={getErrorMessage(error.value)} onRetry={() => refreshProducts()} />
   }
 
   const hasProducts = products.value.length > 0
