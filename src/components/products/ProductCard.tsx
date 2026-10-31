@@ -53,7 +53,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
       <div class="relative">
         <button
           type="button"
-          class="relative aspect-4/5 w-full cursor-pointer overflow-hidden bg-surface text-left"
+          class="relative aspect-square w-full cursor-pointer overflow-hidden bg-surface text-left"
           aria-label={`Ver ${name}`}
           aria-haspopup="dialog"
           onClick={() => setIsOpen(true)}
@@ -67,7 +67,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
 
           <img
             class={cx(
-              'h-full w-full object-cover object-center transition-opacity duration-300',
+              'h-full w-full object-contain object-center transition-opacity duration-300',
               isLoading && 'opacity-0'
             )}
             src={optimizeImage(firstImage, 480)}

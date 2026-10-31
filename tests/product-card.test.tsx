@@ -27,7 +27,10 @@ describe('ProductCard accesibilidad', () => {
     expect(trigger).toBeTruthy()
     expect(trigger?.getAttribute('aria-haspopup')).toBe('dialog')
     expect(trigger?.getAttribute('type')).toBe('button')
-    expect(baseElement.querySelector('img[alt="Anillo de oro 14k"]')).toBeTruthy()
+    expect(trigger?.className).toContain('aspect-square')
+    const image = baseElement.querySelector('img[alt="Anillo de oro 14k"]')
+    expect(image).toBeTruthy()
+    expect(image?.getAttribute('class')).toContain('object-contain')
     expect(baseElement.querySelector('[aria-label="Contiene piedras preciosas"]')).toBeNull()
   })
 
