@@ -324,7 +324,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                   <img
                     src={URL.createObjectURL(image)}
                     alt={`Nueva imagen ${index + 1}`}
-                    class="aspect-square w-full object-cover"
+                    class="aspect-square w-full object-contain"
                     loading="lazy"
                   />
                   <figcaption class="absolute bottom-1.5 left-1.5 rounded-full bg-black/55 px-2 py-0.5 text-[0.7rem] text-white">
@@ -345,7 +345,7 @@ export function ProductForm({ product, onSave, onCancel }: Props) {
                   <img
                     src={imageUrl}
                     alt={`Imagen existente ${index + 1}`}
-                    class="aspect-square w-full object-cover"
+                    class="aspect-square w-full object-contain"
                     loading="lazy"
                   />
                   <figcaption class="absolute bottom-1.5 left-1.5 rounded-full bg-black/55 px-2 py-0.5 text-[0.7rem] text-white">
