@@ -1,9 +1,9 @@
 import { useState } from 'preact/hooks'
 import { lazy, Suspense } from 'preact/compat'
 import { useRoute, Link } from 'wouter'
-import { cats, products, error, loading } from '@/shared/signals'
+import { cats, products, error, loading, refreshProducts } from '@/shared/signals'
 import { CategoryHeader } from '@/components/products/CategoryHeader'
-import { ProductGrid } from '@/components/products/ProductGrid'
+import { ProductGrid, ProductGridSkeleton } from '@/components/products/ProductGrid'
 import { FiltersToolbar } from '@/components/products/FiltersToolbar'
 import { FiltersDrawer } from '@/components/products/FiltersDrawer'
 import { NoProducts } from '@/components/products/NoProducts'
@@ -57,9 +57,6 @@ export function Products() {
 
   const closeFilters = () => setFiltersOpen(false)
 
-  if (loading.value) return <LoadingCard />
-  if (error.value > 0) return <ErrorCard message={getErrorMessage(error.value)} />
-
   if (categoryParam && !category) {
     return (
       <Suspense fallback={<LoadingCard />}>
@@ -90,7 +87,7 @@ export function Products() {
       )}
 
       {!category && (
-        <nav aria-label="Categorías" class="flex flex-wrap justify-center gap-2">
+        <nav aria-label="Categorías" class="flex min-h-9 flex-wrap justify-center gap-2">
           {cats.value.map((cat) => (
             <Link
               key={cat}
@@ -103,9 +100,13 @@ export function Products() {
         </nav>
       )}
 
-      {filtered.length > 0 ? (
+      {error.value > 0 ? (
+        <ErrorCard message={getErrorMessage(error.value)} onRetry={() => refreshProducts()} />
+      ) : loading.value && products.value.length === 0 ? (
+        <ProductGridSkeleton />
+      ) : filtered.length > 0 ? (
         <>
-          <div class="sticky top-16 z-30 bg-bg/95 backdrop-blur-sm">
+          <div class="sticky top-16 z-30 min-h-[53px] bg-bg/95 backdrop-blur-sm">
             <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
           </div>
           <ProductGrid products={filtered} />

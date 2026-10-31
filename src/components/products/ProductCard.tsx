@@ -5,7 +5,6 @@ import noImage from '@/assets/no-image.svg'
 import { normalize, optimizeImage, buildSrcSet } from '@/shared/utils'
 import { Badge } from '@/ui/Badge'
 import { IconButton } from '@/ui/IconButton'
-import { Spinner } from '@/ui/Spinner'
 import { cx } from '@/ui/cx'
 
 const ProductPopup = lazy(() => import('./ProductPopup').then((m) => ({ default: m.ProductPopup })))
@@ -18,9 +17,10 @@ interface Props {
   onDelete?: (id: number) => void
   allProducts?: ProductType[]
   productIndex?: number
+  priority?: boolean
 }
 
-export function ProductCard({ data, editable = false, onEdit, onDelete, allProducts = [], productIndex = 0 }: Props) {
+export function ProductCard({ data, editable = false, onEdit, onDelete, allProducts = [], productIndex = 0, priority = false }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [currentProductIndex, setCurrentProductIndex] = useState(productIndex)
@@ -59,9 +59,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           onClick={() => setIsOpen(true)}
         >
           {isLoading && (
-            <div class="absolute inset-0 z-10 grid place-items-center">
-              <Spinner />
-            </div>
+            <div class="absolute inset-0 z-10 bg-surface-2 animate-pulse motion-reduce:animate-none" />
           )}
           {!data.isActive && <Badge tone="danger" class="absolute right-2 top-2 z-20">Agotado</Badge>}
 
@@ -74,7 +72,8 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
             srcSet={buildSrcSet(firstImage)}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             alt={name}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : undefined}
             decoding="async"
             onLoad={() => setIsLoading(false)}
             onError={() => setIsLoading(false)}
