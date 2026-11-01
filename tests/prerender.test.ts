@@ -6,7 +6,8 @@ import type { ProductType } from '@/types'
 import type { SeoPage } from '@/seo/routes'
 import { SEO_END, SEO_START } from '@/seo/head'
 import { shellPage } from '@/seo/routes'
-import { prerenderPages, renderRouteHtml, routeOutputPath, writePrerenderedPages } from '../build/seo-prerender'
+import { sitemapPages } from '@/seo/sitemap'
+import { renderRouteHtml, routeOutputPath, writePrerenderedPages } from '../build/seo-prerender'
 
 const product: ProductType = {
   id: 1,
@@ -52,9 +53,9 @@ describe('routeOutputPath', () => {
   })
 })
 
-describe('prerenderPages', () => {
+describe('sitemapPages', () => {
   it('suma marketing, categorías visibles y productos', () => {
-    const pages = prerenderPages([product])
+    const pages = sitemapPages([product])
     const paths = pages.map((page) => page.path)
 
     expect(paths).toContain('/')
@@ -72,7 +73,7 @@ describe('prerenderPages', () => {
       productId: 'SET-001',
       category: 'Componentes de Conjunto'
     }
-    const paths = prerenderPages([product, hidden]).map((page) => page.path)
+    const paths = sitemapPages([product, hidden]).map((page) => page.path)
 
     expect(paths.some((path) => path.includes('componentes-de-conjunto'))).toBe(false)
     expect(paths).not.toContain('/products/componentes-de-conjunto')

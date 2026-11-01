@@ -2,9 +2,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import type { Plugin } from 'vite'
 import { renderSeoHead, replaceSeoHead } from '../src/seo/head'
-import { normalizeCatalogProduct, productRoutes } from '../src/seo/product'
+import { normalizeCatalogProduct } from '../src/seo/product'
 import type { SeoPage } from '../src/seo/routes'
-import { categoryPages, marketingPages, shellPage } from '../src/seo/routes'
+import { shellPage } from '../src/seo/routes'
+import { renderSitemap, sitemapPages } from '../src/seo/sitemap'
 import type { ProductType } from '../src/types'
 
 const CATALOG_TIMEOUT_MS = 5000
@@ -18,10 +19,6 @@ export interface PrerenderOptions {
 export function routeOutputPath(route: string): string {
   const segments = route.split('/').filter(Boolean)
   return segments.length === 0 ? 'index.html' : `${segments.join('/')}.html`
-}
-
-export function prerenderPages(products: ProductType[] = []): SeoPage[] {
-  return [...marketingPages(), ...categoryPages(), ...productRoutes(products)]
 }
 
 export function renderRouteHtml(template: string, page: SeoPage): string {
@@ -86,10 +83,11 @@ export function seoPrerender(options: PrerenderOptions = {}): Plugin {
         }
       }
 
-      const pages = prerenderPages(products)
+      const pages = sitemapPages(products)
       await writePrerenderedPages(distDir, template, pages)
       await writeFile(join(distDir, 'shell.html'), renderRouteHtml(template, shellPage()), 'utf8')
-      this.info(`Prerendered ${pages.length} routes and shell.html`)
+      await writeFile(join(distDir, 'sitemap.xml'), renderSitemap(pages), 'utf8')
+      this.info(`Prerendered ${pages.length} routes, shell.html and sitemap.xml`)
     }
   }
 }
