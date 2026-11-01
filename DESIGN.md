@@ -60,7 +60,7 @@ Usage guidance
 - **Drawer** (`Drawer`) — same scrim; left panel slides in (`animate-drawer-left`), full-height for mobile menus and filters.
 - **Update banner** (`layout/UpdateBanner.tsx`) — one-line strip under the header: `bg-gold-soft/40` + `border-b border-line/70`, `Sparkles` 14px in gold, short sentence, underlined "Ver cambios" link (`text-gold-deep`, decoration gold) and an `X` dismiss (persisted in localStorage). Opens a `Modal md` with the changelog: gold check-circles (12px path in `bg-gold-soft/70` circle), heading `font-semibold text-ink` + detail `text-sm text-ink-muted`.
 - **Footer link arrows** (`layout/Footer.tsx`) — every clickable footer option carries a small always-visible arrow (`ArrowRight` 13px for internal links, `ArrowUpRight` 13px for tel/mailto/close links, 11px in the credit line) in `text-ink-muted`; on hover the arrow shifts 0.5px toward its direction and turns `text-gold-deep`. Social icons keep their own hover affordance.
-- **Empty/error/loading states** — centered `max-w-md` stacks: error = `CircleX` 26px in a `red-100` circle + retry CTA; loading = `animate-pulse` skeletons on `surface-2`; empty = short sober copy + CTA, no illustration spam.
+- **Empty/error/loading states** — centered `max-w-md` stacks. Error uses `ErrorCard` (icon + message + gold text retry, no circles); loading uses the real grid/carousel as `bg-surface-2 animate-pulse motion-reduce:animate-none` skeletons; empty = short sober copy + CTA, no illustration spam.
 
 ## Elevation
 
