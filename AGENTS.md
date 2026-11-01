@@ -15,8 +15,9 @@
 - ❌ `ls` hunting → ✅ use glob/grep tools; imports use the `@/` alias (= `src/`).
 - Run the dev server with `pnpm devx` (`--host 0.0.0.0`, LAN-shareable) or `pnpm dev`. It proxies nothing — API calls go straight to `localhost:3000`; start `pnpm dev` in `api/` first.
 - The commit gate is: `pnpm typecheck && pnpm lint && pnpm build`. Run it before every commit.
-- Category data is centralized in `src/data/categories.ts` (single source: `CATEGORIES`, `HIDDEN_CATEGORY`, `slugify`, `findCategory`). `src/shared/utils.ts` re-exports it for backward compatibility — import the data module, not the re-export, for new code.
-- Routing is wouter-based: `/products/:category?` resolves slugs with `slugify`; an unknown slug renders lazy `NotFound`. Keep category links slug-generated, never hand-written strings.
+- Category copy lives in the Node-safe `src/data/category-defs.ts`; `src/data/categories.ts` attaches the AVIF imports and exposes `CATEGORIES`, `HIDDEN_CATEGORY`, `slugify`, `findCategory`. `src/shared/utils.ts` re-exports it for backward compatibility — import the data module, not the re-export, for new code. Keep `src/seo/*` free of asset imports because the build plugin runs it in Node.
+- Routing is wouter-based: `/products/:category?/:slug?` resolves category slugs with `slugify`; a canonical product slug (`nombre--productId`) opens the popup and pushes/replaces the URL. Unknown category/product slugs render lazy `NotFound`. Keep category links slug-generated, never hand-written strings.
+- SEO metadata is built in `src/seo/*` and shared by the client (`usePageMeta`) and `build/seo-prerender.ts`. `index.html` keeps its `<!-- seo:start -->` / `<!-- seo:end -->` markers; don't remove them. `pnpm build` fetches the catalog from `VITE_BACKEND_URL` to prerender product heads and `sitemap.xml`; it fails on Vercel if the API is unreachable, while local builds warn and skip products (or set `SEO_SKIP_CATALOG=1`).
 - Tailwind pitfalls worth knowing:
   - `Button` exposes `type` and `disabled` as first-class props (Preact's JSX types omit them); a `type="submit"` prop overrides the internal `type="button"` because the spread comes after it.
   - Prefer deterministic arbitrary values over composited width ramps when sizing must be exact (hero logo uses `w-[14rem] sm:w-[16rem] lg:w-[18rem]` + real `width`/`height` attributes).
@@ -31,7 +32,7 @@
 
 - CI plan: `.github/workflows/ci.yml` — installs with pnpm (Node 22), then runs `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` on every PR.
 - From `app/`, one-liner: `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
-- The vitest suite lives in `tests/`: `utils.test.ts` + `meta.test.ts` (pure helpers, node env) and `overlay.test.tsx` + `product-card.test.tsx` (component tests with `happy-dom` + `@testing-library/preact`; `tests/setup.ts` is only needed to shim `requestAnimationFrame` in that environment). Run it with `pnpm test`, or focus one case with `pnpm vitest run -t "<test name>"`. The business-logic suite (products API, auth) lives in the sibling `api/` repo.
+- The vitest suite lives in `tests/`: `utils.test.ts` + `meta.test.ts` + `seo.test.ts` + `product-seo.test.ts` + `sitemap.test.ts` + `robots.test.ts` (pure/Node-env logic) and `overlay.test.tsx` + `product-card.test.tsx` + `product-modal-route.test.tsx` + `meta-dom.test.tsx` (component tests with `happy-dom` + `@testing-library/preact`). `tests/setup.ts` shims `requestAnimationFrame` and cleans the DOM after each component test; `vitest.config.ts` aliases React to `preact/compat` so wouter runs against Preact. Run it with `pnpm test`, or focus one case with `pnpm vitest run -t "<test name>"`. The business-logic suite (products API, auth) lives in the sibling `api/` repo.
 - After moving files or changing imports, re-run `pnpm lint && pnpm typecheck`; both must be green before commit.
 - Add tests for fetch/transform logic you change in `tests/` (the existing suite covers exactly those pure helpers) even if nobody asked; keep helpers pure so they remain easy to test.
 
