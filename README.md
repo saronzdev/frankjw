@@ -129,7 +129,7 @@ The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. Image uploads a
 
 The project deploys to [Vercel](https://vercel.com/) as a static site:
 
-- `vercel.json` enables `cleanUrls`/`trailingSlash`, serves the build-time prerendered HTML for marketing, category and product routes, rewrites unmatched SPA routes to a noindex `shell.html`, and sets immutable cache headers for hashed assets and images, plus `must-revalidate` for `sw.js`. Auth and shell responses carry `X-Robots-Tag: noindex`.
+- `vercel.json` enables `cleanUrls`/`trailingSlash`, serves the build-time prerendered HTML for marketing, category and product routes, rewrites unmatched SPA routes to a noindex `shell`, and sets immutable cache headers for hashed assets and images, plus `must-revalidate` for `sw.js`. Auth and shell responses carry `X-Robots-Tag: noindex`.
 - The build step (`pnpm build`) runs `tsc -b` as a type-check gate before bundling. It then fetches the catalog to generate product heads and `sitemap.xml`; on Vercel a failed catalog fetch fails the build, while local builds skip product routes with a warning (or set `SEO_SKIP_CATALOG=1`).
 - Vercel auto-deploys previews for pull requests and production on pushes to `main`.
 - CI runs `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` on every PR and on pushes to `main`.
