@@ -57,7 +57,7 @@ Usage guidance
 - **Badges** (`Badge`) — pill `rounded-full px-2.5 py-0.5 text-xs font-semibold`: `neutral` (`bg-surface-2 text-ink-soft`), `gold` (`bg-gold-soft text-gold-deep`), `diamond` (`bg-diamond-soft text-diamond-deep ring-1 ring-diamond/70` — piedras preciosas), `danger` (`bg-red-100 text-danger` — sold out, savings), `dark` (`bg-ink text-white`).
 - **Inputs** — `h-11 rounded-md border border-line bg-surface px-3 text-sm`, placeholder `text-ink-muted`; select/radio stacks gap-1.5 with labels `text-sm font-medium text-ink`. Focus state on field inputs is a seamless flip: outline suppressed (`outline-none`), border turns gold and a flush 2px gold/35 ring hugs the border (no offset gap). The global 2px offset gold outline keeps applying to buttons, links and other focusables.
 - **Tooltip-less meta chips** — small reference chips like product ID use `Badge neutral` with a 1px border on top.
-- **Modal** (`Modal`) — scrim `bg-black/55 backdrop-blur-[2px]`; panel `bg-surface rounded-lg shadow-2xl animate-panel-in`, sizes `sm 24rem / md 32rem / lg 40rem`, `max-h-[calc(100dvh-4rem)]`, header with `font-display text-lg` title + icon close; body scrollable; Escape/backdrop close.
+- **Modal** (`Modal`) — scrim `bg-black/55 backdrop-blur-[2px]`; panel `bg-surface rounded-lg shadow-2xl animate-panel-in`, sizes `sm 24rem / md 32rem / lg 40rem`, `max-h-[calc(100dvh-4rem)]`, header with `font-display text-lg` title + icon close; body scrollable; Escape/backdrop close. The product popup passes `fast` (0.08s scrim / 0.1s panel) so opening feels near-instant.
 - **Drawer** (`Drawer`) — same scrim; left panel slides in (`animate-drawer-left`), full-height for mobile menus and filters.
 - **Update banner** (`layout/UpdateBanner.tsx`) — one-line strip under the header: `bg-gold-soft/40` + `border-b border-line/70`, `Sparkles` 14px in gold, short sentence, underlined "Ver cambios" link (`text-gold-deep`, decoration gold) and an `X` dismiss (persisted in localStorage). Opens a `Modal md` with the changelog: gold check-circles (12px path in `bg-gold-soft/70` circle), heading `font-semibold text-ink` + detail `text-sm text-ink-muted`.
 - **Footer link arrows** (`layout/Footer.tsx`) — every clickable footer option carries a small always-visible arrow (`ArrowRight` 13px for internal links, `ArrowUpRight` 13px for tel/mailto/close links, 11px in the credit line) in `text-ink-muted`; on hover the arrow shifts 0.5px toward its direction and turns `text-gold-deep`. Social icons keep their own hover affordance.
@@ -75,6 +75,7 @@ Usage guidance
 
 - `animate-overlay-in` — scrim fade, 0.2s ease-out.
 - `animate-panel-in` — modal rise: fade + translateY(16px) scale(0.97), 0.25s `--ease-out-quart`.
+- `animate-overlay-in-fast` / `animate-panel-in-fast` — same curves at 0.08s / 0.1s for the product popup.
 - `animate-drawer-left` — drawer slide-in 0.3s (explosive-free: 1 step, no bounce).
 - Hover transitions: `transition-colors` 150–200ms on borders/text only. No decorative transforms.
 - `prefers-reduced-motion` disables all animation globally (already implemented). The carousel also skips autoplay entirely for those users.

@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /shell.html
 
 Sitemap: https://frankjoyeriacuba.com/sitemap.xml
-Host: https://frankjoyeriacuba.com

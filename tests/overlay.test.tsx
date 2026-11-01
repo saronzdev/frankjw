@@ -41,4 +41,16 @@ describe('Modal / useOverlayBehavior', () => {
     )
     expect(baseElement.querySelectorAll('[role="dialog"]').length).toBe(0)
   })
+
+  it('usa la animación casi instantánea cuando fast está activo', () => {
+    const { baseElement } = render(
+      <Modal open fast title="Producto" onClose={() => {}}>
+        <button>contenido</button>
+      </Modal>
+    )
+    const dialog = baseElement.querySelector('[role="dialog"]') as HTMLElement
+
+    expect(baseElement.querySelector('.animate-overlay-in-fast')).toBeTruthy()
+    expect(dialog.className).toContain('animate-panel-in-fast')
+  })
 })

@@ -16,6 +16,8 @@ type ModalProps = {
   /** Renders the panel with a tall fixed height suitable for image galleries. */
   tall?: boolean
   padded?: boolean
+  /** Uses the near-instant scrim/panel animation for product popups. */
+  fast?: boolean
   children?: ComponentChildren
 }
 
@@ -25,7 +27,7 @@ const sizes: Record<Size, string> = {
   lg: 'max-w-2xl'
 }
 
-export function Modal({ open, onClose, title, size = 'md', tall, padded = true, children }: ModalProps) {
+export function Modal({ open, onClose, title, size = 'md', tall, padded = true, fast = false, children }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
 
   useOverlayBehavior({ open, onClose, panelRef })
@@ -34,7 +36,10 @@ export function Modal({ open, onClose, title, size = 'md', tall, padded = true, 
 
   return createPortal(
     <div
-      class="fixed inset-0 z-50 overflow-y-auto bg-black/55 backdrop-blur-[2px] animate-overlay-in"
+      class={cx(
+        'fixed inset-0 z-50 overflow-y-auto bg-black/55 backdrop-blur-[2px]',
+        fast ? 'animate-overlay-in-fast' : 'animate-overlay-in'
+      )}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -47,7 +52,8 @@ export function Modal({ open, onClose, title, size = 'md', tall, padded = true, 
           aria-label={title}
           tabIndex={-1}
           class={cx(
-            'relative flex w-full flex-col overflow-hidden rounded-lg bg-surface shadow-2xl animate-panel-in',
+            'relative flex w-full flex-col overflow-hidden rounded-lg bg-surface shadow-2xl',
+            fast ? 'animate-panel-in-fast' : 'animate-panel-in',
             'outline-none focus-visible:outline-none',
             tall ? 'h-[min(88dvh,760px)]' : 'max-h-[calc(100dvh-4rem)]',
             sizes[size]

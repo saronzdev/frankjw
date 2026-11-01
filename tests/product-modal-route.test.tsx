@@ -90,4 +90,24 @@ describe('modal de producto por URL', () => {
 
     await waitFor(() => expect(baseElement.textContent).toContain('Página no encontrada'))
   })
+
+  it('marca la categoría oculta como noindex', async () => {
+    products.value = [
+      {
+        ...product,
+        id: 2,
+        productId: 'SET-001',
+        description: 'anillo componente',
+        category: 'Componentes de Conjunto'
+      }
+    ]
+
+    renderAt('/products/componentes-de-conjunto')
+
+    await waitFor(() =>
+      expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
+        'noindex, noarchive'
+      )
+    )
+  })
 })

@@ -39,8 +39,10 @@ Everything in the client is public, so the design assumes the bundle can be read
 ## Project structure
 
 ```
-├── index.html                      # Entry HTML (SEO, Open Graph, fonts, preconnects)
-├── public/                         # PWA icons, og image, favicon set, robots.txt, sitemap
+├── index.html                      # Entry HTML with SEO markers (build replaces the marked block)
+├── build/
+│   └── seo-prerender.ts            # Build plugin: catalog fetch, route heads, shell.html, sitemap.xml
+├── public/                         # PWA icons, og image, favicon set, robots.txt
 ├── src/
 │   ├── assets/                     # Bundled images (cat-*.avif banners, hero/logo webp, samples, social SVGs)
 │   ├── ui/                         # Design-system primitives: Button, IconButton, Badge, Spinner, Modal, Drawer
@@ -49,7 +51,8 @@ Everything in the client is public, so the design assumes the bundle can be read
 │   │   ├── landing/                # Hero, Carousel, Highlighted, Sample, Social
 │   │   └── products/               # ProductCard, ProductForm, ProductPopup, filters, search, sort
 │   ├── pages/                      # HomePage, Products, Dashboard, About, Contact, Login, NotFound
-│   ├── data/                       # Static catalog metadata: categories.ts, navigation.ts
+│   ├── data/                       # Static catalog metadata: category-defs.ts, categories.ts, slug.ts, navigation.ts
+│   ├── seo/                        # Node-safe metadata: site, routes, head, product, sitemap
 │   ├── shared/
 │   │   ├── fetching.ts             # API client requests + centralized error codes
 │   │   ├── signals.ts              # Preact signals (catalog, admin role) + retry/backoff actions
@@ -59,15 +62,15 @@ Everything in the client is public, so the design assumes the bundle can be read
 │   ├── app.tsx                     # Routes (code-split) and layout
 │   ├── global.css                  # Tailwind v4 @theme design tokens (colors, type, motion) + base styles
 │   └── main.tsx                    # Entry point
-├── tests/                          # Unit tests (pure helper logic)
+├── tests/                          # Unit/component tests (helpers, SEO, DOM meta, overlays)
 ├── .github/workflows/ci.yml        # CI: lint + typecheck + test + build
 ├── eslint.config.mjs
 ├── vitest.config.ts
 ├── DESIGN.md                       # Design system tokens and guidelines
 ├── AGENTS.md                       # Contributor/agent guide
-├── vercel.json                     # SPA rewrites + cache headers
+├── vercel.json                     # cleanUrls, SPA shell rewrite + cache/robots headers
 ├── .env.example
-└── vite.config.ts                  # PWA manifest + workbox runtime caching
+└── vite.config.ts                  # SEO prerender + PWA manifest/workbox caching
 ```
 
 ## Getting started
@@ -89,14 +92,14 @@ pnpm test           # run once
 pnpm test:watch     # watch mode
 ```
 
-The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/utils.ts`: product filtering by price/karats/on-sale, every sort mode, slugify/unslugify round-trips, image src-set building, email validation, the retry policy for transient API codes and the error-code → message map.
+The test suite in `tests/` covers the pure helpers in `src/shared/utils.ts` (product filtering by price/karats/on-sale, every sort mode, slugify/unslugify round-trips, image src-set building, email validation, the retry policy for transient API codes and the error-code → message map), category/slug mapping, page and product metadata, JSON-LD, head replacement, prerender output paths, sitemap generation, `robots.txt`, overlay behavior and product-card accessibility.
 
 ## Routes
 
 | Path | Page | Notes |
 |---|---|---|
 | `/` | Home | Hero, carousel, highlights, social links. |
-| `/products/:category?` | Catalog | Sorting (newest, name, price, weight) and filters (price range, karats, on sale). |
+| `/products/:category?/:slug?` | Catalog | Sorting/filters and a product popup; a canonical product slug (`nombre--productId`) opens the modal directly and updates the URL. |
 | `/login` | Login | Admin authentication against the API. |
 | `/dashboard` | Dashboard | Admin-only: full CRUD, image uploads, search by product ID. |
 | `/about`, `/contact` | Static | Store info and contact. |
@@ -105,7 +108,8 @@ The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/ut
 ## Features
 
 - **Product catalog** — browse by category with sorting and filters; prices support offers (`offerPrice`).
-- **Product details popup** — multi-image viewer with prev/next navigation, price/weight/karat info and WhatsApp reservation.
+- **Product details popup** — URL-addressable modal with multi-image viewer, prev/next navigation, price/weight/karat info and WhatsApp reservation; direct product links keep their prerendered metadata.
+- **SEO** — build-time prerendered titles, descriptions, canonicals, Open Graph/Twitter tags and Product JSON-LD, plus a catalog-generated `sitemap.xml`.
 - **Admin dashboard** — full product CRUD, image upload through the API (dev environments without storage config surface a clean notice instead of failing), search by product ID, same sort/filter controls as the public catalog.
 - **WhatsApp reservation** — one tap opens a `wa.me` chat pre-filled with product details for the store sellers.
 - **PWA** — installable, offline-ready: precached app shell + locally stored images, and a scoped runtime cache for the public catalog endpoint.
@@ -116,7 +120,8 @@ The test suite (`tests/utils.test.ts`) covers the pure helpers in `src/shared/ut
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_BACKEND_URL` | No | Backend API base URL (e.g. `https://api.frankjoyeriacuba.com`). Defaults to `http://localhost:3000` for local development. |
+| `VITE_BACKEND_URL` | No | Backend API base URL (e.g. `https://api.frankjoyeriacuba.com`). Defaults to `http://localhost:3000` for local development. It is also used at build time to fetch the catalog for product prerendering and the sitemap. |
+| `SEO_SKIP_CATALOG` | No | Build only. Set to `1` to prerender marketing/category routes and the sitemap without fetching the API catalog. Product routes are skipped with a warning when the catalog is unreachable locally; the build fails on Vercel. |
 
 The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. Image uploads and deletions are performed server-side by the API (see the [API README](https://github.com/saronzdev/frankjw-api#environment-variables) for its `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` setup).
 
@@ -124,8 +129,8 @@ The client calls `${VITE_BACKEND_URL}/api/v1/` with credentials. Image uploads a
 
 The project deploys to [Vercel](https://vercel.com/) as a static site:
 
-- `vercel.json` rewrites every request to the SPA entry point and sets immutable cache headers for hashed assets and images, plus `must-revalidate` for `sw.js`.
-- The build step (`pnpm build`) runs `tsc -b` as a type-check gate before bundling.
+- `vercel.json` enables `cleanUrls`/`trailingSlash`, serves the build-time prerendered HTML for marketing, category and product routes, rewrites unmatched SPA routes to a noindex `shell.html`, and sets immutable cache headers for hashed assets and images, plus `must-revalidate` for `sw.js`. Auth and shell responses carry `X-Robots-Tag: noindex`.
+- The build step (`pnpm build`) runs `tsc -b` as a type-check gate before bundling. It then fetches the catalog to generate product heads and `sitemap.xml`; on Vercel a failed catalog fetch fails the build, while local builds skip product routes with a warning (or set `SEO_SKIP_CATALOG=1`).
 - Vercel auto-deploys previews for pull requests and production on pushes to `main`.
 - CI runs `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` on every PR and on pushes to `main`.
 

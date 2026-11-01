@@ -1,6 +1,6 @@
-import type { Category } from '@/types'
-import { CATEGORY_DEFS, HIDDEN_CATEGORY } from '@/data/category-defs'
-import { slugify } from '@/data/slug'
+import type { Category } from '../types'
+import { CATEGORY_DEFS, HIDDEN_CATEGORY } from '../data/category-defs'
+import { slugify } from '../data/slug'
 import {
   ABOUT_DESCRIPTION,
   ABOUT_TITLE,

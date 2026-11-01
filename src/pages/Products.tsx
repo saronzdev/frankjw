@@ -54,7 +54,7 @@ export function Products() {
       : productSlug && category
         ? productFallbackPage(categoryParam, productSlug)
         : category
-          ? categoryPage(category)
+          ? { ...categoryPage(category), noIndex: category.title === HIDDEN_CATEGORY }
           : categoryParam
             ? { ...catalogPage(), path: `/products/${categoryParam}`, noIndex: true }
             : catalogPage()

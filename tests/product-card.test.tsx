@@ -52,7 +52,11 @@ describe('ProductCard accesibilidad', () => {
       )
       if (dialogs.length <= dialogsBefore) throw new Error('dialog not ready')
     })
-    expect([...baseElement.querySelectorAll('[role=dialog]')].some((el) => (el as HTMLElement).getAttribute('aria-label') === 'Detalles del producto')).toBe(true)
+    const popup = [...baseElement.querySelectorAll('[role=dialog]')].find(
+      (el) => (el as HTMLElement).getAttribute('aria-label') === 'Detalles del producto'
+    ) as HTMLElement | undefined
+    expect(popup).toBeTruthy()
+    expect(popup?.className).toContain('animate-panel-in-fast')
   })
 
   it('delega la apertura cuando recibe onOpen', () => {
