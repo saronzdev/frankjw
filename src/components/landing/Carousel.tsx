@@ -3,7 +3,8 @@ import type { ProductType } from '@/types'
 import noImage from '@/assets/no-image.svg'
 import { ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-preact'
 import { Link } from 'wouter'
-import { optimizeImage, buildSrcSet, slugify } from '@/shared/utils'
+import { optimizeImage, buildSrcSet } from '@/shared/utils'
+import { productPath } from '@/seo/product'
 import { IconButton } from '@/ui/IconButton'
 import { cx } from '@/ui/cx'
 
@@ -111,7 +112,7 @@ export function Carousel({ title, items }: Props) {
                 />
                 <div class="absolute bottom-3 right-3 sm:bottom-5 sm:right-5">
                   <Link
-                    to={`/products/${slugify(p.category ?? '')}`}
+                    to={productPath(items[i]) ?? '/products'}
                     aria-hidden={i !== currentIndex}
                     tabIndex={i === currentIndex ? undefined : -1}
                     class="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2.5 font-medium text-white shadow-md transition-transform hover:-translate-y-0.5 hover:bg-stone-700 sm:px-5 sm:py-3"
