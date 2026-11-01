@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [{ "source": "/(.*)", "destination": "/shell.html" }],
+  "rewrites": [{ "source": "/(.*)", "destination": "/shell" }],
   "headers": [
     {
       "source": "/(.*)",
@@ -41,7 +41,7 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
     },
     {
-      "source": "/shell.html",
+      "source": "/shell",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, noarchive" }]
     },
     {

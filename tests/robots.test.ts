@@ -12,7 +12,7 @@ describe('robots.txt', () => {
 
     expect(lines).toContain('Disallow: /dashboard')
     expect(lines).toContain('Disallow: /login')
-    expect(lines).toContain('Disallow: /shell.html')
+    expect(lines).toContain('Disallow: /shell')
     expect(lines).toContain('Sitemap: https://frankjoyeriacuba.com/sitemap.xml')
     expect(lines.some((line) => line.toLowerCase().startsWith('host:'))).toBe(false)
   })
