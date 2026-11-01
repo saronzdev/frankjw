@@ -1,7 +1,7 @@
-import type { ProductType } from '@/types'
-import { findCategoryDef, HIDDEN_CATEGORY } from '@/data/category-defs'
-import { slugify } from '@/data/slug'
-import { normalize } from '@/shared/text'
+import type { ProductType } from '../types'
+import { findCategoryDef, HIDDEN_CATEGORY } from '../data/category-defs'
+import { slugify } from '../data/slug'
+import { normalize } from '../shared/text'
 import type { JsonLdNode, SeoPage } from './routes'
 import { PRODUCTS_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl, canonicalUrl } from './site'
 
