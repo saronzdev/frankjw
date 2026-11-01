@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { lazy, Suspense } from 'preact/compat'
-import { useRoute, Link } from 'wouter'
+import { useLocation, useRoute, Link } from 'wouter'
 import { cats, products, error, loading, refreshProducts } from '@/shared/signals'
 import { CategoryHeader } from '@/components/products/CategoryHeader'
 import { ProductGrid, ProductGridSkeleton } from '@/components/products/ProductGrid'
@@ -9,6 +9,7 @@ import { FiltersDrawer } from '@/components/products/FiltersDrawer'
 import { NoProducts } from '@/components/products/NoProducts'
 import { ErrorCard } from '@/components/products/ErrorCard'
 import { LoadingCard } from '@/components/products/LoadingCard'
+import type { ProductType } from '@/types'
 import {
   getErrorMessage,
   findCategory,
@@ -19,12 +20,18 @@ import {
 } from '@/shared/utils'
 import { usePageMeta } from '@/shared/meta'
 import { catalogPage, categoryPage } from '@/seo/routes'
+import { findProductBySlug, productFallbackPage, productPath, productSeo } from '@/seo/product'
 
 const NotFound = lazy(() => import('./NotFound').then((m) => ({ default: m.NotFound })))
+const ProductPopup = lazy(() =>
+  import('@/components/products/ProductPopup').then((m) => ({ default: m.ProductPopup }))
+)
 
 export function Products() {
-  const [_, params] = useRoute('/products/:category?')
+  const [, setLocation] = useLocation()
+  const [_, params] = useRoute('/products/:category?/:slug?')
   const categoryParam = params?.category || ''
+  const productSlug = params?.slug || ''
   const category = categoryParam ? findCategory(categoryParam) : undefined
   const [sortBy, setSortBy] = useState('default')
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0])
@@ -32,12 +39,25 @@ export function Products() {
   const [onSale, setOnSale] = useState(false)
   const [preciousStones, setPreciousStones] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
+
+  const catalogLoading = loading.value && products.value.length === 0
+  const resolved = productSlug && category ? findProductBySlug(products.value, categoryParam, productSlug) : null
+  const canonicalPath = resolved?.needsRedirect ? resolved.canonicalPath : ''
+
+  useEffect(() => {
+    if (canonicalPath) setLocation(canonicalPath, { replace: true })
+  }, [canonicalPath, setLocation])
+
   usePageMeta(
-    category
-      ? categoryPage(category)
-      : categoryParam
-        ? { ...catalogPage(), path: `/products/${categoryParam}`, noIndex: true }
-        : catalogPage()
+    resolved
+      ? productSeo(resolved.product) ?? productFallbackPage(categoryParam, productSlug)
+      : productSlug && category
+        ? productFallbackPage(categoryParam, productSlug)
+        : category
+          ? categoryPage(category)
+          : categoryParam
+            ? { ...catalogPage(), path: `/products/${categoryParam}`, noIndex: true }
+            : catalogPage()
   )
 
   const handleResetFilters = () => {
@@ -57,11 +77,36 @@ export function Products() {
     )
   }
 
+  if (productSlug && !resolved && !catalogLoading && error.value === 0) {
+    return (
+      <Suspense fallback={<LoadingCard />}>
+        <NotFound />
+      </Suspense>
+    )
+  }
+
   const baseList = category
     ? products.value.filter((p) => p.category.toLowerCase().trim() === category.title.toLowerCase().trim())
     : products.value.filter((p) => p.category !== HIDDEN_CATEGORY)
 
   const filtered = filterAndSortProducts(baseList, { sortBy, priceRange, selectedKarats, onSale, preciousStones })
+
+  const categoryPath = category ? `/products/${slugify(category.title)}` : '/products'
+  const selectedProduct = resolved?.product
+  const selectedIndex = selectedProduct ? filtered.findIndex((product) => product.id === selectedProduct.id) : -1
+
+  const openProduct = (product: ProductType) => {
+    const path = productPath(product)
+    if (path) setLocation(path)
+  }
+
+  const closeProduct = () => setLocation(categoryPath, { replace: true })
+
+  const navigateProduct = (index: number) => {
+    const product = filtered[index]
+    const path = product ? productPath(product) : null
+    if (path) setLocation(path, { replace: true })
+  }
 
   return (
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 md:py-10">
@@ -94,14 +139,14 @@ export function Products() {
 
       {error.value > 0 ? (
         <ErrorCard message={getErrorMessage(error.value)} onRetry={() => refreshProducts()} />
-      ) : loading.value && products.value.length === 0 ? (
+      ) : catalogLoading ? (
         <ProductGridSkeleton />
       ) : filtered.length > 0 ? (
         <>
           <div class="sticky top-16 z-30 min-h-[53px] bg-bg/95 backdrop-blur-sm">
             <FiltersToolbar sortValue={sortBy} onSortChange={setSortBy} onOpenFilters={() => setFiltersOpen(true)} />
           </div>
-          <ProductGrid products={filtered} />
+          <ProductGrid products={filtered} onOpen={openProduct} />
         </>
       ) : (
         <NoProducts hasProducts={baseList.length > 0} />
@@ -120,6 +165,19 @@ export function Products() {
         onPreciousStonesChange={setPreciousStones}
         onReset={handleResetFilters}
       />
+
+      {selectedProduct && (
+        <Suspense fallback={null}>
+          <ProductPopup
+            key={selectedProduct.id}
+            product={selectedProduct}
+            onClose={closeProduct}
+            allProducts={filtered}
+            currentIndex={selectedIndex >= 0 ? selectedIndex : 0}
+            onNavigate={navigateProduct}
+          />
+        </Suspense>
+      )}
     </div>
   )
 }

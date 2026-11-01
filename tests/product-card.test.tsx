@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, render, waitFor } from '@testing-library/preact'
 import { ProductCard } from '@/components/products/ProductCard'
 import type { ProductType } from '@/types'
@@ -53,5 +53,14 @@ describe('ProductCard accesibilidad', () => {
       if (dialogs.length <= dialogsBefore) throw new Error('dialog not ready')
     })
     expect([...baseElement.querySelectorAll('[role=dialog]')].some((el) => (el as HTMLElement).getAttribute('aria-label') === 'Detalles del producto')).toBe(true)
+  })
+
+  it('delega la apertura cuando recibe onOpen', () => {
+    const onOpen = vi.fn()
+    const { baseElement, getByLabelText } = render(<ProductCard data={product} onOpen={onOpen} />)
+    fireEvent.click(getByLabelText('Ver Anillo de oro 14k'))
+
+    expect(onOpen).toHaveBeenCalledWith(product)
+    expect(baseElement.querySelector('[role="dialog"]')).toBeNull()
   })
 })

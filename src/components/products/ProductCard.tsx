@@ -15,18 +15,24 @@ interface Props {
   editable?: boolean
   onEdit?: (product: ProductType) => void
   onDelete?: (id: number) => void
+  onOpen?: (product: ProductType) => void
   allProducts?: ProductType[]
   productIndex?: number
   priority?: boolean
 }
 
-export function ProductCard({ data, editable = false, onEdit, onDelete, allProducts = [], productIndex = 0, priority = false }: Props) {
+export function ProductCard({ data, editable = false, onEdit, onDelete, onOpen, allProducts = [], productIndex = 0, priority = false }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [currentProductIndex, setCurrentProductIndex] = useState(productIndex)
   const [isReserve, setIsReserve] = useState(false)
 
   const close = () => setIsOpen(false)
+
+  const openProduct = () => {
+    if (onOpen) onOpen(data)
+    else setIsOpen(true)
+  }
 
   const handleNavigate = (newIndex: number) => {
     setCurrentProductIndex(newIndex)
@@ -56,7 +62,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           class="relative aspect-square w-full cursor-pointer overflow-hidden bg-surface text-left"
           aria-label={`Ver ${name}`}
           aria-haspopup="dialog"
-          onClick={() => setIsOpen(true)}
+          onClick={openProduct}
         >
           {isLoading && (
             <div class="absolute inset-0 z-10 bg-surface-2 animate-pulse motion-reduce:animate-none" />
@@ -140,7 +146,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
                 size="sm"
                 label={`Ver detalles de ${data.productId}`}
                 title="Ver detalles"
-                onClick={() => setIsOpen(true)}
+                onClick={openProduct}
               >
                 <Info size={16} aria-hidden="true" />
               </IconButton>
@@ -148,7 +154,7 @@ export function ProductCard({ data, editable = false, onEdit, onDelete, allProdu
           )}
         </div>
       </div>
-      {isOpen && (
+      {!onOpen && isOpen && (
         <Suspense fallback={null}>
           <ProductPopup
             product={currentProduct}
