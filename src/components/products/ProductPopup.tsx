@@ -66,7 +66,7 @@ export function ProductPopup({ product, onClose, allProducts = [], currentIndex 
   }, [currentImageIndex])
 
   return (
-    <Modal open onClose={onClose} title="Detalles del producto" size="lg" tall padded={false}>
+    <Modal open onClose={onClose} title="Detalles del producto" size="lg" tall padded={false} fast>
       <div class="flex h-full flex-col">
         <div class="relative min-h-0 flex-1 bg-surface">
           <img

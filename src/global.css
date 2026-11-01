@@ -42,6 +42,8 @@
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --animate-overlay-in: overlay-in 0.2s ease-out;
   --animate-panel-in: panel-in 0.25s var(--ease-out-quart);
+  --animate-overlay-in-fast: overlay-in 0.08s ease-out;
+  --animate-panel-in-fast: panel-in 0.1s var(--ease-out-quart);
   --animate-drawer-left: drawer-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Layout */
