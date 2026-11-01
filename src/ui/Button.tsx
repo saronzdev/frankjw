@@ -1,4 +1,4 @@
-import type { AccessibleAnchorHTMLAttributes, ButtonHTMLAttributes } from 'preact'
+import type { ButtonHTMLAttributes, JSX } from 'preact'
 import { cx } from './cx'
 
 type Variant = 'primary' | 'outline' | 'gold' | 'ghost'
@@ -36,7 +36,7 @@ export function Button({ variant = 'primary', size = 'md', block, class: cls, ..
   const classes = cx(base, variants[variant], sizes[size], block && 'w-full', cls)
 
   if (rest.href !== undefined) {
-    return <a class={classes} {...(rest as AccessibleAnchorHTMLAttributes<HTMLAnchorElement>)} />
+    return <a class={classes} {...(rest as JSX.IntrinsicElements['a'])} />
   }
 
   return <button type="button" class={classes} {...rest} />
