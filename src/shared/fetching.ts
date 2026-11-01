@@ -1,6 +1,7 @@
 import type { ProductType, ProductIn } from '../types'
 import { AxiosError } from 'axios'
 import { api } from './utils'
+import { normalizeCatalogProduct } from '@/seo/product'
 
 const UNKNOWN_ERROR = 1
 const NETWORK_ERROR = 1000
@@ -25,7 +26,7 @@ export const isUserAdmin = async () => {
 export const getProductsSignals = async ({ fresh = false }: { fresh?: boolean } = {}): Promise<ProductType[] | { error: number }> => {
   try {
     const { data } = await api.get<ProductType[]>('products', fresh ? { params: { _: Date.now() } } : undefined)
-    return data.map((p) => ({ ...p, isActive: Boolean(p.isActive), hasPreciousStones: Boolean(p.hasPreciousStones) }))
+    return data.map(normalizeCatalogProduct)
   } catch (error: unknown) {
     return { error: getErrorCode(error) }
   }
