@@ -9,9 +9,10 @@ interface Props {
   editable?: boolean
   onEdit?: (product: ProductType) => void
   onDelete?: (id: number) => void
+  onOpen?: (product: ProductType) => void
 }
 
-export function ProductGrid({ products, editable = false, onEdit, onDelete }: Props) {
+export function ProductGrid({ products, editable = false, onEdit, onDelete, onOpen }: Props) {
   return (
     <div class={GRID_CLASSES}>
       {products.map((product, index) => (
@@ -21,6 +22,7 @@ export function ProductGrid({ products, editable = false, onEdit, onDelete }: Pr
           editable={editable}
           onEdit={onEdit}
           onDelete={onDelete}
+          onOpen={onOpen}
           priority={index < 4}
         />
       ))}
