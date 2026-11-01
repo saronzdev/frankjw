@@ -1,32 +1,18 @@
 import { useEffect } from 'preact/hooks'
+import { serializeJsonLd } from '@/seo/head'
+import type { JsonLdNode, SeoPage } from '@/seo/routes'
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_WIDTH,
+  SITE_NAME,
+  absoluteUrl,
+  canonicalUrl
+} from '@/seo/site'
 
-export const SITE_URL = 'https://frankjoyeriacuba.com'
-
-export const DEFAULT_DESCRIPTION =
-  'Frank Joyería: joyas de alta calidad, anillos, cadenas, aretes y más. Compra online en Cuba. Artesanía, elegancia y los mejores precios.'
-
-export const PRODUCTS_TITLE = 'Catálogo de joyas | Frank Joyería'
-
-export const PRODUCTS_DESCRIPTION =
-  'Explora nuestro catálogo: anillos, cadenas, aretes, pulseras y más joyas de oro con diseños únicos y precios justos.'
-
-/** Convierte una ruta de wouter en URL canónica absoluta para frankjoyeriacuba.com. */
-export function canonicalUrl(path: string): string {
-  const [route] = path.split('?')
-  const normalized = route && route !== '/' ? `/${route.split('/').filter(Boolean).join('/')}` : '/'
-  return SITE_URL + normalized
-}
-
-interface PageMeta {
-  /** Texto del `<title>` y de `og:title`/`twitter:title`. */
-  title: string
-  /** Descripción de la página; por defecto usa la del sitio. */
-  description?: string
-  /** Ruta actual de wouter (sin dominio). */
-  path: string
-  /** Marca la página con `noindex` (login, dashboard, 404). */
-  noIndex?: boolean
-}
+export { SITE_URL, DEFAULT_DESCRIPTION, PRODUCTS_TITLE, PRODUCTS_DESCRIPTION, canonicalUrl } from '@/seo/site'
 
 const setMeta = (kind: 'name' | 'property', key: string, content: string): void => {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${kind}="${key}"]`)
@@ -36,6 +22,10 @@ const setMeta = (kind: 'name' | 'property', key: string, content: string): void 
     document.head.appendChild(el)
   }
   el.setAttribute('content', content)
+}
+
+const removeMeta = (kind: 'name' | 'property', key: string): void => {
+  document.head.querySelector<HTMLMetaElement>(`meta[${kind}="${key}"]`)?.remove()
 }
 
 const setCanonical = (href: string): void => {
@@ -48,17 +38,70 @@ const setCanonical = (href: string): void => {
   el.setAttribute('href', href)
 }
 
-/** Aplica `<title>`, canonical y las metas OG/Twitter/robots de la página actual en la SPA. */
-export function usePageMeta({ title, description = DEFAULT_DESCRIPTION, path, noIndex = false }: PageMeta): void {
+const syncJsonLd = (route: string, nodes: JsonLdNode[]): void => {
+  const scripts = [...document.head.querySelectorAll<HTMLScriptElement>('script[data-seo-route]')]
+  const existing = scripts.find((el) => el.dataset.seoRoute === route)
+
+  scripts.forEach((el) => {
+    if (el !== existing) el.remove()
+  })
+
+  if (nodes.length === 0) {
+    existing?.remove()
+    return
+  }
+
+  const script = existing ?? document.createElement('script')
+  if (!existing) {
+    script.type = 'application/ld+json'
+    script.dataset.seoRoute = route
+    document.head.appendChild(script)
+  }
+  script.textContent = serializeJsonLd(nodes)
+}
+
+export function usePageMeta(page: SeoPage): void {
+  const {
+    title,
+    description = DEFAULT_DESCRIPTION,
+    path,
+    noIndex = false,
+    image,
+    imageAlt,
+    type = 'website',
+    jsonLd = []
+  } = page
+  const jsonLdText = JSON.stringify(jsonLd)
+
   useEffect(() => {
-    document.title = title
     const canonical = canonicalUrl(path)
+    const imageUrl = image ? absoluteUrl(image) : DEFAULT_OG_IMAGE
+
+    document.title = title
     setCanonical(canonical)
+    setMeta('name', 'description', description)
+    setMeta('property', 'og:site_name', SITE_NAME)
+    setMeta('property', 'og:locale', 'es_CU')
     setMeta('property', 'og:title', title)
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:url', canonical)
+    setMeta('property', 'og:type', type)
+    setMeta('property', 'og:image', imageUrl)
+    setMeta('property', 'og:image:alt', imageAlt ?? DEFAULT_OG_IMAGE_ALT)
+    setMeta('name', 'twitter:card', 'summary_large_image')
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
+    setMeta('name', 'twitter:image', imageUrl)
     setMeta('name', 'robots', noIndex ? 'noindex, noarchive' : 'index, follow')
-  }, [title, description, path, noIndex])
+
+    if (imageUrl === DEFAULT_OG_IMAGE) {
+      setMeta('property', 'og:image:width', DEFAULT_OG_IMAGE_WIDTH)
+      setMeta('property', 'og:image:height', DEFAULT_OG_IMAGE_HEIGHT)
+    } else {
+      removeMeta('property', 'og:image:width')
+      removeMeta('property', 'og:image:height')
+    }
+
+    syncJsonLd(path, JSON.parse(jsonLdText) as JsonLdNode[])
+  }, [title, description, path, noIndex, image, imageAlt, type, jsonLdText])
 }

@@ -20,7 +20,7 @@ export const api = axios.create({
   withCredentials: true
 })
 
-export const normalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+export { normalize } from './text'
 
 export const isValidEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

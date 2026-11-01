@@ -17,7 +17,8 @@ import {
   normalize,
   HIDDEN_CATEGORY
 } from '@/shared/utils'
-import { usePageMeta, PRODUCTS_TITLE, PRODUCTS_DESCRIPTION } from '@/shared/meta'
+import { usePageMeta } from '@/shared/meta'
+import { catalogPage, categoryPage } from '@/seo/routes'
 
 const NotFound = lazy(() => import('./NotFound').then((m) => ({ default: m.NotFound })))
 
@@ -33,19 +34,10 @@ export function Products() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   usePageMeta(
     category
-      ? {
-          title: `${category.title} | Frank Joyería`,
-          description: category.description,
-          path: `/products/${categoryParam}`
-        }
+      ? categoryPage(category)
       : categoryParam
-        ? {
-            title: PRODUCTS_TITLE,
-            description: PRODUCTS_DESCRIPTION,
-            path: `/products/${categoryParam}`,
-            noIndex: true
-          }
-        : { title: PRODUCTS_TITLE, description: PRODUCTS_DESCRIPTION, path: '/products' }
+        ? { ...catalogPage(), path: `/products/${categoryParam}`, noIndex: true }
+        : catalogPage()
   )
 
   const handleResetFilters = () => {
